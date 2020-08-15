@@ -1,0 +1,132 @@
+<div class="row ">
+  <div class="col-md-6">
+    <mat-card class="width90">
+      <mat-card-header>
+        <div mat-card-avatar class="example-header-image"></div>
+        <mat-card-title>SIP calculator</mat-card-title>
+        <mat-card-subtitle>For mutual funds</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="row justify-content-md-center">
+          <div class="col-md-4">
+            <form>
+              <mat-form-field>
+                <mat-label>Monthly Investment</mat-label>
+                <input [(ngModel)]="amount" name="amount" type="number" matInput #message maxlength="6"
+                  placeholder="3000" (ngModelChange)="inputChange()">
+              </mat-form-field>
+            </form>
+          </div>
+          <div class="col-md-6">
+            <mat-slider thumbLabel [displayWith]="formatAmount" class="full-width" (input)="amountChanged($event)"
+              [(ngModel)]="amount" value="amount" step="500" min="500" max="120000"></mat-slider>
+          </div>
+        </div>
+        <div class="row justify-content-md-center">
+          <div class="col-md-4">
+            <form>
+              <mat-form-field>
+                <mat-label>Interest Rates</mat-label>
+                <input [(ngModel)]="interest" name="interest" type="number" matInput #message maxlength="2"
+                  placeholder="12" (ngModelChange)="inputChange()">
+              </mat-form-field>
+            </form>
+          </div>
+          <div class="col-md-6">
+            <mat-slider thumbLabel [displayWith]="formatInterest" class="full-width" (input)="interestChanged($event)"
+              [(ngModel)]="interest" value="interest" step="0.5" min="-10" max="99"></mat-slider>
+          </div>
+        </div>
+
+        <div class="row justify-content-md-center">
+          <div class="col-md-4">
+            <form>
+              <mat-form-field>
+                <mat-label>Number of months</mat-label>
+                <input [(ngModel)]="months" name="months" type="number" matInput #message maxlength="3" placeholder="36"
+                  (ngModelChange)="inputChange()">
+              </mat-form-field>
+            </form>
+          </div>
+          <div class="col-md-6">
+            <mat-slider thumbLabel [displayWith]="formatMonth" class="full-width" (input)="monthsChanged($event)"
+              [(ngModel)]="months" value="months" step="1" min="1" max="500"></mat-slider>
+          </div>
+        </div>
+        <div class="row justify-content-md-center">
+          <div class="col-md-6 " align="center">
+            Invested Amount <h4> {{amount*months | number : '1.0-0'}}</h4>
+          </div>
+          <div class="col-md-6">
+            Est. Returns <h4>{{total - (amount*months) | number : '1.0-0'}}</h4>
+          </div>
+        </div>
+        <div class="row justify-content-md-center">
+          <div class="col-md-2"></div>
+          <div class="col-md-6">
+            Total = <strong>{{total | number : '1.0-0'}}</strong>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
+
+
+
+
+<div class="pt-5 row">
+  <div class="col-md-6">
+    <h3>Formula used by SIP Calculator</h3>
+
+    <table class="formula table-condensed">
+      <tbody>
+        <tr>
+          <td></td>
+          <td rowspan="2">FV =</td>
+          <td>P * ( R * ( 1+i )<sup>n</sup> -1 )</td>
+          <td rowspan="2">* ( 1 + i )</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td style="border-top:1px solid #000;text-align:center">i</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p><b>FV =</b> Future Value</p>
+
+    <p><b>P =</b> SIP amount</p>
+
+    <p><b>i =</b> compounded rate of return</p>
+
+    <p>As the returns are compounded for every investment instalment, monthly SIP will be compounded as: i/12.</p>
+
+    <p>Similarly, daily SIP will be compounded as i/365.</p>
+
+    <p>For instance, your SIP amount is Rs 10,000 for a tenure of 24 months. You expect 10% annual rate of return. Then
+      the future value of your SIP would be calculated as below:</p>
+
+    <p>Here, P= 10000</p>
+
+    <p>i = 10% = (10/100)/12 = 1/120</p>
+
+    <p>N= 12 months</p>
+
+    <table class="formula table-condensed" style="width:80%">
+      <tbody>
+        <tr>
+          <td></td>
+          <td rowspan="2">FV =</td>
+          <td style="text-align:center">10000 * ( ( 1+1/120)<sup>12 </sup>-1 )</td>
+          <td rowspan="2">* ( 1 + 1/120 )</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td style="border-top:1px solid #000;text-align:center">1/120</td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
