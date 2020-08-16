@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, LOCALE_ID } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -29,6 +29,7 @@ import {MatSliderModule} from '@angular/material/slider';
 import {MatInputModule} from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { CalculatorService } from './services/calculator.service';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 @NgModule({
   declarations: [
@@ -60,9 +61,13 @@ import { CalculatorService } from './services/calculator.service';
     MatSliderModule,
     MatInputModule,
     FormsModule,
+    NgxChartsModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
-  providers: [CalculatorService],
+  providers: [CalculatorService,{
+    provide: LOCALE_ID,
+    useValue: 'en-DE' // 'de-DE' for Germany, 'fr-FR' for France ...
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
