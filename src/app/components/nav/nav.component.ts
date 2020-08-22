@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-nav',
@@ -7,9 +7,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavComponent implements OnInit {
 
+  openDrawer = false;
+  @Output() openDrawerToggle = new EventEmitter<boolean>(); 
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  toggleDrawer(){
+    this.openDrawer = !this.openDrawer;
+    this.openDrawerToggle.emit(this.openDrawer);
   }
 
 }

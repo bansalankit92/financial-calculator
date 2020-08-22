@@ -1,6 +1,14 @@
-<app-nav></app-nav>
-<div class="container-fluid fc-doc-viewer">
-  <router-outlet></router-outlet>
-</div>
- 
-<app-footer fxFlexOffset="auto"></app-footer>
+<app-nav (openDrawerToggle)="drawer.toggle()"></app-nav>
+<mat-drawer-container class="example-container">
+  <mat-drawer #drawer [mode]="mode" opened>
+    <app-side-nav></app-side-nav>
+  </mat-drawer>
+  <mat-drawer-content>
+    <div class="container-fluid">
+      <div class="mt-2">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+    <app-footer fxFlexOffset="auto"></app-footer>
+  </mat-drawer-content>
+</mat-drawer-container>

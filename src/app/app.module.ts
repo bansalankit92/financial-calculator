@@ -30,6 +30,11 @@ import {MatInputModule} from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { CalculatorService } from './services/calculator.service';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { MycurrencyPipe } from './pipes/mycurrency.pipe';
+import { CurrencyPipe } from '@angular/common';
+import {MatSidenavModule} from '@angular/material/sidenav';
+import {MatListModule} from '@angular/material/list';
+import { SideNavComponent } from './components/side-nav/side-nav.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +52,9 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
     RetirementComponent,
     FinancialFreedomComponent,
     EmiComponent,
-    HomeLoanComponent
+    HomeLoanComponent,
+    MycurrencyPipe,
+    SideNavComponent
   ],
   imports: [
     BrowserModule,
@@ -62,12 +69,14 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
     MatInputModule,
     FormsModule,
     NgxChartsModule,
+    MatSidenavModule,
+    MatListModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
-  providers: [CalculatorService,{
-    provide: LOCALE_ID,
-    useValue: 'en-DE' // 'de-DE' for Germany, 'fr-FR' for France ...
-  }],
+  providers: [
+    CalculatorService,
+    CurrencyPipe,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
