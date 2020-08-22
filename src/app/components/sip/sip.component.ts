@@ -6,6 +6,7 @@ import {
   debounceTime
 } from "rxjs/operators";
 import { Sip } from '../../models/sip';
+import { Constants } from '../../util/constants';
 
 @Component({
   selector: 'app-sip',
@@ -14,11 +15,13 @@ import { Sip } from '../../models/sip';
 })
 export class SipComponent implements OnInit {
 
-  amount = 3000;
+  amount = Constants.SIP_BASE_AMT;
   total = 0;
-  interest = 12;
-  years = 3;
+  interest = Constants.SIP_BASE_INTEREST;
+  years = Constants.SIP_BASE_YEARS;
   months = this.years * 12;
+  colorScheme = Constants.CHART_PIE_COLOR_SCHEME;
+
   sipArr:Sip[] = [];
 
   gradient: boolean = true;
@@ -26,14 +29,9 @@ export class SipComponent implements OnInit {
   showLabels: boolean = true;
   isDoughnut: boolean = false;
 
-  colorScheme = {
-    domain: ['#A10A28', '#5AA454']
-  };
   single = [];
-  view: any[] = [350, 250];
 
   private calculateSubj: Subject < boolean > = new Subject();
-
 
   constructor() {}
 
@@ -61,7 +59,7 @@ export class SipComponent implements OnInit {
 
   formatAmount(value: number) {
     if (value >= 1000) {
-      return Number(value / 1000).toPrecision(2) + 'k';
+      return Number(value / 1000) + 'k';
     }
     return value;
   }
