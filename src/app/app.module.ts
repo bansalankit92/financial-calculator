@@ -35,6 +35,9 @@ import { CurrencyPipe } from '@angular/common';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatListModule} from '@angular/material/list';
 import { SideNavComponent } from './components/side-nav/side-nav.component';
+import { OldIncomeTaxComponent } from './components/old-income-tax/old-income-tax.component';
+import { OldVsNewIncomeTaxComponent } from './components/old-vs-new-income-tax/old-vs-new-income-tax.component';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -54,7 +57,9 @@ import { SideNavComponent } from './components/side-nav/side-nav.component';
     EmiComponent,
     HomeLoanComponent,
     MycurrencyPipe,
-    SideNavComponent
+    SideNavComponent,
+    OldIncomeTaxComponent,
+    OldVsNewIncomeTaxComponent
   ],
   imports: [
     BrowserModule,
@@ -71,6 +76,7 @@ import { SideNavComponent } from './components/side-nav/side-nav.component';
     NgxChartsModule,
     MatSidenavModule,
     MatListModule,
+    MatSnackBarModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [

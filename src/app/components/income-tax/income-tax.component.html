@@ -1,9 +1,9 @@
 <div class="row ">
-  <div class="col-md-7">
-    <mat-card class="width90">
+  <div class="col-md-6">
+    <mat-card class="">
       <mat-card-header>
         <!-- <div mat-card-avatar class="example-header-image"></div> -->
-        <mat-card-title>Income Tax calculator</mat-card-title>
+        <mat-card-title>Income Tax calculator (2020-21) New Regime</mat-card-title>
         <mat-card-subtitle>Gross Yearly Salary</mat-card-subtitle>
       </mat-card-header>
       <mat-card-content>
@@ -18,49 +18,200 @@
           </div>
           <div class="full-width">
             <mat-slider class="full-width" thumbLabel [displayWith]="formatSalary" (input)="salaryChanged($event)"
-              [(ngModel)]="salary" value="salary" step="50000" min="200000" max="5000000"></mat-slider>
+              [(ngModel)]="salary" value="salary" step="50000" min="200000" [max]="maxSalarySlider"></mat-slider>
           </div>
         </div>
-        Tax = {{totalNewRegimeTax|mycurrency}}
-        <div class="table-responsive">
-          <table class="table table-striped">
-            <thead>
-              <tr>
-                <th scope="col">Duration</th>
-                <th scope="col">Tax payable in New Regime</th>
-              </tr>
-            </thead>
-            <tbody>
-    
-            </tbody>
-          </table>
+        <div>
+          <span *ngIf="salary>500000">Total Tax Payable = <strong> {{totalNewRegimeTax|mycurrency}}
+            </strong><em>{{taxInWords}}</em>
+          </span>
+          <span *ngIf="salary<500000"> Chill !! Buddy no tax for you. <br />You are eligible for tax rebate under
+            section 87A
+            up to Rs 12,500 </span>
+          <span *ngIf="salary>4000000"><br /><br />Buddy get an CA he will guide you properly. And also please teach me
+            what you do to earn {{this.salary}}, Thanks.</span>
         </div>
+     
       </mat-card-content>
     </mat-card>
-  </div>
-  <div class="col-md-5">
-    <div class="table-responsive">
-      <table class="table table-striped">
+
+    
+  <div class="mt-3">
+    <div>
+      Given below are the income tax slabs that are applicable in the new tax regime for individuals from FY
+      2020-21:
+    </div>
+    <div class="table-responsive  table-sm">
+      <table class="table">
         <thead>
           <tr>
-            <th scope="col">Duration</th>
-            <th scope="col">Amount monthly</th>
-            <th scope="col">Total Value</th>
-            <th scope="col">Wealth Gain</th>
+            <th>S. No. </th>
+            <th>Income slabs</th>
+            <th>Income tax rate (%)</th>
           </tr>
         </thead>
         <tbody>
+          <tr>
+            <td>1</td>
+            <td>Upto 2.5 Lakhs </td>
+            <td>NIL</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>Between Rs 2,50,001 and Rs 5 lakh </td>
+            <td>5%</td>
 
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>Between Rs 5,00,001 and Rs 7.5 lakh </td>
+            <td>10%</td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>Between Rs 7,50,001 and Rs 10 lakh </td>
+            <td>15%</td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td>Between Rs 10,00,001 and Rs 12.5 lakh </td>
+            <td>20%</td>
+          </tr>
+          <tr>
+            <td>6</td>
+            <td>Between Rs 12,50,001 and Rs 15 lakh </td>
+            <td>25%</td>
+          </tr>
+          <tr>
+            <td>7</td>
+            <td>Above Rs 15 lakh </td>
+            <td>30%</td>
+          </tr>
         </tbody>
       </table>
+      <p><em>*Individuals having taxable income of up to Rs 5 lakh will be eligible for tax rebate under section
+          87A
+          up to Rs 12,500, thereby making zero tax payable in the new tax regime.</em></p>
+      <p>
+        Under the new tax regime, an individual is eligible for only one deduction under section 80CCD (2). This
+        section allows deduction on the employer's contribution to the NPS (National Pension System) account for
+        maximum of 10 per cent of the employee's salary (salary here means basic plus dearness allowance).
+      </p>
+      <p>
+        Other commonly availed deductions such as those under sections 80C, 80D etc, and tax exemptions such as
+        HRA, LTA etc. are not available in the new tax structure.
+      </p>
     </div>
-  </div>
-</div>
 
-<!--   -->
-<div class="pt-5 row">
+  </div>
+  </div>
+
   <div class="col-md-6">
-    <h3>Formula used by SIP Calculator</h3>
+    <mat-card class="">
+      <mat-card-header>
+        <!-- <div mat-card-avatar class="example-header-image"></div> -->
+        <mat-card-title>Income Tax calculator (2020-21) New Regime</mat-card-title>
+        <mat-card-subtitle>Gross Yearly Salary</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+    <div class="table-responsive">
+      <table class="table  table-sm">
+        <thead class="thead-light">
+          <tr>
+            <th scope="col" rowspan="2">Income Tax Calculation </th>
+            <th scope="col">Monthly</th>
+            <th scope="col">Yearly</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Total CTC</td>
+            <td>{{newRegime.salaryMonthly | mycurrency}}</td>
+            <td>{{newRegime.salary | mycurrency}}</td>
+          </tr>
+          <tr>
+            <td>Basic </td>
+            <td>{{newRegime.baseSalaryM | mycurrency}}</td>
+            <td>{{newRegime.baseSalaryY | mycurrency}}</td>
+          </tr>
+          <tr>
+            <td>Deductions (Employer NPS @10% basic) </td>
+            <td>{{newRegime.deductions/12 | mycurrency}}</td>
+            <td>{{newRegime.deductions | mycurrency}}</td>
+          </tr>
+          <tr class="table-active">
+            <th>Amount after deductions </th>
+            <th>{{newRegime.amtAfterDeductions/12 | mycurrency}}</th>
+            <th>{{newRegime.amtAfterDeductions | mycurrency}}</th>
+          </tr>
+          <tr>
+            <th>Tax Slab </th>
+            <th></th>
+            <th></th>
+          </tr>
+          <tr>
+            <td>Upto 2.5 Lakhs (NIL) </td>
+            <td>{{newRegime.zeroPercent | mycurrency}}</td>
+            <td>{{newRegime.zeroPercent | mycurrency}}</td>
+          </tr>
+          <tr>
+            <td>Between Rs 2,50,001 and Rs 5 lakh (5%) </td>
+            <td>{{newRegime.fivePercent/12 | mycurrency}}</td>
+            <td>{{newRegime.fivePercent | mycurrency}}</td>
+          </tr>
+          <tr>
+            <td>Between Rs 5,00,001 and Rs 7.5 lakh (10%) </td>
+            <td>{{newRegime.tenPercent/12 | mycurrency}}</td>
+            <td>{{newRegime.tenPercent | mycurrency}}</td>
+          </tr>
+          <tr>
+            <td>Between Rs 7,50,001 and Rs 10 lakh (15%) </td>
+            <td>{{newRegime.fifteenPercent/12 | mycurrency}}</td>
+            <td>{{newRegime.fifteenPercent | mycurrency}}</td>
+          </tr>
+          <tr>
+            <td>Between Rs 10,00,001 and Rs 12.5 lakh (20%) </td>
+            <td>{{newRegime.twentyPercent/12 | mycurrency}}</td>
+            <td>{{newRegime.twentyPercent | mycurrency}}</td>
+          </tr>
+          <tr>
+            <td>Between Rs 12,50,001 and Rs 15 lakh (25%) </td>
+            <td>{{newRegime.twentyFivePercent/12 | mycurrency}}</td>
+            <td>{{newRegime.twentyFivePercent | mycurrency}}</td>
+          </tr>
+          <tr>
+            <td>Above Rs 15 lakh (30%) </td>
+            <td>{{newRegime.thirtyPercent/12 | mycurrency}}</td>
+            <td>{{newRegime.thirtyPercent | mycurrency}}</td>
+          </tr>
+          <tr class="table-active">
+            <td>Income Tax </td>
+            <td>{{newRegime.taxBeforeCess/12 | mycurrency}}</td>
+            <td>{{newRegime.taxBeforeCess | mycurrency}}</td>
+          </tr>
+          <tr>
+            <td>Education Cess @ (4%) </td>
+            <td>{{newRegime.cess/12 | mycurrency}}</td>
+            <td>{{newRegime.cess | mycurrency}}</td>
+          </tr>
+          <tr class="table-active">
+            <th>Total Tax Outgo </th>
+            <th>{{newRegime.taxPayable/12 | mycurrency}}</th>
+            <th>{{newRegime.taxPayable | mycurrency}}</th>
+          </tr>
+        </tbody>
+      </table>
 
+    </div>
+    </mat-card-content>
+    </mat-card>
   </div>
+
+
+<div>
+  <h5>Refrences</h5>
+  <pre>
+    https://www.axisbank.com/progress-with-us/tax-planning/new-tax-regime-vs-old-tax-regime-union-budget-2020
+    https://economictimes.indiatimes.com/wealth/tax/how-to-calculate-income-tax-for-fy-2020-21/articleshow/74706402.cms?from=mdr
+  </pre>
 </div>
