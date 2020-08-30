@@ -141,4 +141,10 @@ export class SipComponent implements OnInit {
 
   }
 
+  tableClicked(item: Sip){
+    this.years = item.yr;
+    this.months = this.years * 12;
+    this.updateTotal();
+  }
+
 }

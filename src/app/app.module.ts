@@ -38,6 +38,7 @@ import { SideNavComponent } from './components/side-nav/side-nav.component';
 import { OldIncomeTaxComponent } from './components/old-income-tax/old-income-tax.component';
 import { OldVsNewIncomeTaxComponent } from './components/old-vs-new-income-tax/old-vs-new-income-tax.component';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { InlineEditInputComponent } from './components/forms/inline-edit-input/inline-edit-input.component';
 
 @NgModule({
   declarations: [
@@ -59,7 +60,8 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
     MycurrencyPipe,
     SideNavComponent,
     OldIncomeTaxComponent,
-    OldVsNewIncomeTaxComponent
+    OldVsNewIncomeTaxComponent,
+    InlineEditInputComponent
   ],
   imports: [
     BrowserModule,

@@ -13,8 +13,8 @@
             <div class="form-group row  justify-content-md-center ">
               <label for="amount" class="col-sm-6 col-form-label">Montly Investment</label>
               <div class="col-sm-6">
-                <input type="number" class="form-control-plaintext" id="amount" [(ngModel)]="amount" name="amount"
-                  placeholder="3000" (ngModelChange)="inputChange()">
+                <input type="number" class="form-control" id="amount" [(ngModel)]="amount" name="amount"
+                  placeholder="3000" min="500" step="500" (ngModelChange)="inputChange()">
               </div>
               <div class="full-width">
                 <mat-slider class="full-width" thumbLabel [displayWith]="formatAmount" (input)="amountChanged($event)"
@@ -24,7 +24,7 @@
             <div class="form-group row  justify-content-md-center">
               <label for="interest" class="col-sm-6 col-form-label">Interest Rates (%)</label>
               <div class="col-sm-6">
-                <input [(ngModel)]="interest" class="form-control-plaintext" name="interest" type="number" matInput
+                <input [(ngModel)]="interest" class="form-control" name="interest" type="number" matInput
                   #message maxlength="2" placeholder="12" (ngModelChange)="inputChange()">
               </div>
               <div class="full-width">
@@ -34,14 +34,15 @@
               </div>
             </div>
             <div class="form-group row  justify-content-md-center">
-              <label for="years" class="col-sm-6 col-form-label">Number of years</label>
-              <div class="col-sm-3">
-                <input [(ngModel)]="years" id="years" class="form-control-plaintext" name="years" type="number" matInput
-                  #message maxlength="3" placeholder="36" (ngModelChange)="inputChange()">
-              </div>
-              <div class="col-sm-3">
+              <label for="years" class="col-sm-4 col-form-label">Number of Years</label>
+              <div class="col-sm-4">
                 <div class="mt-2">{{years*12 | number : '1.0-0'}} months</div>
               </div>
+              <div class="col-sm-4">
+                <input [(ngModel)]="years" id="years" class="form-control" name="years" type="number" matInput
+                  #message maxlength="3" min="1" placeholder="36" (ngModelChange)="inputChange()">
+              </div>
+            
               <div class="full-width">
                 <mat-slider thumbLabel [displayWith]="formatYear" class="full-width" (input)="yearsChanged($event)"
                   [(ngModel)]="years" value="years" step="1" min="1" max="35"></mat-slider>
@@ -74,8 +75,15 @@
     </mat-card>
   </div>
   <div class="col-md-5">
+    <mat-card class="width90">
+      <mat-card-header>
+        <!-- <div mat-card-avatar class="example-header-image"></div> -->
+        <mat-card-title>Calculation for different years</mat-card-title>
+        <mat-card-subtitle>For mutual funds</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
     <div class="table-responsive-md">
-    <table class="table table-striped" *ngIf="sipArr.length>0">
+    <table class="table table-striped table-sm" *ngIf="sipArr.length>0">
       <thead>
         <tr>
           <th scope="col">Duration</th>
@@ -85,8 +93,8 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let item of sipArr">
-          <th scope="row">{{item.yr}} yr</th>
+        <tr *ngFor="let item of sipArr" (click)="tableClicked(item)">
+          <th scope="row" >{{item.yr}} yr</th>
           <td>{{item.amt | mycurrency}}</td>
           <td>{{item.total |mycurrency}}</td>
           <td>{{item.earn |mycurrency}}</td>
@@ -94,7 +102,10 @@
 
       </tbody>
     </table>
+    
     </div>
+    </mat-card-content>
+    </mat-card>
   </div>
 </div>
 

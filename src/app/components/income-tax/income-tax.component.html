@@ -13,7 +13,7 @@
             <div *ngIf="!isEdit" (click)="isEdit=true">
               <span>{{salary | mycurrency}} - {{inwords()}} </span>
             </div>
-            <input *ngIf="isEdit" type="number" class="form-control-plaintext" id="salary" [(ngModel)]="salary"
+            <input *ngIf="isEdit" type="number" class="form-control" id="salary" [(ngModel)]="salary"
               name="salary" placeholder="10,00,000" (ngModelChange)="inputChange()" step="10000" (blur)="isEdit=false">
           </div>
           <div class="full-width">

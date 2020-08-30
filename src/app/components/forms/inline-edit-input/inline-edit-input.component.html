@@ -1,0 +1,13 @@
+<div class="fc-input-value p-2" *ngIf="!isEdit || disabled" (click)="isEdit=true">
+  <span *ngIf="type==='currency'">{{value | mycurrency}} <span *ngIf="currencyShowWords">  - {{inwords()}} </span></span>
+  <span *ngIf="type!=='currency'">{{value}}</span>
+</div>
+<div  *ngIf="isEdit && !disabled">
+    <input *ngIf="type==='currency'" type="number" class="form-control" [id]="name" [(ngModel)]="value" 
+    [name]="name"  [placeholder]="placeholder" (ngModelChange)="inputChange()" step="10000" (blur)="isEdit=false">
+    <input *ngIf="type==='number'" type="number" class="form-control-plaintext" [id]="name" [(ngModel)]="value"
+     [name]="name" [placeholder]="placeholder" (ngModelChange)="inputChange()" [step]="step" (blur)="isEdit=false">
+     <input *ngIf="type==='text'" type="text" class="form-control-plaintext" [id]="name" [(ngModel)]="value"
+     [name]="name" [placeholder]="placeholder" (ngModelChange)="inputChange()" (blur)="isEdit=false">
+</div>
+
