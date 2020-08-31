@@ -74,7 +74,8 @@ export class CalculatorService {
   }
 
  
-static inWords (num) {
+static inWords (num):string {
+  num = Math.round(num);
   var a = ['','one ','two ','three ','four ', 'five ','six ','seven ','eight ','nine ','ten ','eleven ','twelve ','thirteen ','fourteen ','fifteen ','sixteen ','seventeen ','eighteen ','nineteen '];
   var b = ['', '', 'twenty','thirty','forty','fifty', 'sixty','seventy','eighty','ninety'];
   

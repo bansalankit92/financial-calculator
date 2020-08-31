@@ -39,6 +39,7 @@ import { OldIncomeTaxComponent } from './components/old-income-tax/old-income-ta
 import { OldVsNewIncomeTaxComponent } from './components/old-vs-new-income-tax/old-vs-new-income-tax.component';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { InlineEditInputComponent } from './components/forms/inline-edit-input/inline-edit-input.component';
+import {MatExpansionModule} from '@angular/material/expansion';
 
 @NgModule({
   declarations: [
@@ -79,6 +80,7 @@ import { InlineEditInputComponent } from './components/forms/inline-edit-input/i
     MatSidenavModule,
     MatListModule,
     MatSnackBarModule,
+    MatExpansionModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [

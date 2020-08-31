@@ -16,6 +16,7 @@ export class InlineEditInputComponent implements OnInit {
   @Input() placeholder:string = "Please enter "+this.name;
   @Input() step:number = 1;
   @Input() disabled = false;
+  @Input() max = 100000000000;
   @Output() valueChanged: EventEmitter<string|number> = new EventEmitter<string|number>();
   @Output() focus: EventEmitter<string|number> = new EventEmitter<string|number>();
   constructor() { }

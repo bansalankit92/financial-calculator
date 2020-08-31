@@ -5,6 +5,7 @@ import { ToastService } from '../../services/toast.service';
 import { debounceTime } from 'rxjs/operators';
 import { MatSliderChange } from '@angular/material/slider';
 import { CalculatorService } from '../../services/calculator.service';
+import { OldRegime } from '../../models/old-regime19';
 
 @Component({
   selector: 'app-old-vs-new-income-tax',
@@ -20,15 +21,19 @@ export class OldVsNewIncomeTaxComponent implements OnInit {
   newRegime: NewRegime2020;
   taxInWords = "";
   maxSalarySlider = 5000000;
+  oldRegime: OldRegime;
+
 
   private calculateSubj: Subject < boolean > = new Subject();
 
   constructor(private toastService: ToastService) {}
 
   ngOnInit(): void {
+    this.getOldRegimeTax();
     this.getNewRegimeTax();
     this.calculateSubj.pipe(debounceTime(100)).subscribe(val => {
       this.getNewRegimeTax();
+      this.getOldRegimeTax();
     });
   }
   formatSalary(value: number) {
@@ -47,7 +52,8 @@ export class OldVsNewIncomeTaxComponent implements OnInit {
   }
 
   inputChange() {
-    this.updateTax();
+    OldRegime.calculate(this.oldRegime);
+   // this.updateTax();
   }
 
   inwords(): string {
@@ -57,16 +63,18 @@ export class OldVsNewIncomeTaxComponent implements OnInit {
   updateTax(): void {
     this.calculateSubj.next(true)
   }
-
+  salaryUpdate() {
+    this.updateTax();
+  }
   getNewRegimeTax() {
-   
       this.newRegime =new NewRegime2020(this.salary);
       this.totalNewRegimeTax =this.newRegime.taxPayable;
       this.taxInWords  = CalculatorService.inWords(this.totalNewRegimeTax);
-    if(this.salary<500000){
-        this.toastService.success("No need to worry about tax buddy, Chillax!!");
-      
-    }
+  }
+
+  getOldRegimeTax() {
+    this.oldRegime = new OldRegime(this.salary);    
+    this.taxInWords = CalculatorService.inWords(this.oldRegime.taxPayable);    
   }
 
 }

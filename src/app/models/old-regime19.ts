@@ -40,7 +40,8 @@ export class OldRegime {
     this.salaryM = salary / 12;
     this.baseSalaryY = TaxUtil.calculateBase(salary);
     this.baseSalaryM = this.baseSalaryY / 12;
-
+    this.dedepf = TaxUtil.getTaxValue(this.baseSalaryY, 12);
+    this.dedpf = this.dedepf;
     this.dedhra = TaxUtil.getTaxValue(salary, 10); // 10% 
     this.standardDed = 50000; // 50
     this.dedprofTax = 2400
@@ -60,11 +61,14 @@ export class OldRegime {
   }
 
   static calculate(old: OldRegime) {
-   
-    
-    old.baseSalaryY = old.baseSalaryM*12;
-    old.dedepf = TaxUtil.getTaxValue(old.baseSalaryY, 12);
-    old.dedpf = old.dedepf;
+    if( old.baseSalaryM*12 === old.baseSalaryY){
+        old.dedepf = old.dedpf;
+    }else{
+      old.baseSalaryY = old.baseSalaryM*12;
+      old.dedpf = TaxUtil.getTaxValue(old.baseSalaryY, 12);
+      old.dedepf = old.dedpf;
+    }
+
     old.dedgratuity = TaxUtil.getTaxValue(old.baseSalaryY, 5);;
     old.deductions = old.dedhra + old.standardDed + old.dedprofTax + old.dedconveyance +
       old.ded80C + old.dedccd + old.ded80D + old.dedeea + old.dedepf + old.dedpf + old.dedgratuity +
