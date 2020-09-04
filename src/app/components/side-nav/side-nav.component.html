@@ -1,15 +1,17 @@
-<mat-selection-list  [multiple]="false">
-    <mat-list-option routerLink="/sip" >
-      SIP Calculator
-    </mat-list-option>
-    <mat-list-option  routerLink="/old-vs-new-regime-income-tax-calculator">
-     Old vs New Regime Income Tax
-     </mat-list-option>
-    <mat-list-option  routerLink="/income-tax-calculator">
-     Income Tax 2020-21 (New)
-    </mat-list-option>
-    <mat-list-option  routerLink="/old-income-tax-calculator-2019-20">
-      Income Tax 2019-20 (Old)
-     </mat-list-option>
-   
-  </mat-selection-list>
+<mat-selection-list [multiple]="false">
+  <mat-list-option routerLink="/sip">
+    <span class="stext">SIP Calculator</span> 
+  </mat-list-option>
+  <mat-list-option routerLink="/old-vs-new-regime-income-tax-calculator" (click)="onClick()">
+    <span  class="stext">Old vs New Regime Income Tax</span>
+  </mat-list-option>
+  <mat-list-option routerLink="/income-tax-calculator" (click)="onClick()">
+    <span  class="stext"> (New) Income Tax 2020-21</span>
+  </mat-list-option>
+  <mat-list-option routerLink="/old-income-tax-calculator-2019-20" (click)="onClick()">
+    <span  class="stext"> (Old) Income Tax 2019-20 </span>
+  </mat-list-option>
+  <mat-list-option routerLink="/salary-calculator" (click)="onClick()">
+    <span  class="stext">  Salary calculator</span>
+  </mat-list-option>
+</mat-selection-list>

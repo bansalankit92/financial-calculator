@@ -1,3 +1,15 @@
 a{
     text-decoration: none;
 }
+
+.stext:hover{
+    color: black;
+}
+
+mat-list-option[aria-selected="true"] {
+    background: rgba(212, 218, 251, 0.7);
+  }
+
+  .mat-option:hover:not(.mat-option-disabled){
+    background: rgba(212, 218, 251, 0.7);
+  }

@@ -24,7 +24,7 @@ export class SipComponent implements OnInit {
 
   sipArr:Sip[] = [];
 
-  gradient: boolean = true;
+  gradient: boolean = false;
   showLegend: boolean = false;
   showLabels: boolean = true;
   isDoughnut: boolean = false;

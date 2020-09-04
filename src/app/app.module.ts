@@ -40,6 +40,7 @@ import { OldVsNewIncomeTaxComponent } from './components/old-vs-new-income-tax/o
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { InlineEditInputComponent } from './components/forms/inline-edit-input/inline-edit-input.component';
 import {MatExpansionModule} from '@angular/material/expansion';
+import { OldTaxAdvOptionComponent } from './components/old-tax-adv-option/old-tax-adv-option.component';
 
 @NgModule({
   declarations: [
@@ -62,7 +63,8 @@ import {MatExpansionModule} from '@angular/material/expansion';
     SideNavComponent,
     OldIncomeTaxComponent,
     OldVsNewIncomeTaxComponent,
-    InlineEditInputComponent
+    InlineEditInputComponent,
+    OldTaxAdvOptionComponent
   ],
   imports: [
     BrowserModule,

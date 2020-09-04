@@ -1,0 +1,154 @@
+<div *ngIf="oldRegime">
+<div class="row">
+    <div class="col-md-6">
+      <div class="row justify-content-md-center">
+        <label for="basic-monthly-salary" class="col-sm-6 col-form-label">Montly Basic:</label>
+        <div class="col-sm-6">
+          <app-inline-edit-input (valueChanged)="oldRegime.baseSalaryM = $event; inputChange()" step="500"
+            type="currency" name="basic-monthly-salary" [value]="oldRegime.baseSalaryM" placeholder="30,000">
+          </app-inline-edit-input>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="row justify-content-md-center">
+        <label for="basic-monthly-salary" class="col-sm-6 col-form-label">Yearly Basic:</label>
+        <div class="col-sm-6">
+          <p class="mt-2">{{ (oldRegime.baseSalaryM*12) |mycurrency}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <hr />
+  <div class="row">
+    <div class="col-md-4">
+      <div class="row justify-content-md-center">
+        <label for="dedpf" class="col-sm-3 col-form-label">PF:</label>
+        <div class="col-sm-9">
+          <app-inline-edit-input (valueChanged)="oldRegime.dedpf = $event; inputChange()" step="200"
+            type="currency" name="dedpf" [value]="oldRegime.dedpf" placeholder="30000">
+          </app-inline-edit-input>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="row justify-content-md-center">
+        <label for="dedepf" class="col-sm-3 col-form-label">EPF:</label>
+        <div class="col-sm-9">
+          <app-inline-edit-input (valueChanged)="oldRegime.dedepf = $event; inputChange()" step="500"
+            type="currency" name="dedepf" disabled="true" [value]="oldRegime.dedepf" placeholder="30,000">
+          </app-inline-edit-input>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="row justify-content-md-center">
+        <label for="gratuity" class="col-sm-4 col-form-label">Gratuity:</label>
+        <div class="col-sm-8  ">
+          <app-inline-edit-input (valueChanged)="oldRegime.dedgratuity = $event; inputChange()" step="500"
+            type="currency" name="gratuity" [value]="oldRegime.dedgratuity" placeholder="1,00,000">
+          </app-inline-edit-input>
+        </div>
+      </div>
+    </div>
+  </div>
+  <hr />
+  <div class="row">
+    <div class="col-md-4">
+      <div class="row justify-content-md-center">
+        <label for="dedconveyance" class="col-sm-4 col-form-label">Conveyance:</label>
+        <div class="col-sm-8">
+          <app-inline-edit-input (valueChanged)="oldRegime.dedconveyance = $event; inputChange()" step="200"
+            type="currency" name="dedconveyance" [value]="oldRegime.dedconveyance" placeholder="19000">
+          </app-inline-edit-input>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="row justify-content-md-center">
+        <label for="hra" class="col-sm-3 col-form-label">HRA:</label>
+        <div class="col-sm-9">
+          <app-inline-edit-input (valueChanged)="oldRegime.dedhra = $event; inputChange()" step="200"
+            type="currency" name="hra" [value]="oldRegime.dedhra" placeholder="30000">
+          </app-inline-edit-input>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="row justify-content-md-center">
+        <label for="profTax" class="col-sm-6 col-form-label">Prof tax:</label>
+        <div class="col-sm-6">
+          <app-inline-edit-input disabled="true" type="currency" name="profTax" [value]="oldRegime.dedprofTax">
+          </app-inline-edit-input>
+        </div>
+      </div>
+    </div>
+  </div>
+  <hr />
+  <div class="row">
+    <div class="col-md-6">
+      <div class="row justify-content-md-center">
+        <label for="ded80C" class="col-sm-6 col-form-label">ELSS/PPF/ LIC/H.Loan 80C:</label>
+        <div class="col-sm-6">
+          <app-inline-edit-input (valueChanged)="oldRegime.ded80C = $event; inputChange()" step="500"
+            type="currency" name="ded80C" [value]="oldRegime.ded80C" placeholder="150000" max="150000">
+          </app-inline-edit-input>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="row justify-content-md-center">
+        <label for="ded80D" class="col-sm-6 col-form-label">Mediclaim 80D:</label>
+        <div class="col-sm-6">
+          <app-inline-edit-input (valueChanged)="oldRegime.ded80D = $event; inputChange()" step="500"
+            type="currency" name="ded80D" [value]="oldRegime.ded80D" placeholder="25,000" max="25000">
+          </app-inline-edit-input>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="row justify-content-md-center">
+        <label for="dedccd" class="col-sm-6 col-form-label">NPS - 80CCD</label>
+        <div class="col-sm-6">
+          <app-inline-edit-input (valueChanged)="oldRegime.dedccd = $event; inputChange()" step="500"
+            type="currency" name="dedccd" [value]="oldRegime.dedccd" placeholder="25,000" max="50000">
+          </app-inline-edit-input>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="row justify-content-md-center">
+        <label for="dedeea" class="col-sm-6 col-form-label"> H. Loan Interest 80EEA</label>
+        <div class="col-sm-6">
+          <app-inline-edit-input (valueChanged)="oldRegime.dedeea = $event; inputChange()" step="500"
+            type="currency" name="dedeea" [value]="oldRegime.dedeea" placeholder="25,000">
+          </app-inline-edit-input>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="row justify-content-md-center">
+        <label for="ded80g" class="col-sm-6 col-form-label">Donations 80G </label>
+        <div class="col-sm-6">
+          <app-inline-edit-input (valueChanged)="oldRegime.ded80g = $event; inputChange()" step="500"
+            type="currency" name="ded80g" [value]="oldRegime.ded80g">
+          </app-inline-edit-input>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="row justify-content-md-center">
+        <label for="ded80e" class="col-sm-6 col-form-label">Edu. Loan Interest 80E</label>
+        <div class="col-sm-6">
+          <app-inline-edit-input (valueChanged)="oldRegime.ded80e = $event; inputChange()" step="500"
+            type="currency" name="ded80e" [value]="oldRegime.ded80e">
+          </app-inline-edit-input>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>

@@ -1,7 +1,7 @@
-<app-nav (openDrawerToggle)="drawer.toggle()"></app-nav>
+<app-nav (openDrawerToggle)="drawer.toggle()" class="mat-elevation-z6"></app-nav>
 <mat-drawer-container class="example-container">
   <mat-drawer #drawer [mode]="mode" opened>
-    <app-side-nav></app-side-nav>
+    <app-side-nav (click)="drawer.close()"></app-side-nav>
   </mat-drawer>
   <mat-drawer-content>
     <div class="container-fluid">

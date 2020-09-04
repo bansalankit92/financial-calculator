@@ -41,11 +41,15 @@ const routes: Routes = [{
   {
     path: 'old-vs-new-regime-income-tax-calculator',
     component: OldVsNewIncomeTaxComponent
+  } ,
+  {
+    path: 'salary-calculator',
+    component: SalaryComponent
   }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, { useHash: true })],
   exports: [RouterModule]
 })
 export class AppRoutingModule {}
