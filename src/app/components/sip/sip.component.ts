@@ -95,6 +95,7 @@ export class SipComponent implements OnInit {
   }
 
   getTotal(): number {
+    this.months = this.years * 12;
     return CalculatorService.getMonthlySip(this.amount, this.interest, this.months);
   }
 

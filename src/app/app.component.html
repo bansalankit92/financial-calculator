@@ -1,14 +1,16 @@
 <app-nav (openDrawerToggle)="drawer.toggle()" class="mat-elevation-z6"></app-nav>
 <mat-drawer-container class="example-container">
   <mat-drawer #drawer [mode]="mode" opened>
-    <app-side-nav (click)="drawer.close()"></app-side-nav>
+    <app-side-nav (click)="isMobile?drawer.close():''"></app-side-nav>
   </mat-drawer>
   <mat-drawer-content>
-    <div class="container-fluid">
+    <div class="container-fluid wrapper ">
       <div class="mt-2">
         <router-outlet></router-outlet>
       </div>
     </div>
-    <app-footer fxFlexOffset="auto"></app-footer>
+    <footer class="footer" id="footer">
+      <app-footer fxFlexOffset="auto"></app-footer>
+    </footer>
   </mat-drawer-content>
 </mat-drawer-container>

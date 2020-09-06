@@ -51,6 +51,10 @@ export class IncomeTaxComponent implements OnInit {
     this.updateTax();
   }
 
+  baseChange(){
+    NewRegime2020.calculate(this.newRegime);
+  }
+
   inwords(): string {
     return CalculatorService.inWords(this.salary);
   }

@@ -5,6 +5,7 @@ import { SalaryComponent } from './components/salary/salary.component';
 import { IncomeTaxComponent } from './components/income-tax/income-tax.component';
 import { OldIncomeTaxComponent } from './components/old-income-tax/old-income-tax.component';
 import { OldVsNewIncomeTaxComponent } from './components/old-vs-new-income-tax/old-vs-new-income-tax.component';
+import { FdComponent } from './components/fd/fd.component';
 
 const routes: Routes = [{
     path: '',
@@ -41,10 +42,18 @@ const routes: Routes = [{
   {
     path: 'old-vs-new-regime-income-tax-calculator',
     component: OldVsNewIncomeTaxComponent
-  } ,
+  },
   {
     path: 'salary-calculator',
     component: SalaryComponent
+  },
+  {
+    path: 'take-home-calculator',
+    component: SalaryComponent
+  },
+  {
+    path: 'fd',
+    component: FdComponent
   }
 ];
 

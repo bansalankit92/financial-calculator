@@ -21,7 +21,7 @@ export class SalaryComponent implements OnInit {
   taxInWords = "";
   maxSalarySlider = 5000000;
   oldRegime: OldRegime;
-
+  regimeType = "old";
 
   private calculateSubj: Subject < boolean > = new Subject();
 
@@ -49,7 +49,10 @@ export class SalaryComponent implements OnInit {
       this.maxSalarySlider = this.salary + 1000000;
     }
   }
-
+  baseChange(){
+    OldRegime.calculate(this.oldRegime);
+    NewRegime2020.calculate(this.newRegime)
+  }
   inputChange() {
     OldRegime.calculate(this.oldRegime);
    // this.updateTax();

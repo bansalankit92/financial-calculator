@@ -1,211 +1,331 @@
-<mat-card class="">
-  <mat-card-header>
-    <!-- <div mat-card-avatar class="example-header-image"></div> -->
-    <mat-card-title>Income Tax calculator - New Regime vs Old Regime</mat-card-title>
-    <mat-card-subtitle>Gross Yearly Salary</mat-card-subtitle>
-  </mat-card-header>
-  <mat-card-content>
-    <div class="row">
-      <div class="col-md-6">
-        <div class="row justify-content-md-center ">
-          <label for="salary" class="col-sm-6 col-form-label">Fixed CTC</label>
-          <div class="col-sm-6">
-            <app-inline-edit-input (valueChanged)="salaryUpdate()" step="10000" type="currency" name="salary"
-              [value]="salary" placeholder="10,00,000" currencyShowWords="true">
+<div class="row">
+  <div class="col-md-6">
+
+    <mat-card class="">
+      <mat-card-header class="w-100">
+        <!-- <div mat-card-avatar class="example-header-image"></div> -->
+        <mat-card-title> Salary calculator </mat-card-title>
+        <mat-card-subtitle>Calculate your take home salary</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+
+        <div class="row ">
+          <label for="salary" class="col-4 col-form-label"><span class="pl-2">Fixed CTC</span></label>
+          <div class="col-6">
+            <app-inline-edit-input (valueChanged)="salary = $event; salaryUpdate()" step="10000" type="currency"
+              name="salary" [value]="salary" placeholder="10,00,000" currencyShowWords="true">
             </app-inline-edit-input>
           </div>
-          <div class="full-width">
+        </div>
+        <div class="row">
+          <div class="col-md-8">
             <mat-slider class="full-width" thumbLabel [displayWith]="formatSalary" (input)="salaryChanged($event)"
               [(ngModel)]="salary" value="salary" step="50000" min="200000" [max]="maxSalarySlider"></mat-slider>
           </div>
+          <div class="col-md-4">
+            <mat-select class="mt-3" [(ngModel)]="regimeType">
+              <mat-option value="old">Old Regime</mat-option>
+              <mat-option value="new">New Regime</mat-option>
+            </mat-select>
+          </div>
         </div>
-        <mat-expansion-panel class="mat-elevation-z0">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="row justify-content-md-center">
+              <label for="basic-monthly-salary" class="col-6 col-form-label">Montly Basic:</label>
+              <div class="col-6">
+                <app-inline-edit-input
+                  (valueChanged)="newRegime.baseSalaryM = oldRegime.baseSalaryM = $event; baseChange()" step="500"
+                  type="currency" name="basic-monthly-salary" [value]="oldRegime.baseSalaryM" placeholder="30,000">
+                </app-inline-edit-input>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="row justify-content-md-center">
+              <label for="basic-monthly-salary" class="col-6 col-form-label">Yearly Basic:</label>
+              <div class="col-6">
+                <p class="mt-2">{{ (oldRegime.baseSalaryM*12) |mycurrency}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row" *ngIf="regimeType==='new'">
+          <div class="col-md-6">
+            <div class="row justify-content-md-center">
+              <label for="gratuity" class="col-6 col-form-label">Gratuity:</label>
+              <div class="col-6">
+                <app-inline-edit-input (valueChanged)="newRegime.gratuity = $event; baseChange()" step="500"
+                  type="currency" name="gratuity" [value]="newRegime.gratuity" placeholder="30,000">
+                </app-inline-edit-input>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="row justify-content-md-center">
+              <label for="empNps" class="col-6 col-form-label">Emp. Nps:</label>
+              <div class="col-6">
+                <app-inline-edit-input (valueChanged)="newRegime.empNps = $event; baseChange()" step="500"
+                  type="currency" name="empNps" [value]="newRegime.empNps" placeholder="30,000">
+                </app-inline-edit-input>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="row justify-content-md-center">
+              <label for="epf" class="col-6 col-form-label">EPF:</label>
+              <div class="col-6">
+                <app-inline-edit-input (valueChanged)="newRegime.epf = $event; baseChange()" step="500"
+                  type="currency" name="epf" [value]="newRegime.epf" placeholder="30,000">
+                </app-inline-edit-input>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="row justify-content-md-center">
+              <label for="pf" class="col-6 col-form-label">PF:</label>
+              <div class="col-6">
+                <app-inline-edit-input (valueChanged)="newRegime.pf = $event; baseChange()" step="500"
+                  type="currency" name="pf" [value]="newRegime.pf" placeholder="30,000" disabled="true">
+                </app-inline-edit-input>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr />
+        <mat-expansion-panel class="mat-elevation-z0" *ngIf="regimeType === 'old'">
           <mat-expansion-panel-header>
             <mat-panel-title>
               Advanced Options Old Regime
             </mat-panel-title>
-
           </mat-expansion-panel-header>
-        <app-old-tax-adv-option [oldRegime]="oldRegime" (inputChanged)="inputChange()"></app-old-tax-adv-option>
+          <app-old-tax-adv-option [oldRegime]="oldRegime" (inputChanged)="inputChange()"></app-old-tax-adv-option>
         </mat-expansion-panel>
-        <hr />
-      </div>
-      <div class="col-md-6">
-        <div class="row ">
-          <div class="col-md-6" align="center">
-            <h1>Old Regime</h1>
-            <strong> {{oldRegime.taxPayable|mycurrency}} </strong>
-          </div>
-          <div class="col-md-6 "  align="center">
-            <h1>New Regime</h1>
-            <strong> {{newRegime.taxPayable|mycurrency}}</strong>
-          </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div class="col-md-6">
+    <div *ngIf="regimeType === 'new'">
+      <mat-card>
+        <div class="table-responsive table-sm">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Component</th>
+                <th>Monthly</th>
+                <th>Yearly</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="table-primary">
+                <td>Take Home </td>
+                <td>{{newRegime.takeHomeM|mycurrency}}</td>
+                <td>{{newRegime.takeHomeY|mycurrency}}</td>
+              </tr>
+              <tr>
+                <td>Income Tax </td>
+                <td>{{newRegime.taxPayable/12|mycurrency}}</td>
+                <td>{{newRegime.taxPayable|mycurrency}}</td>
+              </tr>
+              <tr>
+                <td>Prof Tax </td>
+                <td>200</td>
+                <td>2400</td>
+              </tr>
+              <tr>
+                <td>Gratuity </td>
+                <td>{{newRegime.gratuity/12|mycurrency}}</td>
+                <td>{{newRegime.gratuity|mycurrency}}</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-        <div>
+      </mat-card>
+
+      <mat-card class="mt-2">
+        <div class="table-responsive table-sm">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Comparison</th>
+                <th>Monthly</th>
+                <th>Yearly</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr >
+                <td>Take Home </td>
+                <td>{{newRegime.takeHomeM|mycurrency}}</td>
+                <td>{{newRegime.takeHomeY|mycurrency}}</td>
+              </tr>
+              <tr>
+                <td>CTC </td>
+                <td>{{newRegime.salaryCtc/12|mycurrency}}</td>
+                <td>{{newRegime.salaryCtc|mycurrency}}</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-      </div>
+      </mat-card>
     </div>
+    <div *ngIf="regimeType === 'old'">
+      <mat-card>
+        <div class="table-responsive table-sm">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Component</th>
+                <th>Monthly</th>
+                <th>Yearly</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="table-primary">
+                <td>Take Home </td>
+                <td>{{oldRegime.takeHomeM|mycurrency}}</td>
+                <td>{{oldRegime.takeHomeY|mycurrency}}</td>
+              </tr>
+              <tr>
+                <td>Income Tax </td>
+                <td>{{oldRegime.taxPayable/12|mycurrency}}</td>
+                <td>{{oldRegime.taxPayable|mycurrency}}</td>
+              </tr>
+              <tr>
+                <td>Prof Tax </td>
+                <td>200</td>
+                <td>2400</td>
+              </tr>
+              <tr>
+                <td>Gratuity </td>
+                <td>{{oldRegime.dedgratuity/12|mycurrency}}</td>
+                <td>{{oldRegime.dedgratuity|mycurrency}}</td>
+              </tr>
+              <tr>
+                <td>PF </td>
+                <td>{{oldRegime.dedpf/12|mycurrency}}</td>
+                <td>{{oldRegime.dedpf|mycurrency}}</td>
+              </tr>
+              <tr>
+                <td>EPF </td>
+                <td>{{oldRegime.dedepf/12|mycurrency}}</td>
+                <td>{{oldRegime.dedepf|mycurrency}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </mat-card>
 
-
-  </mat-card-content>
-</mat-card>
-
-
-<mat-card class="">
-  <mat-card-header>
-    <!-- <div mat-card-avatar class="example-header-image"></div> -->
-    <mat-card-title>Income Tax calculator (2019-20) Old Regime</mat-card-title>
-    <mat-card-subtitle>Gross Yearly Salary</mat-card-subtitle>
-  </mat-card-header>
-  <mat-card-content>
-    <div class="table-responsive">
-      <table class="table  table-sm">
-        <thead class="thead-light">
-          <tr>
-            <th scope="col" colspan="3">Old Regime</th>
-            <th scope="col" colspan="3">New Regime</th>
-          </tr>
-          <tr>
-            <th scope="col" rowspan="2">Particulars </th>
-            <th scope="col">Monthly</th>
-            <th scope="col">Yearly</th>
-            <th scope="col" rowspan="2">Particulars </th>
-            <th scope="col">Monthly</th>
-            <th scope="col">Yearly</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Total CTC</td>
-            <td>{{oldRegime.salaryM | mycurrency}}</td>
-            <td>{{oldRegime.salaryCtc | mycurrency}}</td>
-            <td>Total CTC</td>
-            <td>{{newRegime.salaryMonthly | mycurrency}}</td>
-            <td>{{newRegime.salary | mycurrency}}</td>
-          </tr>
-          <tr>
-            <td>Basic </td>
-            <td>{{oldRegime.baseSalaryM | mycurrency}}</td>
-            <td>{{oldRegime.baseSalaryY | mycurrency}}</td>
-            <td>Basic </td>
-            <td>{{newRegime.baseSalaryM | mycurrency}}</td>
-            <td>{{newRegime.baseSalaryY | mycurrency}}</td>
-
-          </tr>
-
-          <tr>
-            <td>Total Deductions (80C+80D+80CCD....) </td>
-            <td>{{oldRegime.deductions/12 | mycurrency}}</td>
-            <td>{{oldRegime.deductions | mycurrency}}</td>
-            <td>Deductions (Employer NPS @10% basic) </td>
-            <td>{{newRegime.deductions/12 | mycurrency}}</td>
-            <td>{{newRegime.deductions | mycurrency}}</td>
-
-          </tr>
-          <tr class="table-active">
-            <th>Amount after deductions </th>
-            <th>{{oldRegime.amtAfterDeductions/12 | mycurrency}}</th>
-            <th>{{oldRegime.amtAfterDeductions | mycurrency}}</th>
-            <th>Amount after deductions </th>
-            <th>{{newRegime.amtAfterDeductions/12 | mycurrency}}</th>
-            <th>{{newRegime.amtAfterDeductions | mycurrency}}</th>
-
-          </tr>
-          <tr>
-            <th>Tax Slab </th>
-
-          </tr>
-          <tr>
-            <td>Upto 2.5 Lakhs (NIL) </td>
-            <td>{{oldRegime.zeroPercent | mycurrency}}</td>
-            <td>{{oldRegime.zeroPercent | mycurrency}}</td>
-            <td>Upto 2.5 Lakhs (NIL) </td>
-            <td>{{newRegime.zeroPercent | mycurrency}}</td>
-            <td>{{newRegime.zeroPercent | mycurrency}}</td>
-
-          </tr>
-          <tr>
-            <td>Between Rs 2,50,001 and Rs 5 lakh (5%) </td>
-            <td>{{oldRegime.fivePercent/12 | mycurrency}}</td>
-            <td>{{oldRegime.fivePercent | mycurrency}}</td>
-            <td> Between Rs 2,50,001 and Rs 5 lakh (5%) </td>
-            <td>{{newRegime.fivePercent/12 | mycurrency}}</td>
-            <td>{{newRegime.fivePercent | mycurrency}}</td>
-          </tr>
-          <tr>
-            <td>Between Rs 5,00,001 and Rs 7.5 lakh (20%) </td>
-            <td rowspan="2">{{oldRegime.twentyPercent/12 | mycurrency}}</td>
-            <td rowspan="2">{{oldRegime.twentyPercent | mycurrency}}</td>
-            <td>Between Rs 5,00,001 and Rs 7.5 lakh (10%) </td>
-            <td>{{newRegime.tenPercent/12 | mycurrency}}</td>
-            <td>{{newRegime.tenPercent | mycurrency}}</td>
-          </tr>
-          <tr>
-            <td>Between Rs 7,50,001 and Rs 10 lakh (20%) </td>
-            <td>Between Rs 7,50,001 and Rs 10 lakh (15%) </td>
-            <td>{{newRegime.fifteenPercent/12 | mycurrency}}</td>
-            <td>{{newRegime.fifteenPercent | mycurrency}}</td>
-          </tr>
-
-          <tr>
-            <td>Between Rs 10,00,001 and Rs 12.5 lakh (30%) </td>
-            <td rowspan="3">{{oldRegime.thirtyPercent/12 | mycurrency}}</td>
-            <td rowspan="3">{{oldRegime.thirtyPercent | mycurrency}}</td>
-            <td>Between Rs 10,00,001 and Rs 12.5 lakh (20%) </td>
-            <td>{{newRegime.twentyPercent/12 | mycurrency}}</td>
-            <td>{{newRegime.twentyPercent | mycurrency}}</td>
-          </tr>
-          <tr>
-            <td>Between Rs 12,50,001 and Rs 15 lakh (30%) </td>
-            <td>Between Rs 12,50,001 and Rs 15 lakh (25%) </td>
-            <td>{{newRegime.twentyFivePercent/12 | mycurrency}}</td>
-            <td>{{newRegime.twentyFivePercent | mycurrency}}</td>
-          </tr>
-          <tr>
-            <td>Above Rs 15 lakh (30%) </td>
-            <td>Above Rs 15 lakh (30%) </td>
-            <td>{{newRegime.thirtyPercent/12 | mycurrency}}</td>
-            <td>{{newRegime.thirtyPercent | mycurrency}}</td>
-          </tr>
-
-          <tr class="table-active">
-            <td>Income Tax </td>
-            <td>{{oldRegime.taxBeforeCess/12 | mycurrency}}</td>
-            <td>{{oldRegime.taxBeforeCess | mycurrency}}</td>
-            <td>Income Tax </td>
-            <td>{{newRegime.taxBeforeCess/12 | mycurrency}}</td>
-            <td>{{newRegime.taxBeforeCess | mycurrency}}</td>
-
-          </tr>
-          <tr>
-            <td>Education Cess @ (4%) </td>
-            <td>{{oldRegime.cess/12 | mycurrency}}</td>
-            <td>{{oldRegime.cess | mycurrency}}</td>
-            <td>Education Cess @ (4%) </td>
-            <td>{{newRegime.cess/12 | mycurrency}}</td>
-            <td>{{newRegime.cess | mycurrency}}</td>
-
-          </tr>
-          <tr class="table-active">
-            <th>Total Tax Outgo </th>
-            <th>{{oldRegime.taxPayable/12 | mycurrency}}</th>
-            <th>{{oldRegime.taxPayable | mycurrency}}</th>
-            <th>Total Tax Outgo </th>
-            <th>{{newRegime.taxPayable/12 | mycurrency}}</th>
-            <th>{{newRegime.taxPayable | mycurrency}}</th>
-
-          </tr>
-        </tbody>
-      </table>
-
+      <mat-card class="mt-2">
+        <div class="table-responsive table-sm">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Comparison</th>
+                <th>Monthly</th>
+                <th>Yearly</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Take Home </td>
+                <td>{{oldRegime.takeHomeM|mycurrency}}</td>
+                <td>{{oldRegime.takeHomeY|mycurrency}}</td>
+              </tr>
+              <tr>
+                <td>Gross </td>
+                <td>{{oldRegime.gross/12|mycurrency}}</td>
+                <td>{{oldRegime.gross|mycurrency}}</td>
+              </tr>
+              <tr>
+                <td>CTC </td>
+                <td>{{oldRegime.salaryCtc/12|mycurrency}}</td>
+                <td>{{oldRegime.salaryCtc|mycurrency}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </mat-card>
     </div>
-  </mat-card-content>
-</mat-card>
+  </div>
+</div>
 
 <div>
+  <h2>
+    Explanation of above calculations
+  </h2>
+  <div *ngIf="regimeType==='old'">
+  <p>
+    <strong> Gross Salary:</strong><br>
+    Gross Salary ( <span class="color-red">{{oldRegime.gross | mycurrency }} </span> ) = CTC ( <span
+      class="color-red">{{oldRegime.salaryCtc | mycurrency }} </span> ) - EPF ( <span
+      class="color-red">{{oldRegime.dedepf | mycurrency }} </span> ) - Gratuity ( <span
+      class="color-red">{{oldRegime.dedgratuity | mycurrency }} </span> ).
+  </p>
+  <p>
+    <strong> Take Home:</strong><br>
+    Take Home ( <span class="color-red">{{oldRegime.takeHomeY | mycurrency }} </span>) =
+    Gross ( <span class="color-red">{{oldRegime.gross | mycurrency }} </span> ) - Income Tax ( <span
+      class="color-red">{{oldRegime.taxPayable | mycurrency }} </span>) - PF ( <span
+      class="color-red">{{oldRegime.dedpf | mycurrency }} </span> ) - Professional Tax ( <span
+      class="color-red">{{ '2400' | mycurrency }} </span> ).
+  </p>
+  <p>
+    <strong>Taxable Income:</strong><br>
+    Taxable Income (<span class="color-red">{{oldRegime.amtAfterDeductions | mycurrency }} </span> )
+    = Gross Salary ( <span class="color-red">{{oldRegime.gross | mycurrency }} </span> )
+    - PF (<span class="color-red">{{oldRegime.dedpf | mycurrency }} </span>)
+    - Conveyance ( <span class="color-red">{{oldRegime.dedconveyance | mycurrency }} </span> )
+    - HRA ( <span class="color-red">{{oldRegime.dedhra | mycurrency }} </span>)
+    - Professional Tax ( <span class="color-red">{{2400 | mycurrency }} </span> ).
+    - ELSS/PPF/80C ( <span class="color-red">{{oldRegime.ded80C | mycurrency }} </span> )
+    - Standard Deduction ( <span class="color-red">{{oldRegime.standardDed | mycurrency }} </span> )
+    - NPS/80CCD ( <span class="color-red">{{oldRegime.dedccd | mycurrency }} </span> )
+    - Mediclaim/80D ( <span class="color-red">{{oldRegime.ded80D | mycurrency }} </span> )
+    - Home Loan Interest/80EEA ( <span class="color-red">{{oldRegime.dedeea | mycurrency }} </span> )
+    - LTA ( <span class="color-red">{{oldRegime.dedlta | mycurrency }} </span> )
+    - Donations/80G ( <span class="color-red">{{oldRegime.ded80g | mycurrency }} </span> )
+    - Education loan Interest/80E ( <span class="color-red">{{oldRegime.ded80e | mycurrency }} </span> )
+  </p>
+  <p>
+    <strong> Income Tax:</strong><br>
+    Income Tax for your Taxable Income of <span class="color-red">{{oldRegime.amtAfterDeductions | mycurrency }} </span>
+    is <span class="color-red">{{oldRegime.taxBeforeCess | mycurrency }} </span> (refer table below). If 4% health and
+    Educational cess is applied to the Tax calculated below , your total tax would be <span
+      class="color-red">{{oldRegime.taxPayable | mycurrency }} </span>
+  </p>
+</div>
+<div *ngIf="regimeType==='new'">
+
+  <p>
+    <strong> Take Home:</strong><br>
+    Take Home ( <span class="color-red">{{newRegime.takeHomeY | mycurrency }} </span>) =
+    CTC ( <span class="color-red">{{newRegime.salaryCtc | mycurrency }} </span> ) 
+    - Income Tax ( <span class="color-red">{{newRegime.taxPayable | mycurrency }} </span>) 
+      - Employer NPS ( <span class="color-red">{{newRegime.empNps | mycurrency }} </span> ) 
+      - Professional Tax ( <span  class="color-red">{{ '2400' | mycurrency }} </span> )
+      - Gratuity ( <span  class="color-red">{{ newRegime.gratuity | mycurrency }} </span> )
+      - EPF ( <span class="color-red">{{newRegime.epf | mycurrency }} </span> )
+      - PF ( <span class="color-red">{{newRegime.pf | mycurrency }} </span> ).
+  </p>
+  <p>
+    <strong>Taxable Income:</strong><br>
+    Taxable Income (<span class="color-red">{{newRegime.amtAfterDeductions | mycurrency }} </span> )
+    =  CTC ( <span class="color-red">{{newRegime.salaryCtc | mycurrency }} </span> ) 
+    - Employer NPS ( <span class="color-red">{{newRegime.empNps | mycurrency }} </span> ).
+  </p>
+  <p>
+    <strong> Income Tax:</strong><br>
+    Income Tax for your Taxable Income of <span class="color-red">{{newRegime.amtAfterDeductions | mycurrency }} </span>
+    is <span class="color-red">{{newRegime.taxBeforeCess | mycurrency }} </span> (refer table below). If 4% health and
+    Educational cess is applied to the Tax calculated below , your total tax would be <span
+      class="color-red">{{newRegime.taxPayable | mycurrency }} </span>
+  </p>
+</div>
+</div>
+<!-- <div>
   <h5>Refrences</h5>
   <pre>
       https://www.axisbank.com/progress-with-us/tax-planning/new-tax-regime-vs-old-tax-regime-union-budget-2020
       https://economictimes.indiatimes.com/wealth/tax/how-to-calculate-income-tax-for-fy-2020-21/articleshow/74706402.cms?from=mdr
     </pre>
-</div>
+</div> -->

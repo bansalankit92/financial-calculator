@@ -3,7 +3,7 @@
   <span *ngIf="type!=='currency'">{{value}}</span>
 </div>
 <div  *ngIf="isEdit && !disabled">
-    <input *ngIf="type==='currency'" type="number" class="form-control" [id]="name" [(ngModel)]="value" 
+    <input *ngIf="type==='currency'" type="number" class="form-control" [id]="name" [(ngModel)]="value" min="0"
     [name]="name"  [placeholder]="placeholder" [max]="max" (ngModelChange)="inputChange()" [step]="step" (blur)="isEdit=false">
     <input *ngIf="type==='number'" type="number" class="form-control-plaintext" [id]="name" [(ngModel)]="value"
      [name]="name" [placeholder]="placeholder" [max]="max" (ngModelChange)="inputChange()" [step]="step" (blur)="isEdit=false">

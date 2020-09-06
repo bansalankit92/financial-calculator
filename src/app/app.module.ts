@@ -41,6 +41,7 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { InlineEditInputComponent } from './components/forms/inline-edit-input/inline-edit-input.component';
 import {MatExpansionModule} from '@angular/material/expansion';
 import { OldTaxAdvOptionComponent } from './components/old-tax-adv-option/old-tax-adv-option.component';
+import {MatSelectModule} from '@angular/material/select';
 
 @NgModule({
   declarations: [
@@ -83,6 +84,7 @@ import { OldTaxAdvOptionComponent } from './components/old-tax-adv-option/old-ta
     MatListModule,
     MatSnackBarModule,
     MatExpansionModule,
+    MatSelectModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [

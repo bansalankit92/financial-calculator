@@ -51,7 +51,6 @@ export class OldIncomeTaxComponent implements OnInit {
   }
   inputChange() {
     OldRegime.calculate(this.oldRegime);
-    console.log(this.oldRegime);
   }
 
   inwords(): string {

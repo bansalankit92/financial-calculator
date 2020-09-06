@@ -33,7 +33,10 @@ export class OldRegime {
   taxBeforeCess: number = 0;
   cess: number = 0;
   taxPayable: number = 0;
-
+  takeHomeY: number = 0;
+  takeHomeM: number = 0;
+  savings = 0;
+  gross: number = 0;
 
   constructor(salary: number) {
     this.salaryCtc = salary;
@@ -67,32 +70,34 @@ export class OldRegime {
       old.baseSalaryY = old.baseSalaryM*12;
       old.dedpf = TaxUtil.getTaxValue(old.baseSalaryY, 12);
       old.dedepf = old.dedpf;
+      old.dedgratuity = TaxUtil.getTaxValue(old.baseSalaryY, 5);
     }
-
-    old.dedgratuity = TaxUtil.getTaxValue(old.baseSalaryY, 5);;
     old.deductions = old.dedhra + old.standardDed + old.dedprofTax + old.dedconveyance +
       old.ded80C + old.dedccd + old.ded80D + old.dedeea + old.dedepf + old.dedpf + old.dedgratuity +
       old.dedlta + old.ded80g + old.ded80e;
     let totalTaxable = old.amtAfterDeductions = old.salaryCtc - old.deductions;
-    let tax = 0;
+   
     if (totalTaxable <= 250000) {
-      old.zeroPercent = tax = 0;
+      old.zeroPercent = 0;
     } else if (totalTaxable <= 500000) {
       totalTaxable -= 1 * 250000;
-      old.fivePercent = tax += TaxUtil.getTaxValue(totalTaxable, 5);
+      old.fivePercent = TaxUtil.getTaxValue(totalTaxable, 5);
     } else
     if (totalTaxable <= 1000000) {
-      old.fivePercent = tax += TaxUtil.getTaxValue(250000, 5);
+      old.fivePercent = TaxUtil.getTaxValue(250000, 5);
       totalTaxable -= 500000;
-      old.twentyPercent = tax += TaxUtil.getTaxValue(totalTaxable, 20);
+      old.twentyPercent = TaxUtil.getTaxValue(totalTaxable, 20);
     } else {
-      old.fivePercent = tax += TaxUtil.getTaxValue(250000, 5);
-      old.twentyPercent = tax += TaxUtil.getTaxValue(250000, 20);
+      old.fivePercent = TaxUtil.getTaxValue(250000, 5);
+      old.twentyPercent = TaxUtil.getTaxValue(250000, 20);
       totalTaxable -= 1000000;
-      old.thirtyPercent = tax += TaxUtil.getTaxValue(totalTaxable, 30);
+      old.thirtyPercent = TaxUtil.getTaxValue(totalTaxable, 30);
     }
-    old.taxBeforeCess = tax;
-    old.cess = (tax * Constants.EDUCATION_CESS / 100);
-    old.taxPayable = tax + old.cess;
+    old.taxBeforeCess =  old.fivePercent +  old.twentyPercent  +  old.thirtyPercent ;
+    old.cess = (old.taxBeforeCess * Constants.EDUCATION_CESS / 100);
+    old.taxPayable = old.taxBeforeCess + old.cess;
+    old.takeHomeY = old.salaryCtc - old.taxPayable - old.deductions + old.dedhra + old.dedconveyance;
+    old.takeHomeM = Math.round(old.takeHomeY/12);
+    old.gross = old.salaryCtc - old.dedepf - old.dedgratuity;
   }
 }

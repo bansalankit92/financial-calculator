@@ -8,8 +8,8 @@
       </mat-card-header>
       <mat-card-content>
         <div class="form-group row  justify-content-md-center ">
-          <label for="salary" class="col-sm-6 col-form-label">Fixed CTC</label>
-          <div class="col-sm-6">
+          <label for="salary" class="col-6 col-form-label">Fixed CTC</label>
+          <div class="col-6">
             <div *ngIf="!isEdit" (click)="isEdit=true">
               <span>{{salary | mycurrency}} - {{inwords()}} </span>
             </div>
@@ -21,6 +21,27 @@
               [(ngModel)]="salary" value="salary" step="50000" min="200000" [max]="maxSalarySlider"></mat-slider>
           </div>
         </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="row justify-content-md-center">
+              <label for="basic-monthly-salary" class="col-6 col-form-label">Montly Basic:</label>
+              <div class="col-6">
+                <app-inline-edit-input (valueChanged)="newRegime.baseSalaryM = $event; baseChange()" step="500"
+                  type="currency" name="basic-monthly-salary" [value]="newRegime.baseSalaryM" placeholder="30,000">
+                </app-inline-edit-input>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="row justify-content-md-center">
+              <label for="basic-monthly-salary" class="col-6 col-form-label">Yearly Basic:</label>
+              <div class="col-6">
+                <p class="mt-2">{{ (newRegime.baseSalaryM*12) |mycurrency}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr />
         <div>
           <span *ngIf="salary>500000">Total Tax Payable = <strong> {{totalNewRegimeTax|mycurrency}}
             </strong><em>{{taxInWords}}</em>
@@ -108,11 +129,6 @@
 
   <div class="col-md-6">
     <mat-card class="">
-      <mat-card-header>
-        <!-- <div mat-card-avatar class="example-header-image"></div> -->
-        <mat-card-title>Income Tax calculator (2020-21) New Regime</mat-card-title>
-        <mat-card-subtitle>Gross Yearly Salary</mat-card-subtitle>
-      </mat-card-header>
       <mat-card-content>
     <div class="table-responsive">
       <table class="table  table-sm">

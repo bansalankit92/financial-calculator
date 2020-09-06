@@ -7,27 +7,47 @@
         <mat-card-subtitle>Gross Yearly Salary</mat-card-subtitle>
       </mat-card-header>
       <mat-card-content>
-        <div class="row justify-content-md-center ">
-          <label for="salary" class="col-sm-6 col-form-label">Fixed CTC</label>
-          <div class="col-sm-6">
-            <app-inline-edit-input (valueChanged)="salaryUpdate()" step="10000" type="currency" name="salary"
-              [value]="salary" placeholder="10,00,000" currencyShowWords="true">
+        <div class="row justify-content-md-center pl-2">
+          <label for="salary" class="col-6 col-form-label">Fixed CTC</label>
+          <div class="col-6">
+            <app-inline-edit-input (valueChanged)="salary=$event; salaryUpdate()" step="10000" type="currency"
+              name="salary" [value]="salary" placeholder="10,00,000" currencyShowWords="true">
             </app-inline-edit-input>
           </div>
-          <div class="full-width">
+          <div class="full-width pl-2 pr-2">
             <mat-slider class="full-width" thumbLabel [displayWith]="formatSalary" (input)="salaryChanged($event)"
               [(ngModel)]="salary" value="salary" step="50000" min="200000" [max]="maxSalarySlider"></mat-slider>
           </div>
         </div>
+        <div class="row">
+          <div class="col-md-6 ">
+            <div class="row justify-content-md-center pl-2">
+              <label for="basic-monthly-salary" class="col-6 col-form-label">Montly Basic:</label>
+              <div class="col-6">
+                <app-inline-edit-input (valueChanged)="oldRegime.baseSalaryM = $event; inputChange()" step="500"
+                  type="currency" name="basic-monthly-salary" [value]="oldRegime.baseSalaryM" placeholder="30,000">
+                </app-inline-edit-input>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="row justify-content-md-center">
+              <label for="basic-monthly-salary" class="col-6 col-form-label">Yearly Basic:</label>
+              <div class="col-6">
+                <p class="mt-2">{{ (oldRegime.baseSalaryM*12) |mycurrency}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
         <mat-expansion-panel class="mat-elevation-z0">
-            <mat-expansion-panel-header>
-              <mat-panel-title>
-                Advanced Options Old Regime
-              </mat-panel-title>
-  
-            </mat-expansion-panel-header>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Advanced Options Old Regime
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <hr />
           <app-old-tax-adv-option [oldRegime]="oldRegime" (inputChanged)="inputChange()"></app-old-tax-adv-option>
-          </mat-expansion-panel>
+        </mat-expansion-panel>
         <hr />
         <div>
           <span *ngIf="salary>500000">Total Tax Payable = <strong> {{oldRegime.taxPayable|mycurrency}}
@@ -38,9 +58,6 @@
         </div>
       </mat-card-content>
     </mat-card>
-
-
-
     <div class="mt-3">
       <div>
         Given below are the income tax slabs that are applicable in the new tax regime for individuals from FY
@@ -78,19 +95,11 @@
             </tr>
           </tbody>
         </table>
-
       </div>
-
     </div>
   </div>
-
   <div class="col-md-6">
     <mat-card class="">
-      <mat-card-header>
-        <!-- <div mat-card-avatar class="example-header-image"></div> -->
-        <mat-card-title>Income Tax calculator (2019-20) Old Regime</mat-card-title>
-        <mat-card-subtitle>Gross Yearly Salary</mat-card-subtitle>
-      </mat-card-header>
       <mat-card-content>
         <div class="table-responsive">
           <table class="table  table-sm">
@@ -112,7 +121,21 @@
                 <td>{{oldRegime.baseSalaryM | mycurrency}}</td>
                 <td>{{oldRegime.baseSalaryY | mycurrency}}</td>
               </tr>
-
+              <tr>
+                <td>Standard Deductions </td>
+                <td>{{ 50000/12 | mycurrency}}</td>
+                <td>{{ '50000' | mycurrency}}</td>
+              </tr>
+              <tr>
+                <td>EPF + PF </td>
+                <td>{{oldRegime.dedpf/6 | mycurrency}}</td>
+                <td>{{oldRegime.dedpf*2 | mycurrency}}</td>
+              </tr>
+              <tr>
+                <td>ELSS/PPF/H.Loan 80C </td>
+                <td>{{oldRegime.ded80C/12 | mycurrency}}</td>
+                <td>{{oldRegime.ded80C | mycurrency}}</td>
+              </tr>
               <tr>
                 <td>Total Deductions</td>
                 <td>{{oldRegime.deductions/12 | mycurrency}}</td>
