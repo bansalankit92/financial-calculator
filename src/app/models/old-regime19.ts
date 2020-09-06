@@ -14,7 +14,7 @@ export class OldRegime {
   dedhra: number = 0; // 10% 
   standardDed: number = 0; // 50
   dedprofTax = 2400
-  dedconveyance: number = 0;
+  dedconveyance: number = 19200;
   ded80C: number = 0; // 150000 = 
   dedccd: number = 0; // 50
   ded80D: number = 0; // 25
@@ -48,7 +48,7 @@ export class OldRegime {
     this.dedhra = TaxUtil.getTaxValue(salary, 10); // 10% 
     this.standardDed = 50000; // 50
     this.dedprofTax = 2400
-    this.dedconveyance = TaxUtil.getTaxValue(salary, 2);
+    this.dedconveyance = 19200;
     this.ded80C = 0; // 150000 = 
     this.dedccd = 0; // 50
     this.ded80D = 0; // 25
@@ -60,8 +60,12 @@ export class OldRegime {
     this.ded80g = 0; // donations
     this.ded80e = 0; // education loan
 
+    if(salary>2000000){
+      this.dedhra = 120000;
+    }
     OldRegime.calculate(this);
   }
+
 
   static calculate(old: OldRegime) {
     if( old.baseSalaryM*12 === old.baseSalaryY){
@@ -72,9 +76,11 @@ export class OldRegime {
       old.dedepf = old.dedpf;
       old.dedgratuity = TaxUtil.getTaxValue(old.baseSalaryY, 5);
     }
-    old.deductions = old.dedhra + old.standardDed + old.dedprofTax + old.dedconveyance +
-      old.ded80C + old.dedccd + old.ded80D + old.dedeea + old.dedepf + old.dedpf + old.dedgratuity +
-      old.dedlta + old.ded80g + old.ded80e;
+    old.dedconveyance = 19200;
+    old.ded80C =  Math.min((old.ded80C+old.dedepf + old.dedpf),150000) 
+    old.deductions = old.dedhra + old.standardDed + old.dedprofTax +
+       + old.dedccd + old.ded80D + old.dedeea + old.ded80C
+        + old.dedlta + old.ded80g + old.ded80e;
     let totalTaxable = old.amtAfterDeductions = old.salaryCtc - old.deductions;
    
     if (totalTaxable <= 250000) {
@@ -89,7 +95,7 @@ export class OldRegime {
       old.twentyPercent = TaxUtil.getTaxValue(totalTaxable, 20);
     } else {
       old.fivePercent = TaxUtil.getTaxValue(250000, 5);
-      old.twentyPercent = TaxUtil.getTaxValue(250000, 20);
+      old.twentyPercent = TaxUtil.getTaxValue(500000, 20);
       totalTaxable -= 1000000;
       old.thirtyPercent = TaxUtil.getTaxValue(totalTaxable, 30);
     }

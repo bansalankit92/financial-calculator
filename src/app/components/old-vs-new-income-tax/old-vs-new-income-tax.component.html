@@ -58,17 +58,17 @@
         </div>
         <div class="row ">
           <div class="col-md-6" align="center" >
-            <h1>Old Regime</h1>
+            <h1  class="mt-3">Old Regime</h1>
             <div>  <span> Tax Payable</span> <strong> {{oldRegime.taxPayable|mycurrency}} </strong> </div>
-            <h2 class="mt-5">Take home</h2>
+            <h2 class="mt-3">Take home</h2>
             <div>  <span> Monthly</span> <strong> {{oldRegime.takeHomeM|mycurrency}} </strong> </div>
             <div>  <span> Yearly</span> <strong> {{oldRegime.takeHomeY|mycurrency}} </strong> </div>
             <div class="mt-2"> <span> Savings more than {{oldRegime.dedpf*2 |mycurrency}} </span></div>
           </div>
           <div class="col-md-6 border-left "  align="center">
-            <h1>New Regime</h1>
+            <h1 class="mt-3">New Regime</h1>
             <div>  <span> Tax Payable</span> <strong> {{newRegime.taxPayable|mycurrency}} </strong> </div>
-            <h2 class="mt-5">Take home</h2>
+            <h2 class="mt-3">Take home</h2>
             <div>  <span> Monthly</span> <strong> {{newRegime.takeHomeM|mycurrency}} </strong> </div>
             <div>  <span> Yearly</span> <strong> {{newRegime.takeHomeY|mycurrency}} </strong> </div>
             <div  class="mt-2"> <span> Almost zero savings<br/> (You own your own shit) </span>          </div>
@@ -140,14 +140,14 @@
             <td> NA </td>
             <td> NA </td>
           </tr>
-          <tr>
+          <!-- <tr>
             <td>ELSS/PPF/H.Loan 80C </td>
             <td>{{oldRegime.ded80C/12 | mycurrency}}</td>
             <td>{{oldRegime.ded80C | mycurrency}}</td>
             <td> </td>
             <td> NA </td>
             <td> NA </td>
-          </tr>
+          </tr> -->
           <tr>
             <td>Total Deductions (80C+80D+80CCD....) </td>
             <td>{{oldRegime.deductions/12 | mycurrency}}</td>
@@ -187,7 +187,7 @@
             <td>{{newRegime.fivePercent | mycurrency}}</td>
           </tr>
           <tr>
-            <td>Between Rs 5,00,001 and Rs 7.5 lakh (20%) </td>
+            <td rowspan="2">Between Rs 5,00,001 and Rs 10 lakh (20%) </td>
             <td rowspan="2">{{oldRegime.twentyPercent/12 | mycurrency}}</td>
             <td rowspan="2">{{oldRegime.twentyPercent | mycurrency}}</td>
             <td>Between Rs 5,00,001 and Rs 7.5 lakh (10%) </td>
@@ -195,14 +195,13 @@
             <td>{{newRegime.tenPercent | mycurrency}}</td>
           </tr>
           <tr>
-            <td>Between Rs 7,50,001 and Rs 10 lakh (20%) </td>
             <td>Between Rs 7,50,001 and Rs 10 lakh (15%) </td>
             <td>{{newRegime.fifteenPercent/12 | mycurrency}}</td>
             <td>{{newRegime.fifteenPercent | mycurrency}}</td>
           </tr>
 
           <tr>
-            <td>Between Rs 10,00,001 and Rs 12.5 lakh (30%) </td>
+            <td rowspan="3">Above 10 Lakh (30%) </td>
             <td rowspan="3">{{oldRegime.thirtyPercent/12 | mycurrency}}</td>
             <td rowspan="3">{{oldRegime.thirtyPercent | mycurrency}}</td>
             <td>Between Rs 10,00,001 and Rs 12.5 lakh (20%) </td>
@@ -210,13 +209,13 @@
             <td>{{newRegime.twentyPercent | mycurrency}}</td>
           </tr>
           <tr>
-            <td>Between Rs 12,50,001 and Rs 15 lakh (30%) </td>
+           
             <td>Between Rs 12,50,001 and Rs 15 lakh (25%) </td>
             <td>{{newRegime.twentyFivePercent/12 | mycurrency}}</td>
             <td>{{newRegime.twentyFivePercent | mycurrency}}</td>
           </tr>
           <tr>
-            <td>Above Rs 15 lakh (30%) </td>
+            
             <td>Above Rs 15 lakh (30%) </td>
             <td>{{newRegime.thirtyPercent/12 | mycurrency}}</td>
             <td>{{newRegime.thirtyPercent | mycurrency}}</td>

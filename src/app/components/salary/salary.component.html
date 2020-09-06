@@ -272,12 +272,15 @@
   <p>
     <strong>Taxable Income:</strong><br>
     Taxable Income (<span class="color-red">{{oldRegime.amtAfterDeductions | mycurrency }} </span> )
-    = Gross Salary ( <span class="color-red">{{oldRegime.gross | mycurrency }} </span> )
-    - PF (<span class="color-red">{{oldRegime.dedpf | mycurrency }} </span>)
+    =  CTC ( <span class="color-red">{{oldRegime.salaryCtc | mycurrency }} </span> )
+    - Minimum of ( PF (<span class="color-red">{{oldRegime.dedpf | mycurrency }} </span>)
+        + EPF (<span class="color-red">{{oldRegime.dedepf | mycurrency }} </span>)
+        + ELSS/PPF/80C ( <span class="color-red">{{oldRegime.ded80C | mycurrency }} </span> )
+        , <span class="color-red">{{150000 | mycurrency }} </span> )
     - Conveyance ( <span class="color-red">{{oldRegime.dedconveyance | mycurrency }} </span> )
     - HRA ( <span class="color-red">{{oldRegime.dedhra | mycurrency }} </span>)
     - Professional Tax ( <span class="color-red">{{2400 | mycurrency }} </span> ).
-    - ELSS/PPF/80C ( <span class="color-red">{{oldRegime.ded80C | mycurrency }} </span> )
+    - 
     - Standard Deduction ( <span class="color-red">{{oldRegime.standardDed | mycurrency }} </span> )
     - NPS/80CCD ( <span class="color-red">{{oldRegime.dedccd | mycurrency }} </span> )
     - Mediclaim/80D ( <span class="color-red">{{oldRegime.ded80D | mycurrency }} </span> )

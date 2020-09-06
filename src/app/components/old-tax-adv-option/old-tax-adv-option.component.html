@@ -50,7 +50,7 @@
         <label for="dedconveyance" class="col-6 col-form-label">Conveyance:</label>
         <div class="col-6">
           <app-inline-edit-input (valueChanged)="oldRegime.dedconveyance = $event; inputChange()" step="200"
-            type="currency" name="dedconveyance" [value]="oldRegime.dedconveyance" placeholder="19000">
+            type="currency" name="dedconveyance" [value]="oldRegime.dedconveyance" placeholder="19000" disabled="true">
           </app-inline-edit-input>
         </div>
       </div>
