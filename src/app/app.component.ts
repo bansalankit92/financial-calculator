@@ -1,17 +1,25 @@
-import { Component } from '@angular/core';
-
+import { Component, Inject, OnInit } from '@angular/core';
+import { PLATFORM_ID } from '@angular/core';
+ import { isPlatformBrowser, isPlatformServer } from '@angular/common';
+import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
+import { filter, map, mergeMap } from 'rxjs/operators';
+import { SeoService } from './services/seo.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'financial-calculator';
   mode = "side"
   isMobile = false;
 
-  constructor(){
-    var ua = navigator.userAgent;
+  constructor(@Inject(PLATFORM_ID) private platformId: Object,
+  private router:Router, private _seoService: SeoService, private activatedRoute: ActivatedRoute){
+    console.log(isPlatformBrowser(platformId),navigator);
+    
+    if(isPlatformBrowser(platformId)&&navigator){
+         var ua = navigator.userAgent;
 
     if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i.test(ua)){
       this.mode = "over";
@@ -24,5 +32,24 @@ export class AppComponent {
       this.mode = "side";
       this.isMobile = false;
     }
+  }
+}
+  ngOnInit(): void {
+    this.router.events.pipe(
+      filter((event) => event instanceof NavigationEnd),
+      map(() => this.activatedRoute),
+      map((route) => {
+        while (route.firstChild) route = route.firstChild;
+        return route;
+      }),
+      filter((route) => route.outlet === 'primary'),
+      mergeMap((route) => route.data)
+     )
+     .subscribe((event) => {
+       this._seoService.updateTitle(event['title']);
+       this._seoService.updateOgUrl(event['ogUrl']);
+       //Updating Description tag dynamically with title
+       this._seoService.updateDescription(event['title'] + event['description'])
+     }); 
   }
 }

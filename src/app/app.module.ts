@@ -42,6 +42,7 @@ import { InlineEditInputComponent } from './components/forms/inline-edit-input/i
 import {MatExpansionModule} from '@angular/material/expansion';
 import { OldTaxAdvOptionComponent } from './components/old-tax-adv-option/old-tax-adv-option.component';
 import {MatSelectModule} from '@angular/material/select';
+import { SeoService } from './services/seo.service';
 
 @NgModule({
   declarations: [
@@ -68,7 +69,7 @@ import {MatSelectModule} from '@angular/material/select';
     OldTaxAdvOptionComponent
   ],
   imports: [
-    BrowserModule,
+    BrowserModule.withServerTransition({ appId: 'serverApp' }),
     AppRoutingModule,
     BrowserAnimationsModule,
     MatToolbarModule,
@@ -90,6 +91,7 @@ import {MatSelectModule} from '@angular/material/select';
   providers: [
     CalculatorService,
     CurrencyPipe,
+    SeoService,
   ],
   bootstrap: [AppComponent]
 })

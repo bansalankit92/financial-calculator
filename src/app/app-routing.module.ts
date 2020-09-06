@@ -9,7 +9,12 @@ import { FdComponent } from './components/fd/fd.component';
 
 const routes: Routes = [{
     path: '',
-    component: SipComponent
+    component: SipComponent,
+    data: {
+      title: 'SIP Calculator',
+      description:'To calculate monthly mutual funds, sip',
+      ogUrl: '/'
+    } 
   },
   {
     path: 'sip',
@@ -58,7 +63,7 @@ const routes: Routes = [{
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, { useHash: true })],
+  imports: [RouterModule.forRoot(routes, { useHash: true, initialNavigation: 'enabled' })],
   exports: [RouterModule]
 })
 export class AppRoutingModule {}
