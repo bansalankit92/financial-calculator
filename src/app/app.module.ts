@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, LOCALE_ID } from '@angular/core';
+import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -18,30 +18,13 @@ import { IncomeTaxComponent } from './components/income-tax/income-tax.component
 import { SalaryComponent } from './components/salary/salary.component';
 import { RetirementComponent } from './components/retirement/retirement.component';
 import { FinancialFreedomComponent } from './components/financial-freedom/financial-freedom.component';
-import {MatToolbarModule} from '@angular/material/toolbar';
-import {MatIconModule} from '@angular/material/icon';
-import {MatButtonModule} from '@angular/material/button';
-import {MatCardModule} from '@angular/material/card';
-import {MatGridListModule} from '@angular/material/grid-list';
-import {MatSliderModule} from '@angular/material/slider';
-import {MatInputModule} from '@angular/material/input';
-import { FormsModule } from '@angular/forms';
-import { CalculatorService } from './services/calculator.service';
-import { NgxChartsModule } from '@swimlane/ngx-charts';
-import { MycurrencyPipe } from './pipes/mycurrency.pipe';
+import { CalculatorService } from './modules/shared/services/calculator.service';
 import { CurrencyPipe } from '@angular/common';
-import {MatSidenavModule} from '@angular/material/sidenav';
-import {MatListModule} from '@angular/material/list';
 import { SideNavComponent } from './components/side-nav/side-nav.component';
 import { OldIncomeTaxComponent } from './components/old-income-tax/old-income-tax.component';
 import { OldVsNewIncomeTaxComponent } from './components/old-vs-new-income-tax/old-vs-new-income-tax.component';
-import {MatSnackBarModule} from '@angular/material/snack-bar';
-import { InlineEditInputComponent } from './components/forms/inline-edit-input/inline-edit-input.component';
-import {MatExpansionModule} from '@angular/material/expansion';
 import { OldTaxAdvOptionComponent } from './components/old-tax-adv-option/old-tax-adv-option.component';
-import {MatSelectModule} from '@angular/material/select';
 import { SeoService } from './services/seo.service';
-import {MatTabsModule} from '@angular/material/tabs';
 import { SharedModule } from './modules/shared/shared.module';
 
 @NgModule({
@@ -62,7 +45,6 @@ import { SharedModule } from './modules/shared/shared.module';
     SideNavComponent,
     OldIncomeTaxComponent,
     OldVsNewIncomeTaxComponent,
-    InlineEditInputComponent,
     OldTaxAdvOptionComponent
   ],
   imports: [

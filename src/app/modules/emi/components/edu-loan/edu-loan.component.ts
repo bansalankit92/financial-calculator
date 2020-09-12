@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Emi } from '../../../../models/emi';
 
 @Component({
   selector: 'app-edu-loan',
@@ -7,9 +8,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class EduLoanComponent implements OnInit {
 
+  emi:Emi;
+  maxAmt = 10000000;
+  maxStep = 10000;
   constructor() { }
 
   ngOnInit(): void {
+    this.emi = new Emi(500000,9,10);
   }
 
 }

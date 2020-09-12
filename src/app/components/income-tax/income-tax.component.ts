@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSliderChange } from '@angular/material/slider';
-import { CalculatorService } from '../../services/calculator.service';
+import { CalculatorService } from '../../modules/shared/services/calculator.service';
 import { Constants } from '../../util/constants';
 import { NewRegime2020 } from '../../models/new-regime2020';
 import { debounceTime } from 'rxjs/operators';

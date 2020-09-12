@@ -1,10 +1,10 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
 import { Emi, YearlyBreakup } from '../../models/emi';
 import { Constants } from '../../util/constants';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { MatSliderChange } from '@angular/material/slider';
-import { CalculatorService } from '../../services/calculator.service';
+import { CalculatorService } from '../shared/services/calculator.service';
 @Component({
   selector: 'app-emi',
   templateUrl: './emi.component.html',
@@ -15,9 +15,9 @@ export class EmiComponent implements OnInit {
   @ViewChild('pieChartRef') pieChartRef: ElementRef;
   @ViewChild('multiChartRef') multiChartRef: ElementRef;
 
-  emi: Emi;
-  maxAmt = 20000000;
-  stepAmt = 1000;
+  @Input() emi: Emi = new Emi();
+  @Input() maxAmt = 20000000;
+  @Input() stepAmt = 1000;
   selectedYear: number = -1;
   colorScheme = Constants.CHART_PIE_COLOR_SCHEME;
 
@@ -44,7 +44,6 @@ export class EmiComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {
-    this.emi = new Emi();
     this.selectedYear = new Date().getFullYear();
     this.calculateTotal();
     this.calculateSubj.pipe(debounceTime(100)).subscribe(val => {

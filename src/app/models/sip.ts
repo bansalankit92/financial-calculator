@@ -1,4 +1,4 @@
-import { CalculatorService } from "../services/calculator.service";
+import { CalculatorService } from "../modules/shared/services/calculator.service";
 
 export class Sip {
   yr: number;

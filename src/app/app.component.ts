@@ -46,9 +46,7 @@ export class AppComponent implements OnInit {
       } else {
         this.mode = "over";
         this.isMobile = true;
-      }
-      console.log(this.isMobile);
-      
+      }      
     });
 
     this.router.events.pipe(

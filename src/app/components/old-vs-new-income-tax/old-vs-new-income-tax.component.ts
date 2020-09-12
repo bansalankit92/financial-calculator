@@ -4,7 +4,7 @@ import { Subject } from 'rxjs';
 import { ToastService } from '../../services/toast.service';
 import { debounceTime } from 'rxjs/operators';
 import { MatSliderChange } from '@angular/material/slider';
-import { CalculatorService } from '../../services/calculator.service';
+import { CalculatorService } from '../../modules/shared/services/calculator.service';
 import { OldRegime } from '../../models/old-regime19';
 
 @Component({

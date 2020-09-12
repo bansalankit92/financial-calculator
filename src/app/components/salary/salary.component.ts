@@ -5,7 +5,7 @@ import { OldRegime } from '../../models/old-regime19';
 import { Subject } from 'rxjs';
 import { ToastService } from '../../services/toast.service';
 import { debounceTime } from 'rxjs/operators';
-import { CalculatorService } from '../../services/calculator.service';
+import { CalculatorService } from '../../modules/shared/services/calculator.service';
 
 @Component({
   selector: 'app-salary',

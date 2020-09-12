@@ -84,9 +84,6 @@ export class Emi {
       }
       this.yearlyBreakup.set(breakup.year, yb);
     }
-
-    console.log(this);
-
   }
 
   // https://www.experts-exchange.com/articles/1948/A-Guide-to-the-PMT-FV-IPMT-and-PPMT-Functions.html#:~:text=Code%20Example%3A%20calculating%20ppmt.&text=%C2%AB%C2%AB%20try%20coding%20this%20using%20formula,c%20with%20its%20appropriate%20formula.
