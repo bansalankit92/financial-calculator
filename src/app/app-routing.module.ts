@@ -6,7 +6,6 @@ import { IncomeTaxComponent } from './components/income-tax/income-tax.component
 import { OldIncomeTaxComponent } from './components/old-income-tax/old-income-tax.component';
 import { OldVsNewIncomeTaxComponent } from './components/old-vs-new-income-tax/old-vs-new-income-tax.component';
 import { FdComponent } from './components/fd/fd.component';
-import { EmiComponent } from './components/emi/emi.component';
 
 const routes: Routes = [{
     path: '',
@@ -63,7 +62,8 @@ const routes: Routes = [{
   },
   {
     path: 'emi',
-    component: EmiComponent
+    loadChildren: () => import('./modules/emi/emi.module').then(mod => mod.EmiModule)
+
   }
 ];
 

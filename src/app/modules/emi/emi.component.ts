@@ -1,12 +1,10 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Emi, YearlyBreakup } from '../../models/emi';
 import { Constants } from '../../util/constants';
-import { Sip } from '../../models/sip';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { MatSliderChange } from '@angular/material/slider';
 import { CalculatorService } from '../../services/calculator.service';
-
 @Component({
   selector: 'app-emi',
   templateUrl: './emi.component.html',
@@ -20,7 +18,7 @@ export class EmiComponent implements OnInit {
   emi: Emi;
   maxAmt = 20000000;
   stepAmt = 1000;
-  selectedYear:number = -1;
+  selectedYear: number = -1;
   colorScheme = Constants.CHART_PIE_COLOR_SCHEME;
 
   gradient: boolean = false;
@@ -36,17 +34,14 @@ export class EmiComponent implements OnInit {
   animations: boolean = true;
 
 
-  view = [200,300];
-  multichartView =[300,400]// [300,400]
+  view = [200, 300];
+  multichartView = [300, 400] // [300,400]
   single = [];
   multi = [];
 
   private calculateSubj: Subject < boolean > = new Subject();
 
-  constructor() {
-   
-
-  }
+  constructor() {}
 
   ngOnInit(): void {
     this.emi = new Emi();
@@ -55,8 +50,9 @@ export class EmiComponent implements OnInit {
     this.calculateSubj.pipe(debounceTime(100)).subscribe(val => {
       this.calculateTotal();
     });
-
-   
+    setTimeout(() => {
+      this.updateView();
+    });
   }
 
   formatMonth(value: number) {
@@ -106,12 +102,12 @@ export class EmiComponent implements OnInit {
   }
 
   private calculateTotal() {
-   this.emi.calculate();
+    this.emi.calculate();
     this.calculateChart();
-   this.updateView();
+    this.updateView();
   }
 
-  lesserThan(val1:number,val2:number){
+  lesserThan(val1: number, val2: number) {
     return val1 < val2;
   }
 
@@ -133,10 +129,9 @@ export class EmiComponent implements OnInit {
 
     this.multi = [];
     this.emi.yearlyBreakup.forEach((value: YearlyBreakup, key: number) => {
-      this.multi.push ({
+      this.multi.push({
         "name": key,
-        "series": [
-          {
+        "series": [{
             "name": "Principal Paid",
             "value": value.tppmt
           },
@@ -146,30 +141,23 @@ export class EmiComponent implements OnInit {
           }
         ]
       });
-  });
-  
-  }
-
-  createTable(){
-  
+    });
 
   }
-  toggleRow(val:number){
+
+  toggleRow(val: number) {
     this.selectedYear = this.selectedYear === val ? -1 : val;
- }
+  }
 
- onSelect(event) {
-  console.log(event);
-}
+  onSelect(event) {
+    this.selectedYear = event.series
+  }
 
-updateView(){
-  if(this.pieChartRef && this.pieChartRef.nativeElement)
-  this.view = [this.pieChartRef.nativeElement.offsetWidth, 300];
-  if(this.multiChartRef && this.multiChartRef.nativeElement)
-  this.multichartView = [this.multiChartRef.nativeElement.offsetWidth, 400];
-
-//  this.multichartView = this.view
-console.log(this.multichartView,this.view);
-}
+  updateView() {
+    if (this.pieChartRef && this.pieChartRef.nativeElement)
+      this.view = [this.pieChartRef.nativeElement.offsetWidth, 300];
+    if (this.multiChartRef && this.multiChartRef.nativeElement)
+      this.multichartView = [this.multiChartRef.nativeElement.offsetWidth, 400];
+  }
 
 }

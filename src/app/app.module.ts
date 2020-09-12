@@ -18,7 +18,6 @@ import { IncomeTaxComponent } from './components/income-tax/income-tax.component
 import { SalaryComponent } from './components/salary/salary.component';
 import { RetirementComponent } from './components/retirement/retirement.component';
 import { FinancialFreedomComponent } from './components/financial-freedom/financial-freedom.component';
-import { EmiComponent } from './components/emi/emi.component';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
@@ -42,6 +41,8 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import { OldTaxAdvOptionComponent } from './components/old-tax-adv-option/old-tax-adv-option.component';
 import {MatSelectModule} from '@angular/material/select';
 import { SeoService } from './services/seo.service';
+import {MatTabsModule} from '@angular/material/tabs';
+import { SharedModule } from './modules/shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -58,8 +59,6 @@ import { SeoService } from './services/seo.service';
     SalaryComponent,
     RetirementComponent,
     FinancialFreedomComponent,
-    EmiComponent,
-    MycurrencyPipe,
     SideNavComponent,
     OldIncomeTaxComponent,
     OldVsNewIncomeTaxComponent,
@@ -70,20 +69,7 @@ import { SeoService } from './services/seo.service';
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
     AppRoutingModule,
     BrowserAnimationsModule,
-    MatToolbarModule,
-    MatIconModule,
-    MatButtonModule,
-    MatCardModule,
-    MatGridListModule,
-    MatSliderModule,
-    MatInputModule,
-    FormsModule,
-    NgxChartsModule,
-    MatSidenavModule,
-    MatListModule,
-    MatSnackBarModule,
-    MatExpansionModule,
-    MatSelectModule,
+    SharedModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [
