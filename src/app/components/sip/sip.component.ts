@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { MatSliderChange } from '@angular/material/slider';
 import { CalculatorService } from '../../services/calculator.service';
 import { Subject } from 'rxjs';
@@ -24,16 +24,20 @@ export class SipComponent implements OnInit {
 
   sipArr:Sip[] = [];
 
+  @ViewChild('pieChartRef') pieChartRef: ElementRef;
   gradient: boolean = false;
   showLegend: boolean = false;
   showLabels: boolean = true;
   isDoughnut: boolean = false;
-
+  view = [200,300];
   single = [];
 
   private calculateSubj: Subject < boolean > = new Subject();
 
-  constructor() {}
+  constructor() {
+    if(this.pieChartRef && this.pieChartRef.nativeElement)
+    this.view = [this.pieChartRef.nativeElement.offsetWidth, 300];
+  }
 
   ngOnInit(): void {
     this.calculateTotal();

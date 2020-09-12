@@ -51,9 +51,9 @@
           </div>
         
         </div>
-          <div #containerRef  class="col-md-4">
+          <div #pieChartRef  class="col-md-4">
             <div *ngIf="single.length>0">
-              <ngx-charts-pie-chart [view]="[containerRef.offsetWidth, 300]" class="pr-1" [scheme]="colorScheme" [results]="single"
+              <ngx-charts-pie-chart [view]="view" class="pr-1" [scheme]="colorScheme" [results]="single"
                 [gradient]="gradient" [legend]="showLegend" [doughnut]="isDoughnut">
               </ngx-charts-pie-chart>
             </div>

@@ -19,7 +19,6 @@ import { SalaryComponent } from './components/salary/salary.component';
 import { RetirementComponent } from './components/retirement/retirement.component';
 import { FinancialFreedomComponent } from './components/financial-freedom/financial-freedom.component';
 import { EmiComponent } from './components/emi/emi.component';
-import { HomeLoanComponent } from './components/home-loan/home-loan.component';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
@@ -60,7 +59,6 @@ import { SeoService } from './services/seo.service';
     RetirementComponent,
     FinancialFreedomComponent,
     EmiComponent,
-    HomeLoanComponent,
     MycurrencyPipe,
     SideNavComponent,
     OldIncomeTaxComponent,

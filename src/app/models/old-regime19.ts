@@ -77,9 +77,8 @@ export class OldRegime {
       old.dedgratuity = TaxUtil.getTaxValue(old.baseSalaryY, 5);
     }
     old.dedconveyance = 19200;
-    old.ded80C =  Math.min((old.ded80C+old.dedepf + old.dedpf),150000) 
     old.deductions = old.dedhra + old.standardDed + old.dedprofTax +
-       + old.dedccd + old.ded80D + old.dedeea + old.ded80C
+       + old.dedccd + old.ded80D + old.dedeea +  Math.min((old.ded80C+old.dedepf + old.dedpf),150000) 
         + old.dedlta + old.ded80g + old.ded80e;
     let totalTaxable = old.amtAfterDeductions = old.salaryCtc - old.deductions;
    
@@ -102,7 +101,7 @@ export class OldRegime {
     old.taxBeforeCess =  old.fivePercent +  old.twentyPercent  +  old.thirtyPercent ;
     old.cess = (old.taxBeforeCess * Constants.EDUCATION_CESS / 100);
     old.taxPayable = old.taxBeforeCess + old.cess;
-    old.takeHomeY = old.salaryCtc - old.taxPayable - old.deductions + old.dedhra + old.dedconveyance;
+    old.takeHomeY = old.salaryCtc - old.taxPayable - old.deductions + old.dedhra + old.dedconveyance + old.ded80C;
     old.takeHomeM = Math.round(old.takeHomeY/12);
     old.gross = old.salaryCtc - old.dedepf - old.dedgratuity;
   }
