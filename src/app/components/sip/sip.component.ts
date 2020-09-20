@@ -7,6 +7,7 @@ import {
 } from "rxjs/operators";
 import { Sip } from '../../models/sip';
 import { Constants } from '../../util/constants';
+import { GoodReads } from '../../modules/shared/models/good-reads';
 
 @Component({
   selector: 'app-sip',
@@ -31,6 +32,10 @@ export class SipComponent implements OnInit {
   isDoughnut: boolean = false;
   view = [200,300];
   single = [];
+  goodReads: GoodReads[] = [{
+    label:'Can we really get 1 crore after 15 years by investing 10K per month of SIP or its just a myth?',
+    link: 'https://www.quora.com/Can-I-really-get-the-return-of-1-crore-after-15-years-by-investing-10K-per-month-of-SIP-or-its-just-a-myth-that-all-the-online-calculators-showing/answer/Manoranjan-Panigrahi-4?ch=3&share=2b0030f1&srid=C53K'
+  }]
 
   private calculateSubj: Subject < boolean > = new Subject();
 
@@ -39,6 +44,9 @@ export class SipComponent implements OnInit {
     this.view = [this.pieChartRef.nativeElement.offsetWidth, 300];
   }
 
+  //@TODO Monthly/lumpsum/ weekly/ yearly/compare all 3
+  // add inflation
+  // Give suggestions
   ngOnInit(): void {
     this.calculateTotal();
     this.calculateSubj.pipe(debounceTime(100)).subscribe(val => {

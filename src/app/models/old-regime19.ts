@@ -59,10 +59,7 @@ export class OldRegime {
     this.dedlta = 0;
     this.ded80g = 0; // donations
     this.ded80e = 0; // education loan
-
-    if(salary>2000000){
-      this.dedhra = 120000;
-    }
+    this.dedhra = this.baseSalaryY/2;  
     OldRegime.calculate(this);
   }
 

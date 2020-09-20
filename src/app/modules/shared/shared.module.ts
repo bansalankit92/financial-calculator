@@ -18,10 +18,14 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MycurrencyPipe } from './pipes/mycurrency.pipe';
 import { InlineEditInputComponent } from './components/forms/inline-edit-input/inline-edit-input.component'
 import { CalculatorService } from './services/calculator.service';
+import { ReferencesComponent } from './components/references/references.component';
+import { GoodReadsComponent } from './components/good-reads/good-reads.component';
 @NgModule({
   declarations: [
     MycurrencyPipe,
-    InlineEditInputComponent
+    InlineEditInputComponent,
+    ReferencesComponent,
+    GoodReadsComponent
   ],
   imports: [
     CommonModule,
@@ -59,6 +63,8 @@ import { CalculatorService } from './services/calculator.service';
     MatTabsModule,
     MycurrencyPipe,
     InlineEditInputComponent,
+    GoodReadsComponent,
+    ReferencesComponent,
   ],
   providers: [CalculatorService]
 })

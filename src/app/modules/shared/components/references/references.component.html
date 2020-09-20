@@ -1,0 +1,8 @@
+<div *ngIf="links.length>0">
+  <h2> References</h2>
+  <ul>
+    <li *ngFor="let link of links">
+      <a [href]="link" target="_blank">{{link}}</a>
+    </li>
+  </ul>
+</div>
