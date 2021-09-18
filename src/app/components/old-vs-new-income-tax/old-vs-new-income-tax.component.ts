@@ -10,33 +10,25 @@ import { OldRegime } from '../../models/old-regime19';
 @Component({
   selector: 'app-old-vs-new-income-tax',
   templateUrl: './old-vs-new-income-tax.component.html',
-  styleUrls: ['./old-vs-new-income-tax.component.scss']
+  styleUrls: ['./old-vs-new-income-tax.component.scss'],
 })
 export class OldVsNewIncomeTaxComponent implements OnInit {
-
-  
   salary = 1000000;
   isEdit = false;
   totalNewRegimeTax: number = 0;
-  newRegime: NewRegime2020;
-  taxInWords = "";
+  newRegime: NewRegime2020 = new NewRegime2020(this.salary);
+  taxInWords = '';
   maxSalarySlider = 5000000;
-  oldRegime: OldRegime;
+  oldRegime: OldRegime = new OldRegime(this.salary);
 
-
-  private calculateSubj: Subject < boolean > = new Subject();
+  private calculateSubj: Subject<boolean> = new Subject();
 
   constructor(private toastService: ToastService) {}
 
   ngOnInit(): void {
-    this.newRegime =new NewRegime2020(this.salary);
-    this.oldRegime = new OldRegime(this.salary);   
-    this.getOldRegimeTax();
-    this.getNewRegimeTax();
-    this.calculateSubj.pipe(debounceTime(100)).subscribe(val => {
-      this.baseChange()
-      this.getNewRegimeTax();
-      this.getOldRegimeTax();
+    this.getBothRegime();
+    this.calculateSubj.pipe(debounceTime(100)).subscribe((val) => {
+      this.getBothRegime();
     });
   }
   formatSalary(value: number) {
@@ -49,19 +41,19 @@ export class OldVsNewIncomeTaxComponent implements OnInit {
   salaryChanged($event: MatSliderChange) {
     this.salary = $event.value;
     this.updateTax();
-    if(this.salary > this.maxSalarySlider - 1000000) {
+    if (this.salary > this.maxSalarySlider - 1000000) {
       this.maxSalarySlider = this.salary + 1000000;
     }
   }
 
   inputChange() {
-    OldRegime.calculate(this.oldRegime);
-   // this.updateTax();
+    this.baseChange();
+    // this.updateTax();
   }
 
-  baseChange(){
+  baseChange() {
     OldRegime.calculate(this.oldRegime);
-    NewRegime2020.calculate(this.newRegime)
+    NewRegime2020.calculate(this.newRegime);
   }
 
   inwords(): string {
@@ -69,18 +61,26 @@ export class OldVsNewIncomeTaxComponent implements OnInit {
   }
 
   updateTax(): void {
-    this.calculateSubj.next(true)
+    this.newRegime.newSalary(this.salary);
+    this.oldRegime.newSalary(this.salary);
+    this.calculateSubj.next(true);
   }
   salaryUpdate() {
     this.updateTax();
   }
+
+  getBothRegime() {
+    this.inputChange();
+    this.getNewRegimeTax();
+    this.getOldRegimeTax();
+  }
+
   getNewRegimeTax() {
-      this.totalNewRegimeTax =this.newRegime.taxPayable;
-      this.taxInWords  = CalculatorService.inWords(this.totalNewRegimeTax);
+    this.totalNewRegimeTax = this.newRegime.taxPayable;
+    this.taxInWords = CalculatorService.inWords(this.totalNewRegimeTax);
   }
 
   getOldRegimeTax() {
-    this.taxInWords = CalculatorService.inWords(this.oldRegime.taxPayable);    
+    this.taxInWords = CalculatorService.inWords(this.oldRegime.taxPayable);
   }
-
 }

@@ -1,38 +1,35 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSliderChange } from '@angular/material/slider';
 import { CalculatorService } from '../../modules/shared/services/calculator.service';
-import { Constants } from '../../util/constants';
 import { NewRegime2020 } from '../../models/new-regime2020';
 import { debounceTime } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import { TaxUtil } from '../../util/tax-util';
 import { ToastService } from '../../services/toast.service';
 
 @Component({
   selector: 'app-income-tax',
   templateUrl: './income-tax.component.html',
-  styleUrls: ['./income-tax.component.scss']
+  styleUrls: ['./income-tax.component.scss'],
 })
 export class IncomeTaxComponent implements OnInit {
-
   salary = 1000000;
   isEdit = false;
   totalNewRegimeTax: number = 0;
-  newRegime: NewRegime2020;
-  taxInWords = "";
+  newRegime: NewRegime2020 = new NewRegime2020(this.salary);
+  taxInWords = '';
   maxSalarySlider = 5000000;
 
-  private calculateSubj: Subject < boolean > = new Subject();
+  private calculateSubj: Subject<boolean> = new Subject();
 
   constructor(private toastService: ToastService) {}
 
   ngOnInit(): void {
-    this.newRegime =new NewRegime2020(this.salary);
     this.getNewRegimeTax();
-    this.calculateSubj.pipe(debounceTime(100)).subscribe(val => {
+    this.calculateSubj.pipe(debounceTime(100)).subscribe((val) => {
       this.getNewRegimeTax();
     });
   }
+
   formatSalary(value: number) {
     if (value >= 100000) {
       return Number(value / 100000).toPrecision(2) + 'LPA';
@@ -43,7 +40,7 @@ export class IncomeTaxComponent implements OnInit {
   salaryChanged($event: MatSliderChange) {
     this.salary = $event.value;
     this.updateTax();
-    if(this.salary > this.maxSalarySlider - 1000000) {
+    if (this.salary > this.maxSalarySlider - 1000000) {
       this.maxSalarySlider = this.salary + 1000000;
     }
   }
@@ -52,7 +49,7 @@ export class IncomeTaxComponent implements OnInit {
     this.updateTax();
   }
 
-  baseChange(){
+  baseChange() {
     NewRegime2020.calculate(this.newRegime);
   }
 
@@ -61,16 +58,16 @@ export class IncomeTaxComponent implements OnInit {
   }
 
   updateTax(): void {
-    this.calculateSubj.next(true)
+    this.newRegime.newSalary(this.salary);
+    this.calculateSubj.next(true);
   }
 
   getNewRegimeTax() {
-      this.totalNewRegimeTax =this.newRegime.taxPayable;
-      this.taxInWords  = CalculatorService.inWords(this.totalNewRegimeTax);
-    if(this.salary<500000){
-        this.toastService.success("No need to worry about tax buddy, Chillax!!");
-      
+    this.inputChange();
+    this.totalNewRegimeTax = this.newRegime.taxPayable;
+    this.taxInWords = CalculatorService.inWords(this.totalNewRegimeTax);
+    if (this.salary < 500000) {
+      this.toastService.success('No need to worry about tax buddy, Chillax!!');
     }
   }
-
 }

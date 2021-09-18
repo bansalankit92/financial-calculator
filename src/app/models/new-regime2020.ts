@@ -35,11 +35,7 @@ export class NewRegime2020 {
 
   constructor(readonly salary: number) {
     this.salaryCtc = salary;
-    this.salaryMonthly = salary / 12;
-    this.baseSalaryY = TaxUtil.calculateBase(this.salaryCtc);
-    this.baseSalaryM = this.baseSalaryY / 12;
-    // this.empNps = TaxUtil.getTaxValue(this.baseSalaryY, 10);
-    // this.gratuity = this.isGratuity? TaxUtil.getTaxValue(this.baseSalaryY, 5):0;
+    this.updateBase();
     NewRegime2020.calculate(this);
   }
 
@@ -113,6 +109,19 @@ export class NewRegime2020 {
 
   static deductNps(salary: number): number {
     return this.deductionOnBase(salary, 10);
+  }
+
+  updateBase() {
+    this.salaryMonthly = this.salaryCtc / 12;
+    this.baseSalaryY = TaxUtil.calculateBase(this.salaryCtc);
+    this.baseSalaryM = this.baseSalaryY / 12;
+    // this.empNps = TaxUtil.getTaxValue(this.baseSalaryY, 10);
+    // this.gratuity = this.isGratuity? TaxUtil.getTaxValue(this.baseSalaryY, 5):0;
+  }
+
+  newSalary(salary: number) {
+    this.salaryCtc = salary;
+    this.updateBase();
   }
 
 }

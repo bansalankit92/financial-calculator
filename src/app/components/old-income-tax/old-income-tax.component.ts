@@ -1,33 +1,31 @@
 import { Component, OnInit } from '@angular/core';
-import { NewRegime2020 } from '../../models/new-regime2020';
 import { Subject } from 'rxjs';
 import { ToastService } from '../../services/toast.service';
 import { debounceTime } from 'rxjs/operators';
 import { MatSliderChange } from '@angular/material/slider';
 import { CalculatorService } from '../../modules/shared/services/calculator.service';
 import { OldRegime } from '../../models/old-regime19';
+import { Constants } from '../../util/constants';
 
 @Component({
   selector: 'app-old-income-tax',
   templateUrl: './old-income-tax.component.html',
-  styleUrls: ['./old-income-tax.component.scss']
+  styleUrls: ['./old-income-tax.component.scss'],
 })
 export class OldIncomeTaxComponent implements OnInit {
-
-
   salary = 1000000;
   isEdit = false;
-  oldRegime: OldRegime = new OldRegime(1000000);;
-  taxInWords = "";
+  oldRegime: OldRegime = new OldRegime(1000000);
+  taxInWords = '';
   maxSalarySlider = 5000000;
 
-  private calculateSubj: Subject < boolean > = new Subject();
+  private calculateSubj: Subject<boolean> = new Subject();
 
   constructor(private toastService: ToastService) {}
 
   ngOnInit(): void {
     this.getOldRegimeTax();
-    this.calculateSubj.pipe(debounceTime(100)).subscribe(val => {
+    this.calculateSubj.pipe(debounceTime(100)).subscribe((val) => {
       this.getOldRegimeTax();
     });
   }
@@ -59,16 +57,14 @@ export class OldIncomeTaxComponent implements OnInit {
 
   updateTax(): void {
     this.oldRegime.newSalary(this.salary);
-    this.calculateSubj.next(true)
+    this.calculateSubj.next(true);
   }
 
   getOldRegimeTax() {
-    this.inputChange();    
-    this.taxInWords = CalculatorService.inWords(this.oldRegime.taxPayable);    
+    this.inputChange();
+    this.taxInWords = CalculatorService.inWords(this.oldRegime.taxPayable);
     if (this.salary < 500000) {
-      this.toastService.success("No need to worry about tax buddy, Chillax!!");
-
+      this.toastService.success('No need to worry about tax buddy, Chillax!!');
     }
   }
-
 }

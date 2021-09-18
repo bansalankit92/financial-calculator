@@ -9,4 +9,7 @@ export class Constants {
   public static readonly SALARY_BASE_PERCENT:number = 50;
   public static readonly EDUCATION_CESS:number = 4;
 
+  public static clone<T>(obj: T): T {
+    return JSON.parse(JSON.stringify(obj));
+  }
 }
