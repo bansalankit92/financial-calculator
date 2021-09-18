@@ -27,6 +27,7 @@ export class IncomeTaxComponent implements OnInit {
   constructor(private toastService: ToastService) {}
 
   ngOnInit(): void {
+    this.newRegime =new NewRegime2020(this.salary);
     this.getNewRegimeTax();
     this.calculateSubj.pipe(debounceTime(100)).subscribe(val => {
       this.getNewRegimeTax();
@@ -64,8 +65,6 @@ export class IncomeTaxComponent implements OnInit {
   }
 
   getNewRegimeTax() {
-   
-      this.newRegime =new NewRegime2020(this.salary);
       this.totalNewRegimeTax =this.newRegime.taxPayable;
       this.taxInWords  = CalculatorService.inWords(this.totalNewRegimeTax);
     if(this.salary<500000){

@@ -6,7 +6,7 @@ export class Constants {
     domain: ['#3F51B5', '#FFC300']
   };
 
-  public static readonly SALARY_BASE_PERCENT:number = 40;
+  public static readonly SALARY_BASE_PERCENT:number = 50;
   public static readonly EDUCATION_CESS:number = 4;
 
 }

@@ -45,7 +45,8 @@ export class OldRegime {
     this.baseSalaryM = this.baseSalaryY / 12;
     this.dedepf = TaxUtil.getTaxValue(this.baseSalaryY, 12);
     this.dedpf = this.dedepf;
-    this.dedhra = TaxUtil.getTaxValue(salary, 10); // 10% 
+    // https://www.iciciprulife.com/insurance-guide/financial-planning-tools-calculators/hra-exemption-calculator.html
+    // this.dedhra = TaxUtil.getTaxValue(this.baseSalaryY, 10); // 10% (rent paid - 50%basic salary)
     this.standardDed = 50000; // 50
     this.dedprofTax = 2400
     this.dedconveyance = 19200;
@@ -53,13 +54,11 @@ export class OldRegime {
     this.dedccd = 0; // 50
     this.ded80D = 0; // 25
     this.dedeea = 0; //  2 lakh house loan interest
-    this.dedepf = TaxUtil.getTaxValue(this.baseSalaryY, 12);
-    this.dedpf = this.dedepf;
     this.dedgratuity = TaxUtil.getTaxValue(this.baseSalaryY, 5);;
     this.dedlta = 0;
     this.ded80g = 0; // donations
     this.ded80e = 0; // education loan
-    this.dedhra = this.baseSalaryY/2;  
+    // this.dedhra = this.baseSalaryY/2;  
     OldRegime.calculate(this);
   }
 
@@ -101,5 +100,9 @@ export class OldRegime {
     old.takeHomeY = old.salaryCtc - old.taxPayable - old.deductions + old.dedhra + old.dedconveyance + old.ded80C;
     old.takeHomeM = Math.round(old.takeHomeY/12);
     old.gross = old.salaryCtc - old.dedepf - old.dedgratuity;
+  }
+
+  newSalary(salary: number) {
+    this.salaryCtc = salary;
   }
 }

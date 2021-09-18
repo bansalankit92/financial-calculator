@@ -17,7 +17,7 @@ export class OldIncomeTaxComponent implements OnInit {
 
   salary = 1000000;
   isEdit = false;
-  oldRegime: OldRegime;
+  oldRegime: OldRegime = new OldRegime(1000000);;
   taxInWords = "";
   maxSalarySlider = 5000000;
 
@@ -58,11 +58,12 @@ export class OldIncomeTaxComponent implements OnInit {
   }
 
   updateTax(): void {
+    this.oldRegime.newSalary(this.salary);
     this.calculateSubj.next(true)
   }
 
   getOldRegimeTax() {
-    this.oldRegime = new OldRegime(this.salary);    
+    this.inputChange();    
     this.taxInWords = CalculatorService.inWords(this.oldRegime.taxPayable);    
     if (this.salary < 500000) {
       this.toastService.success("No need to worry about tax buddy, Chillax!!");

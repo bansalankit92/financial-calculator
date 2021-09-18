@@ -29,9 +29,12 @@ export class OldVsNewIncomeTaxComponent implements OnInit {
   constructor(private toastService: ToastService) {}
 
   ngOnInit(): void {
+    this.newRegime =new NewRegime2020(this.salary);
+    this.oldRegime = new OldRegime(this.salary);   
     this.getOldRegimeTax();
     this.getNewRegimeTax();
     this.calculateSubj.pipe(debounceTime(100)).subscribe(val => {
+      this.baseChange()
       this.getNewRegimeTax();
       this.getOldRegimeTax();
     });
@@ -72,13 +75,11 @@ export class OldVsNewIncomeTaxComponent implements OnInit {
     this.updateTax();
   }
   getNewRegimeTax() {
-      this.newRegime =new NewRegime2020(this.salary);
       this.totalNewRegimeTax =this.newRegime.taxPayable;
       this.taxInWords  = CalculatorService.inWords(this.totalNewRegimeTax);
   }
 
   getOldRegimeTax() {
-    this.oldRegime = new OldRegime(this.salary);    
     this.taxInWords = CalculatorService.inWords(this.oldRegime.taxPayable);    
   }
 

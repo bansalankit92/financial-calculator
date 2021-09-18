@@ -38,8 +38,8 @@ export class NewRegime2020 {
     this.salaryMonthly = salary / 12;
     this.baseSalaryY = TaxUtil.calculateBase(this.salaryCtc);
     this.baseSalaryM = this.baseSalaryY / 12;
-    this.empNps = TaxUtil.getTaxValue(this.baseSalaryY, 10);
-    this.gratuity = this.isGratuity? TaxUtil.getTaxValue(this.baseSalaryY, 5):0;
+    // this.empNps = TaxUtil.getTaxValue(this.baseSalaryY, 10);
+    // this.gratuity = this.isGratuity? TaxUtil.getTaxValue(this.baseSalaryY, 5):0;
     NewRegime2020.calculate(this);
   }
 
@@ -48,10 +48,10 @@ export class NewRegime2020 {
 
     } else {
       newR.baseSalaryY = newR.baseSalaryM * 12;
-      newR.empNps = TaxUtil.getTaxValue(newR.baseSalaryY, 10);
-      newR.gratuity = newR.isGratuity? TaxUtil.getTaxValue(newR.baseSalaryY, 5):0;
+      // newR.empNps = TaxUtil.getTaxValue(newR.baseSalaryY, 10);
+      // newR.gratuity = newR.isGratuity? TaxUtil.getTaxValue(newR.baseSalaryY, 5):0;
     }
-    newR.deductions = newR.empNps;
+    newR.deductions = Math.min(newR.empNps,50000);
     
     let totalTaxable = newR.amtAfterDeductions = newR.salaryCtc - newR.deductions;
     if (totalTaxable <= 250000) {
