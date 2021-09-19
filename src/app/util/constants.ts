@@ -1,5 +1,6 @@
 export class Constants {
   public static readonly SIP_BASE_AMT = 3000;
+  public static readonly WEBSITE_URL = 'https://fincalculator.in';
   public static readonly SIP_BASE_INTEREST = 12;
   public static readonly SIP_BASE_YEARS = 3;
   public static readonly CHART_PIE_COLOR_SCHEME = {
