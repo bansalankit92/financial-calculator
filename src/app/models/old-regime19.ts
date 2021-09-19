@@ -60,6 +60,7 @@ export class OldRegime {
       old.dedepf = old.dedpf;
       old.dedgratuity = TaxUtil.getTaxValue(old.baseSalaryY, 5);
     }
+    old.ded80C = Math.min(old.ded80C, 150000);
     old.dedconveyance = 19200;
     old.deductions =
       old.dedhra +
@@ -99,7 +100,7 @@ export class OldRegime {
       old.deductions +
       old.dedhra +
       old.dedconveyance +
-      old.ded80C;
+      Math.min(old.ded80C, 150000);
     old.takeHomeM = Math.round(old.takeHomeY / 12);
     old.gross = old.salaryCtc - old.dedepf - old.dedgratuity;
   }

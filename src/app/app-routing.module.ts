@@ -13,7 +13,7 @@ const routes: Routes = [
     path: '',
     component: OldVsNewIncomeTaxComponent,
     data: {
-      title: 'SIP Calculator',
+      title: 'Free Financial Calculator',
       description: 'To calculate monthly mutual funds, sip',
       ogUrl: Constants.WEBSITE_URL,
     },
