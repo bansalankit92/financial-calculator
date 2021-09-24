@@ -20,11 +20,14 @@ export class InlineEditInputComponent implements OnInit {
   @Output() focus: EventEmitter<string | number> = new EventEmitter<string | number>();
   constructor() {}
 
-  ngOnInit(): void {
-    console.log(this.placeholder, this.max);
-  }
+  ngOnInit(): void {}
 
   inputChange() {
+    if (this.type === 'number' || this.type === 'currency') {
+      if (this.value > this.max) {
+        this.value = this.max;
+      }
+    }
     this.valueChanged.emit(this.value);
   }
   inwords(): string {

@@ -50,6 +50,7 @@ export class OldRegime {
     OldRegime.calculate(this);
   }
 
+  //https://cleartax.in/s/80c-80-deductions
   static calculate(old: OldRegime) {
     if (old.baseSalaryM * 12 === old.baseSalaryY) {
       // manual base salary change
