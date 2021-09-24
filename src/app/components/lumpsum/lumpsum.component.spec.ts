@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { LumpsumComponent } from './lumpsum.component';
 
@@ -6,7 +6,7 @@ describe('LumpsumComponent', () => {
   let component: LumpsumComponent;
   let fixture: ComponentFixture<LumpsumComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ LumpsumComponent ]
     })
