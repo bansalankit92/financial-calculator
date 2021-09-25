@@ -63,7 +63,7 @@ export class AppComponent implements OnInit {
        this._seoService.updateTitle(event['title']);
        this._seoService.updateOgUrl(event['ogUrl']);
        //Updating Description tag dynamically with title
-       this._seoService.updateDescription(event['title'] + event['description'])
+       this._seoService.updateDescription(event['description'])
      }); 
   }
 }
