@@ -1,6 +1,6 @@
 import { Injectable, EventEmitter, NgZone } from '@angular/core';
 import { Toast } from '../models/toast';
-import { MatSnackBarConfig, MatSnackBar } from '@angular/material/snack-bar';
+import { MatLegacySnackBarConfig as MatSnackBarConfig, MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 
 @Injectable({
   providedIn: 'root'

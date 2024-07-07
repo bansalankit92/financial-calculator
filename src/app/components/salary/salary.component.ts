@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MatSliderChange } from '@angular/material/slider';
+import { MatLegacySliderChange as MatSliderChange } from '@angular/material/legacy-slider';
 import { NewRegime2020 } from '../../models/new-regime2020';
 import { OldRegime } from '../../models/old-regime19';
 import { Subject } from 'rxjs';

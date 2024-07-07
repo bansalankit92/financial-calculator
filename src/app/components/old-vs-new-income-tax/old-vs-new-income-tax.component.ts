@@ -3,7 +3,7 @@ import { NewRegime2020 } from '../../models/new-regime2020';
 import { Subject } from 'rxjs';
 import { ToastService } from '../../services/toast.service';
 import { debounceTime } from 'rxjs/operators';
-import { MatSliderChange } from '@angular/material/slider';
+import { MatLegacySliderChange as MatSliderChange } from '@angular/material/legacy-slider';
 import { CalculatorService } from '../../modules/shared/services/calculator.service';
 import { OldRegime } from '../../models/old-regime19';
 

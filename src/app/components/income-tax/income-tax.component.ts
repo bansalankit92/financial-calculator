@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MatSliderChange } from '@angular/material/slider';
+import { MatLegacySliderChange as MatSliderChange } from '@angular/material/legacy-slider';
 import { CalculatorService } from '../../modules/shared/services/calculator.service';
 import { NewRegime2020 } from '../../models/new-regime2020';
 import { debounceTime } from 'rxjs/operators';

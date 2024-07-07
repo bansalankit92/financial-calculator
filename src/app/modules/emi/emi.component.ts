@@ -3,7 +3,7 @@ import { Emi, YearlyBreakup } from '../../models/emi';
 import { Constants } from '../../util/constants';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
-import { MatSliderChange } from '@angular/material/slider';
+import { MatLegacySliderChange as MatSliderChange } from '@angular/material/legacy-slider';
 import { CalculatorService } from '../shared/services/calculator.service';
 @Component({
   selector: 'app-emi',
