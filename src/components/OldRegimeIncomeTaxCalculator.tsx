@@ -41,6 +41,8 @@ const OldRegimeIncomeTaxCalculator = () => {
     const [actualRent, setActualRent] = useState(0);
     const [isMetroCity, setIsMetroCity] = useState(true);
     const [hraExemption, setHraExemption] = useState(0);
+    const [showDocs, setShowDocs] = useState(false);
+    const [showAdvancedOptions, setShowAdvancedOptions] = useState(false);
 
     // Calculated values
     const [totalDeductions, setTotalDeductions] = useState(0);
@@ -196,7 +198,7 @@ const OldRegimeIncomeTaxCalculator = () => {
         <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="container mx-auto p-4"
+            className="container mx-auto p-4 space-y-6"
         >
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {/* Left Panel - Inputs */}
@@ -258,163 +260,174 @@ const OldRegimeIncomeTaxCalculator = () => {
                             </div>
 
                             {/* Advanced Options */}
-                            <div className="space-y-4 border-t pt-4 mt-4">
-                                <h3 className="text-lg font-semibold">Advanced Options</h3>
-                                <div className="grid grid-cols-2 gap-4">
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">PF (yearly)</label>
-                                        <input
-                                            type="number"
-                                            value={pf}
-                                            onChange={(e: ChangeEvent<HTMLInputElement>) => setPf(Number(e.target.value))}
-                                            className={inputClassName}
-                                        />
-                                    </div>
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">EPF (yearly, Max: ₹1,800/month)</label>
-                                        <input
-                                            type="number"
-                                            value={epf}
-                                            onChange={(e: ChangeEvent<HTMLInputElement>) => setEpf(Math.min(Number(e.target.value), 1800 * 12))}
-                                            className={inputClassName}
-                                            max={1800 * 12}
-                                        />
-                                    </div>
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">Gratuity (Yearly) </label>
-                                        <input
-                                            type="number"
-                                            value={gratuity}
-                                            onChange={(e: ChangeEvent<HTMLInputElement>) => setGratuity(Number(e.target.value))}
-                                            className={inputClassName}
-                                        />
-                                    </div>
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">Professional Tax (Typical: ₹2,400/year)</label>
-                                        <input
-                                            type="number"
-                                            value={profTax}
-                                            onChange={(e: ChangeEvent<HTMLInputElement>) => setProfTax(Number(e.target.value))}
-                                            className={inputClassName}
-                                        />
-                                    </div>
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">Conveyance</label>
-                                        <input
-                                            type="number"
-                                            value={conveyance}
-                                            onChange={(e: ChangeEvent<HTMLInputElement>) => setConveyance(Number(e.target.value))}
-                                            className={inputClassName}
-                                        />
-                                    </div>
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">HRA Received (Yearly)</label>
-                                        <input
-                                            type="number"
-                                            value={hra}
-                                            onChange={(e: ChangeEvent<HTMLInputElement>) => setHra(Number(e.target.value))}
-                                            className={inputClassName}
-                                            min={0}
-                                        />
-                                    </div>
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">Annual Rent Paid</label>
-                                        <input
-                                            type="number"
-                                            value={actualRent}
-                                            onChange={(e: ChangeEvent<HTMLInputElement>) => setActualRent(Number(e.target.value))}
-                                            className={inputClassName}
-                                            min={0}
-                                        />
-                                    </div>
-                                    <div className="col-span-2">
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">City Type</label>
-                                        <div className="flex gap-4">
-                                            <label className="inline-flex items-center">
-                                                <input
-                                                    type="radio"
-                                                    className="form-radio text-blue-600"
-                                                    checked={isMetroCity}
-                                                    onChange={() => setIsMetroCity(true)}
-                                                />
-                                                <span className="ml-2">Metro (50% of Basic)</span>
-                                            </label>
-                                            <label className="inline-flex items-center">
-                                                <input
-                                                    type="radio"
-                                                    className="form-radio text-blue-600"
-                                                    checked={!isMetroCity}
-                                                    onChange={() => setIsMetroCity(false)}
-                                                />
-                                                <span className="ml-2">Non-Metro (40% of Basic)</span>
-                                            </label>
+                            <div className="border-t pt-4 mt-4">
+                                <div 
+                                    className="flex justify-between items-center cursor-pointer" 
+                                    onClick={() => setShowAdvancedOptions(!showAdvancedOptions)}
+                                >
+                                    <h3 className="text-lg font-semibold">Advanced Options</h3>
+                                    <span className="text-gray-500">
+                                        {showAdvancedOptions ? '▼' : '▶'}
+                                    </span>
+                                </div>
+                                
+                                {showAdvancedOptions && (
+                                    <div className="mt-4 grid grid-cols-2 gap-4">
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 mb-2">PF (yearly)</label>
+                                            <input
+                                                type="number"
+                                                value={pf}
+                                                onChange={(e: ChangeEvent<HTMLInputElement>) => setPf(Number(e.target.value))}
+                                                className={inputClassName}
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 mb-2">EPF (yearly, Max: ₹1,800/month)</label>
+                                            <input
+                                                type="number"
+                                                value={epf}
+                                                onChange={(e: ChangeEvent<HTMLInputElement>) => setEpf(Math.min(Number(e.target.value), 1800 * 12))}
+                                                className={inputClassName}
+                                                max={1800 * 12}
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 mb-2">Gratuity (Yearly)</label>
+                                            <input
+                                                type="number"
+                                                value={gratuity}
+                                                onChange={(e: ChangeEvent<HTMLInputElement>) => setGratuity(Number(e.target.value))}
+                                                className={inputClassName}
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 mb-2">Professional Tax (Typical: ₹2,400/year)</label>
+                                            <input
+                                                type="number"
+                                                value={profTax}
+                                                onChange={(e: ChangeEvent<HTMLInputElement>) => setProfTax(Number(e.target.value))}
+                                                className={inputClassName}
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 mb-2">Conveyance (Typical: ₹19,200/year)</label>
+                                            <input
+                                                type="number"
+                                                value={conveyance}
+                                                onChange={(e: ChangeEvent<HTMLInputElement>) => setConveyance(Number(e.target.value))}
+                                                className={inputClassName}
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 mb-2">HRA Received (Yearly)</label>
+                                            <input
+                                                type="number"
+                                                value={hra}
+                                                onChange={(e: ChangeEvent<HTMLInputElement>) => setHra(Number(e.target.value))}
+                                                className={inputClassName}
+                                                min={0}
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 mb-2">Annual Rent Paid</label>
+                                            <input
+                                                type="number"
+                                                value={actualRent}
+                                                onChange={(e: ChangeEvent<HTMLInputElement>) => setActualRent(Number(e.target.value))}
+                                                className={inputClassName}
+                                                min={0}
+                                            />
+                                        </div>
+                                        <div className="col-span-2">
+                                            <label className="block text-sm font-medium text-gray-700 mb-2">City Type</label>
+                                            <div className="flex gap-4">
+                                                <label className="inline-flex items-center">
+                                                    <input
+                                                        type="radio"
+                                                        className="form-radio text-blue-600"
+                                                        checked={isMetroCity}
+                                                        onChange={() => setIsMetroCity(true)}
+                                                    />
+                                                    <span className="ml-2">Metro (50% of Basic)</span>
+                                                </label>
+                                                <label className="inline-flex items-center">
+                                                    <input
+                                                        type="radio"
+                                                        className="form-radio text-blue-600"
+                                                        checked={!isMetroCity}
+                                                        onChange={() => setIsMetroCity(false)}
+                                                    />
+                                                    <span className="ml-2">Non-Metro (40% of Basic)</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 mb-2">ELSS/PPF/LIC/H.Loan 80C (Max: ₹1.5L)</label>
+                                            <input
+                                                type="number"
+                                                value={section80C}
+                                                onChange={(e: ChangeEvent<HTMLInputElement>) => setSection80C(Math.min(Number(e.target.value), MAX_80C_LIMIT))}
+                                                className={inputClassName}
+                                                max={MAX_80C_LIMIT}
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 mb-2">NPS 80CCD (Max: ₹50,000)</label>
+                                            <input
+                                                type="number"
+                                                value={nps80CCD}
+                                                onChange={(e: ChangeEvent<HTMLInputElement>) => setNps80CCD(Math.min(Number(e.target.value), MAX_80CCD_LIMIT))}
+                                                className={inputClassName}
+                                                max={MAX_80CCD_LIMIT}
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 mb-2">Mediclaim 80D (Max: ₹25,000)</label>
+                                            <input
+                                                type="number"
+                                                value={mediclaim80D}
+                                                onChange={(e: ChangeEvent<HTMLInputElement>) => setMediclaim80D(Math.min(Number(e.target.value), MAX_80D_LIMIT))}
+                                                className={inputClassName}
+                                                max={MAX_80D_LIMIT}
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 mb-2">Donations 80G (50-100% deduction)</label>
+                                            <input
+                                                type="number"
+                                                value={donations80G}
+                                                onChange={(e: ChangeEvent<HTMLInputElement>) => setDonations80G(Number(e.target.value))}
+                                                className={inputClassName}
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 mb-2">H. Loan Interest 80EEA (Max: ₹2L)</label>
+                                            <input
+                                                type="number"
+                                                value={homeLoanInterest80EEA}
+                                                onChange={(e: ChangeEvent<HTMLInputElement>) => setHomeLoanInterest80EEA(Math.min(Number(e.target.value), 200000))}
+                                                className={inputClassName}
+                                                max={200000}
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 mb-2">Edu. Loan Interest 80E (No limit)</label>
+                                            <input
+                                                type="number"
+                                                value={eduLoanInterest80E}
+                                                onChange={(e: ChangeEvent<HTMLInputElement>) => setEduLoanInterest80E(Number(e.target.value))}
+                                                className={inputClassName}
+                                            />
                                         </div>
                                     </div>
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">ELSS/PPF/LIC/H.Loan 80C (Max: ₹1.5L)</label>
-                                        <input
-                                            type="number"
-                                            value={section80C}
-                                            onChange={(e: ChangeEvent<HTMLInputElement>) => setSection80C(Math.min(Number(e.target.value), MAX_80C_LIMIT))}
-                                            className={inputClassName}
-                                            max={MAX_80C_LIMIT}
-                                        />
-                                    </div>
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">NPS 80CCD (Max: ₹50,000)</label>
-                                        <input
-                                            type="number"
-                                            value={nps80CCD}
-                                            onChange={(e: ChangeEvent<HTMLInputElement>) => setNps80CCD(Math.min(Number(e.target.value), MAX_80CCD_LIMIT))}
-                                            className={inputClassName}
-                                            max={MAX_80CCD_LIMIT}
-                                        />
-                                    </div>
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">Mediclaim 80D (Max: ₹25,000)</label>
-                                        <input
-                                            type="number"
-                                            value={mediclaim80D}
-                                            onChange={(e: ChangeEvent<HTMLInputElement>) => setMediclaim80D(Math.min(Number(e.target.value), MAX_80D_LIMIT))}
-                                            className={inputClassName}
-                                            max={MAX_80D_LIMIT}
-                                        />
-                                    </div>
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">Donations 80G (50-100% deduction)</label>
-                                        <input
-                                            type="number"
-                                            value={donations80G}
-                                            onChange={(e: ChangeEvent<HTMLInputElement>) => setDonations80G(Number(e.target.value))}
-                                            className={inputClassName}
-                                        />
-                                    </div>
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">H. Loan Interest 80EEA (Max: ₹2L)</label>
-                                        <input
-                                            type="number"
-                                            value={homeLoanInterest80EEA}
-                                            onChange={(e: ChangeEvent<HTMLInputElement>) => setHomeLoanInterest80EEA(Math.min(Number(e.target.value), 200000))}
-                                            className={inputClassName}
-                                            max={200000}
-                                        />
-                                    </div>
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">Edu. Loan Interest 80E (No limit)</label>
-                                        <input
-                                            type="number"
-                                            value={eduLoanInterest80E}
-                                            onChange={(e: ChangeEvent<HTMLInputElement>) => setEduLoanInterest80E(Number(e.target.value))}
-                                            className={inputClassName}
-                                        />
-                                    </div>
-                                </div>
+                                )}
                             </div>
                         </div>
                     </div>
                 </div>
 
-                {/* Right Panel - Tax Calculation */}
+                {/* Right Panel - Tax Distribution */}
                 <div className="space-y-4">
                     <div className="bg-white rounded-xl shadow-lg p-6">
                         <h2 className="text-2xl font-bold mb-4">Tax Distribution</h2>
@@ -460,136 +473,271 @@ const OldRegimeIncomeTaxCalculator = () => {
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
 
-                    <div className="bg-white rounded-xl shadow-lg p-6">
-                        <h3 className="text-xl font-semibold mb-4">Tax Calculation</h3>
-                        
-                        {/* HRA Calculation */}
-                        <div className="mb-6">
-                            <h4 className="text-lg font-medium mb-3">HRA Exemption Calculation</h4>
-                            <div className="space-y-2 text-sm">
-                                <div className="flex justify-between">
-                                    <span>HRA Received:</span>
-                                    <span>{formatCurrency(hra)}</span>
-                                </div>
-                                <div className="flex justify-between">
-                                    <span>{isMetroCity ? '50%' : '40%'} of Basic Salary:</span>
-                                    <span>{formatCurrency(basicSalaryYearly * (isMetroCity ? 0.5 : 0.4))}</span>
-                                </div>
-                                <div className="flex justify-between">
-                                    <span>Rent Exceeding 10% of Basic:</span>
-                                    <span>{formatCurrency(Math.max(0, actualRent - (basicSalaryYearly * 0.1)))}</span>
-                                </div>
-                                <div className="flex justify-between font-medium pt-2 border-t">
-                                    <span>HRA Exemption (Minimum of above):</span>
-                                    <span className="text-green-600">{formatCurrency(hraExemption)}</span>
-                                </div>
+            {/* Tax Calculation - Full Width */}
+            <div className="bg-white rounded-xl shadow-lg p-6">
+                <h2 className="text-3xl font-bold mb-6">Tax Calculation</h2>
+                
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    {/* HRA Calculation */}
+                    <div>
+                        <h3 className="text-2xl font-semibold mb-4">HRA Exemption Calculation</h3>
+                        <div className="space-y-3 text-base">
+                            <div className="flex justify-between">
+                                <span>HRA Received:</span>
+                                <span className="font-medium">{formatCurrency(hra)}</span>
+                            </div>
+                            <div className="flex justify-between">
+                                <span>{isMetroCity ? '50%' : '40%'} of Basic Salary:</span>
+                                <span className="font-medium">{formatCurrency(basicSalaryYearly * (isMetroCity ? 0.5 : 0.4))}</span>
+                            </div>
+                            <div className="flex justify-between">
+                                <span>Rent Exceeding 10% of Basic:</span>
+                                <span className="font-medium">{formatCurrency(Math.max(0, actualRent - (basicSalaryYearly * 0.1)))}</span>
+                            </div>
+                            <div className="flex justify-between font-semibold pt-3 border-t text-lg">
+                                <span>HRA Exemption (Minimum of above):</span>
+                                <span className="text-green-600">{formatCurrency(hraExemption)}</span>
                             </div>
                         </div>
+                    </div>
 
-                        {/* Tax Summary Table */}
+                    {/* Tax Slab Calculation */}
+                    <div>
+                        <h3 className="text-2xl font-semibold mb-4">Tax Slab Calculation</h3>
+                        <div className="space-y-3 text-base">
+                            {taxBreakdown.map((item, index) => (
+                                <div key={index} className="flex justify-between">
+                                    <span>{item.slab}:</span>
+                                    <span className="font-medium">{formatCurrency(item.tax)}</span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+
+                {/* Detailed Breakdown */}
+                <div className="mt-8">
+                    <h3 className="text-2xl font-semibold mb-4">Detailed Breakdown</h3>
+                    <div className="space-y-3 text-base max-w-3xl">
+                        <div className="flex justify-between">
+                            <span>Total CTC:</span>
+                            <span className="font-medium">{formatCurrency(ctc)}</span>
+                        </div>
+                        <div className="flex justify-between">
+                            <span>Standard Deduction:</span>
+                            <span className="font-medium">- {formatCurrency(STANDARD_DEDUCTION)}</span>
+                        </div>
+                        {epf > 0 && (
+                            <div className="flex justify-between">
+                                <span>EPF:</span>
+                                <span className="font-medium">- {formatCurrency(epf)}</span>
+                            </div>
+                        )}
+                        {section80C > 0 && (
+                            <div className="flex justify-between">
+                                <span>Section 80C:</span>
+                                <span className="font-medium">- {formatCurrency(section80C)}</span>
+                            </div>
+                        )}
+                        {nps80CCD > 0 && (
+                            <div className="flex justify-between">
+                                <span>NPS (80CCD):</span>
+                                <span className="font-medium">- {formatCurrency(nps80CCD)}</span>
+                            </div>
+                        )}
+                        {mediclaim80D > 0 && (
+                            <div className="flex justify-between">
+                                <span>Medical Insurance (80D):</span>
+                                <span className="font-medium">- {formatCurrency(mediclaim80D)}</span>
+                            </div>
+                        )}
+                        {donations80G > 0 && (
+                            <div className="flex justify-between">
+                                <span>Donations (80G):</span>
+                                <span className="font-medium">- {formatCurrency(donations80G)}</span>
+                            </div>
+                        )}
+                        {homeLoanInterest80EEA > 0 && (
+                            <div className="flex justify-between">
+                                <span>Home Loan Interest (80EEA):</span>
+                                <span className="font-medium">- {formatCurrency(homeLoanInterest80EEA)}</span>
+                            </div>
+                        )}
+                        {eduLoanInterest80E > 0 && (
+                            <div className="flex justify-between">
+                                <span>Education Loan Interest (80E):</span>
+                                <span className="font-medium">- {formatCurrency(eduLoanInterest80E)}</span>
+                            </div>
+                        )}
+                        {hraExemption > 0 && (
+                            <div className="flex justify-between">
+                                <span>HRA Exemption:</span>
+                                <span className="font-medium">- {formatCurrency(hraExemption)}</span>
+                            </div>
+                        )}
+                        {profTax > 0 && (
+                            <div className="flex justify-between">
+                                <span>Professional Tax:</span>
+                                <span className="font-medium">- {formatCurrency(profTax)}</span>
+                            </div>
+                        )}
+                        <div className="flex justify-between font-semibold pt-3 border-t text-lg">
+                            <span>Taxable Income:</span>
+                            <span>{formatCurrency(taxableIncome)}</span>
+                        </div>
+                        <div className="flex justify-between font-semibold text-lg">
+                            <span>Total Tax:</span>
+                            <span className="text-red-600">{formatCurrency(totalTax)}</span>
+                        </div>
+                        <div className="flex justify-between font-semibold text-lg">
+                            <span>In-Hand Salary (Monthly):</span>
+                            <span className="text-green-600">{formatCurrency(Math.round((ctc - totalDeductions - totalTax) / 12))}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Documentation Section - Full Width */}
+            <div className="bg-white rounded-xl shadow-lg p-6">
+                <h2 className="text-2xl font-bold mb-6">Tax Calculator Documentation</h2>
+                
+                <div className="space-y-8">
+                    {/* Tax Slabs */}
+                    <div>
+                        <h3 className="text-xl font-semibold mb-4">Tax Slabs (Old Regime)</h3>
                         <div className="overflow-x-auto">
-                            <table className="w-full">
-                                <thead>
-                                    <tr className="bg-gray-100">
-                                        <th className="text-left py-2 px-4">Income Tax Calculation</th>
-                                        <th className="text-right py-2 px-4">Monthly</th>
-                                        <th className="text-right py-2 px-4">Yearly</th>
+                            <table className="min-w-full divide-y divide-gray-200">
+                                <thead className="bg-gray-50">
+                                    <tr>
+                                        <th className="px-6 py-3 text-left text-sm font-medium text-gray-500">Income Range</th>
+                                        <th className="px-6 py-3 text-left text-sm font-medium text-gray-500">Tax Rate</th>
+                                        <th className="px-6 py-3 text-left text-sm font-medium text-gray-500">Example</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    {/* Income Details */}
-                                    <tr className="border-b">
-                                        <td className="py-2 px-4">Total CTC</td>
-                                        <td className="text-right py-2 px-4">{formatCurrency(ctc / 12)}</td>
-                                        <td className="text-right py-2 px-4">{formatCurrency(ctc)}</td>
+                                <tbody className="bg-white divide-y divide-gray-200">
+                                    <tr>
+                                        <td className="px-6 py-4 text-sm">Up to ₹2.5L</td>
+                                        <td className="px-6 py-4 text-sm">No tax</td>
+                                        <td className="px-6 py-4 text-sm">For ₹2.5L: Tax = ₹0</td>
                                     </tr>
-                                    <tr className="border-b">
-                                        <td className="py-2 px-4">Basic</td>
-                                        <td className="text-right py-2 px-4">{formatCurrency(basicSalaryMonthly)}</td>
-                                        <td className="text-right py-2 px-4">{formatCurrency(basicSalaryYearly)}</td>
+                                    <tr>
+                                        <td className="px-6 py-4 text-sm">₹2.5L to ₹5L</td>
+                                        <td className="px-6 py-4 text-sm">5%</td>
+                                        <td className="px-6 py-4 text-sm">For ₹5L: Tax = ₹12,500</td>
                                     </tr>
-
-                                    {/* Deductions */}
-                                    <tr className="border-b">
-                                        <td className="py-2 px-4">Standard Deductions</td>
-                                        <td className="text-right py-2 px-4">{formatCurrency(STANDARD_DEDUCTION / 12)}</td>
-                                        <td className="text-right py-2 px-4">{formatCurrency(STANDARD_DEDUCTION)}</td>
+                                    <tr>
+                                        <td className="px-6 py-4 text-sm">₹5L to ₹10L</td>
+                                        <td className="px-6 py-4 text-sm">20%</td>
+                                        <td className="px-6 py-4 text-sm">For ₹10L: Tax = ₹1,12,500</td>
                                     </tr>
-                                    <tr className="border-b">
-                                        <td className="py-2 px-4">EPF + PF</td>
-                                        <td className="text-right py-2 px-4">{formatCurrency((epf + pf) / 12)}</td>
-                                        <td className="text-right py-2 px-4">{formatCurrency(epf + pf)}</td>
+                                    <tr>
+                                        <td className="px-6 py-4 text-sm">Above ₹10L</td>
+                                        <td className="px-6 py-4 text-sm">30%</td>
+                                        <td className="px-6 py-4 text-sm">For ₹15L: Tax = ₹2,62,500</td>
                                     </tr>
-                                    <tr className="border-b">
-                                        <td className="py-2 px-4">ELSS/PPF/H.Loan 80C</td>
-                                        <td className="text-right py-2 px-4">{formatCurrency(section80C / 12)}</td>
-                                        <td className="text-right py-2 px-4">{formatCurrency(section80C)}</td>
-                                    </tr>
-                                    <tr className="border-b">
-                                        <td className="py-2 px-4">Total Deductions</td>
-                                        <td className="text-right py-2 px-4">{formatCurrency(totalDeductions / 12)}</td>
-                                        <td className="text-right py-2 px-4">{formatCurrency(totalDeductions)}</td>
-                                    </tr>
-
-                                    {/* Amount after deductions */}
-                                    <tr className="border-b bg-gray-100 font-medium">
-                                        <td className="py-2 px-4">Amount after deductions</td>
-                                        <td className="text-right py-2 px-4">{formatCurrency(taxableIncome / 12)}</td>
-                                        <td className="text-right py-2 px-4">{formatCurrency(taxableIncome)}</td>
-                                    </tr>
-
-                                    {/* Tax Slabs */}
-                                    <tr className="border-b">
-                                        <td className="py-2 px-4">Upto 2.5 Lakhs (NIL)</td>
-                                        <td className="text-right py-2 px-4">{formatCurrency(0)}</td>
-                                        <td className="text-right py-2 px-4">{formatCurrency(0)}</td>
-                                    </tr>
-                                    {taxBreakdown.map((item, index) => (
-                                        <tr key={index} className="border-b">
-                                            <td className="py-2 px-4">{item.slab}</td>
-                                            <td className="text-right py-2 px-4">{formatCurrency(item.tax / 12)}</td>
-                                            <td className="text-right py-2 px-4">{formatCurrency(item.tax)}</td>
-                                        </tr>
-                                    ))}
-
-                                    {/* Tax Summary */}
-                                    <tr className="border-b bg-gray-100">
-                                        <td className="py-2 px-4 font-medium">Income Tax</td>
-                                        <td className="text-right py-2 px-4">{formatCurrency((totalTax - (totalTax * EDUCATION_CESS / 100)) / 12)}</td>
-                                        <td className="text-right py-2 px-4">{formatCurrency(totalTax - (totalTax * EDUCATION_CESS / 100))}</td>
-                                    </tr>
-                                    <tr className="border-b">
-                                        <td className="py-2 px-4">Education Cess @ {EDUCATION_CESS}%</td>
-                                        <td className="text-right py-2 px-4">{formatCurrency((totalTax * EDUCATION_CESS / 100) / 12)}</td>
-                                        <td className="text-right py-2 px-4">{formatCurrency(totalTax * EDUCATION_CESS / 100)}</td>
-                                    </tr>
-                                    <tr className="bg-gray-100 font-semibold">
-                                        <td className="py-2 px-4">Total Tax Outgo</td>
-                                        <td className="text-right py-2 px-4">{formatCurrency(totalTax / 12)}</td>
-                                        <td className="text-right py-2 px-4">{formatCurrency(totalTax)}</td>
+                                    <tr>
+                                        <td className="px-6 py-4 text-sm">Education Cess</td>
+                                        <td className="px-6 py-4 text-sm">4% on total tax</td>
+                                        <td className="px-6 py-4 text-sm">On ₹1L tax: Cess = ₹4,000</td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
+                    </div>
 
-                        {/* Tax Distribution Summary */}
-                        <div className="mt-8 mb-6">
-                            <h4 className="text-lg font-medium mb-4">Tax Distribution</h4>
-                            <div className="flex items-center justify-around">
-                                <div className="text-center">
-                                    <div className="text-sm text-gray-600">Taxable Income</div>
-                                    <div className="font-semibold">{formatCurrency(taxableIncome)}</div>
+                    {/* Deductions */}
+                    <div>
+                        <h3 className="text-xl font-semibold mb-4">Available Deductions</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div className="space-y-6">
+                                <div>
+                                    <h4 className="text-lg font-medium text-gray-900">Standard Deduction</h4>
+                                    <p className="mt-2 text-gray-600">Fixed amount of ₹50,000 available to all salaried individuals. No documentation needed.</p>
                                 </div>
-                                <div className="text-center">
-                                    <div className="text-sm text-gray-600">Total Tax</div>
-                                    <div className="font-semibold">{formatCurrency(totalTax)}</div>
+                                
+                                <div>
+                                    <h4 className="text-lg font-medium text-gray-900">Section 80C (Max: ₹1.5L)</h4>
+                                    <ul className="mt-2 space-y-2 text-gray-600">
+                                        <li>• EPF (Employee Provident Fund) - 12% of basic salary</li>
+                                        <li>• PPF (Public Provident Fund) - Long-term savings</li>
+                                        <li>• ELSS (Equity Linked Savings Scheme) - Tax-saving mutual funds</li>
+                                        <li>• Life Insurance Premium - Term and traditional plans</li>
+                                        <li>• Home Loan Principal Repayment</li>
+                                        <li>• Tuition Fees for up to 2 children</li>
+                                        <li>• Tax-saving Fixed Deposits (5-year lock-in)</li>
+                                    </ul>
                                 </div>
-                                <div className="text-center">
-                                    <div className="text-sm text-gray-600">In Hand (Monthly)</div>
-                                    <div className="font-semibold">{formatCurrency((ctc - totalTax) / 12)}</div>
+
+                                <div>
+                                    <h4 className="text-lg font-medium text-gray-900">Section 80CCD(1B) - NPS</h4>
+                                    <p className="mt-2 text-gray-600">Additional ₹50,000 deduction for contribution to National Pension System (NPS). This is over and above the ₹1.5L limit of Section 80C.</p>
+                                </div>
+
+                                <div>
+                                    <h4 className="text-lg font-medium text-gray-900">Section 80D - Medical Insurance</h4>
+                                    <ul className="mt-2 space-y-2 text-gray-600">
+                                        <li>• Self & Family: Up to ₹25,000</li>
+                                        <li>• Parents (Non-Senior Citizens): Up to ₹25,000</li>
+                                        <li>• Parents (Senior Citizens): Up to ₹50,000</li>
+                                        <li>• Preventive Health Check-up: Up to ₹5,000 (included in above limits)</li>
+                                    </ul>
                                 </div>
                             </div>
+
+                            <div className="space-y-6">
+                                <div>
+                                    <h4 className="text-lg font-medium text-gray-900">HRA Exemption</h4>
+                                    <p className="mt-2 text-gray-600">Minimum of:</p>
+                                    <ul className="mt-2 space-y-2 text-gray-600">
+                                        <li>• Actual HRA received from employer</li>
+                                        <li>• 50% of basic salary (for metro cities)</li>
+                                        <li>• 40% of basic salary (for non-metro cities)</li>
+                                        <li>• Actual rent paid minus 10% of basic salary</li>
+                                    </ul>
+                                    <p className="mt-2 text-gray-600">Metro cities: Delhi NCR, Mumbai, Chennai, Kolkata, Hyderabad, Bangalore</p>
+                                </div>
+
+                                <div>
+                                    <h4 className="text-lg font-medium text-gray-900">Section 80EEA - Home Loan Interest</h4>
+                                    <ul className="mt-2 space-y-2 text-gray-600">
+                                        <li>• Additional ₹1.5L deduction for first-time home buyers</li>
+                                        <li>• Loan sanctioned between Apr 2019 - Mar 2022</li>
+                                        <li>• Property value up to ₹45L</li>
+                                        <li>• This is over and above Section 24 interest deduction</li>
+                                    </ul>
+                                </div>
+
+                                <div>
+                                    <h4 className="text-lg font-medium text-gray-900">Section 80E - Education Loan Interest</h4>
+                                    <ul className="mt-2 space-y-2 text-gray-600">
+                                        <li>• No upper limit on deduction</li>
+                                        <li>• Available for self, spouse, or children</li>
+                                        <li>• Covers all fields of study</li>
+                                        <li>• Available for 8 years from first repayment</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Important Notes */}
+                    <div>
+                        <h3 className="text-xl font-semibold mb-4">Important Notes</h3>
+                        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                            <ul className="space-y-2 text-gray-600">
+                                <li>• All figures are for Financial Year 2023-24 (Assessment Year 2024-25)</li>
+                                <li>• Basic salary typically constitutes 40-50% of CTC in most organizations</li>
+                                <li>• EPF contribution is mandatory if basic salary > ₹15,000 per month</li>
+                                <li>• EPF contribution is capped at ₹1,800 monthly (12% of ₹15,000)</li>
+                                <li>• Professional Tax varies by state, typically around ₹2,400 per year</li>
+                                <li>• Education Cess of 4% is applicable on the total tax amount</li>
+                                <li>• Tax calculation is progressive - different rates apply to different slabs</li>
+                                <li>• Section 80C deductions have a combined limit of ₹1.5L</li>
+                                <li>• For HRA exemption, rent receipts are mandatory if annual rent > ₹1L</li>
+                            </ul>
                         </div>
                     </div>
                 </div>
