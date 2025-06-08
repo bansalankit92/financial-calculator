@@ -1,8 +1,10 @@
-import { calculateWealthGrowth } from '@/lib/calculations';
+import { SIPFrequency } from '@/types/calculator';
+import { calculateSIP } from '@/lib/calculations';
 
 interface WealthTableProps {
-  monthlyInvestment: number;
+  investment: number;
   interestRate: number;
+  frequency: SIPFrequency;
 }
 
 function formatCurrency(amount: number): string {
@@ -16,55 +18,60 @@ function formatCurrency(amount: number): string {
 }
 
 export default function WealthTable({
-  monthlyInvestment,
+  investment,
   interestRate,
+  frequency
 }: WealthTableProps) {
-  const projections = calculateWealthGrowth(monthlyInvestment, interestRate);
+  const years = [1, 2, 3, 5, 10, 15, 20, 25, 30];
 
   return (
-    <div className="bg-white rounded-xl shadow-lg p-6">
-      <h2 className="text-xl font-semibold mb-6">Calculation for different years</h2>
-      <div className="overflow-x-auto -mx-6">
-        <div className="inline-block min-w-full align-middle">
-          <div className="overflow-hidden md:rounded-lg">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th scope="col" className="sticky left-0 bg-gray-50 px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Duration
-                  </th>
-                  <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Amount monthly
-                  </th>
-                  <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Total Value
-                  </th>
-                  <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Wealth Gain
-                  </th>
+    <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+      <div className="overflow-x-auto">
+        <table className="min-w-full divide-y divide-gray-200">
+          <thead className="bg-gray-50">
+            <tr>
+              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Years
+              </th>
+              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Total Investment
+              </th>
+              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Est. Returns
+              </th>
+              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Total Value
+              </th>
+            </tr>
+          </thead>
+          <tbody className="bg-white divide-y divide-gray-200">
+            {years.map((year) => {
+              const { totalInvestment, totalReturns, totalValue } = calculateSIP(
+                investment,
+                interestRate,
+                year,
+                frequency
+              );
+
+              return (
+                <tr key={year} className="hover:bg-gray-50 cursor-pointer transition-colors">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                    {year} {year === 1 ? 'year' : 'years'}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    ₹{totalInvestment.toLocaleString('en-IN')}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    ₹{totalReturns.toLocaleString('en-IN')}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    ₹{totalValue.toLocaleString('en-IN')}
+                  </td>
                 </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                {projections.map((projection) => (
-                  <tr key={projection.duration}>
-                    <td className="sticky left-0 bg-white px-4 py-3 whitespace-nowrap text-sm">
-                      {projection.duration} yr
-                    </td>
-                    <td className="px-4 py-3 whitespace-nowrap text-sm">
-                      {formatCurrency(projection.monthlyAmount)}
-                    </td>
-                    <td className="px-4 py-3 whitespace-nowrap text-sm font-medium">
-                      {formatCurrency(projection.totalValue)}
-                    </td>
-                    <td className="px-4 py-3 whitespace-nowrap text-sm text-blue-600">
-                      {formatCurrency(projection.wealthGain)}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
+              );
+            })}
+          </tbody>
+        </table>
       </div>
     </div>
   );

@@ -1,21 +1,26 @@
+import { SIPFrequency } from '@/types/calculator';
+import { getInvestmentLabel, getMaxInvestment } from '@/lib/calculations';
+
 interface SipFormProps {
-  monthlyInvestment: number;
+  investment: number;
   interestRate: number;
   years: number;
-  onMonthlyInvestmentChange: (value: number) => void;
+  frequency: SIPFrequency;
+  onInvestmentChange: (value: number) => void;
   onInterestRateChange: (value: number) => void;
   onYearsChange: (value: number) => void;
 }
 
 export default function SipForm({
-  monthlyInvestment,
+  investment,
   interestRate,
   years,
-  onMonthlyInvestmentChange,
+  frequency,
+  onInvestmentChange,
   onInterestRateChange,
   onYearsChange,
 }: SipFormProps) {
-  const MAX_INVESTMENT = 500000; // Fixed max value of 5 Lakhs
+  const MAX_INVESTMENT = getMaxInvestment(frequency);
   const MAX_INTEREST = 30;
   const MAX_YEARS = 35;
 
@@ -43,36 +48,44 @@ export default function SipForm({
   const sliderClassName = "flex-1 h-2 rounded-lg appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-blue-500 [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:shadow-md [&::-moz-range-thumb]:appearance-none [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-white [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-blue-500 [&::-moz-range-thumb]:cursor-pointer [&::-moz-range-thumb]:shadow-md";
   const inputClassName = "block w-32 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm";
 
+  const minInvestment = frequency === 'weekly' ? 100 : 
+                       frequency === 'monthly' ? 500 :
+                       frequency === 'quarterly' ? 1500 : 6000;
+
+  const stepInvestment = frequency === 'weekly' ? 100 : 
+                        frequency === 'monthly' ? 500 :
+                        frequency === 'quarterly' ? 1500 : 6000;
+
   return (
     <div className="bg-white rounded-xl shadow-lg p-6">
       <div className="space-y-6">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            Monthly Investment
+            {getInvestmentLabel(frequency)}
           </label>
           <div className="flex items-center gap-4">
             <input
               type="number"
-              value={monthlyInvestment}
-              onChange={(e) => onMonthlyInvestmentChange(Number(e.target.value))}
+              value={investment}
+              onChange={(e) => onInvestmentChange(Number(e.target.value))}
               className={inputClassName}
-              step="500"
-              min="500"
+              step={stepInvestment}
+              min={minInvestment}
               max={MAX_INVESTMENT}
             />
             <input
               type="range"
-              min="500"
+              min={minInvestment}
               max={MAX_INVESTMENT}
-              step="500"
-              value={monthlyInvestment}
-              onChange={(e) => onMonthlyInvestmentChange(Number(e.target.value))}
+              step={stepInvestment}
+              value={investment}
+              onChange={(e) => onInvestmentChange(Number(e.target.value))}
               className={sliderClassName}
-              style={getSliderStyle(monthlyInvestment, MAX_INVESTMENT)}
+              style={getSliderStyle(investment, MAX_INVESTMENT)}
             />
           </div>
           <div className="mt-1 text-sm text-gray-500">
-            Max value: ₹5 Lakh
+            Max value: ₹{(MAX_INVESTMENT / 100000).toFixed(1)} Lakh
           </div>
         </div>
 

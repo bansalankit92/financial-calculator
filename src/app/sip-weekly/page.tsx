@@ -4,10 +4,10 @@ import SIPCalculator from '@/components/calculators/SIPCalculator';
 import SIPTabs from '@/components/calculators/SIPTabs';
 
 export const metadata: Metadata = getMetadata({
-  title: 'Monthly SIP Calculator',
-  description: 'Calculate your monthly Systematic Investment Plan (SIP) returns with our easy-to-use calculator. Plan your investments and understand the power of compounding with mutual fund SIP calculations.',
+  title: 'Weekly SIP Calculator',
+  description: 'Calculate your weekly Systematic Investment Plan (SIP) returns with our easy-to-use calculator. Plan your investments and understand the power of compounding with mutual fund SIP calculations.',
   keywords: [
-    'monthly SIP calculator',
+    'weekly SIP calculator',
     'mutual fund calculator',
     'investment calculator',
     'systematic investment plan',
@@ -16,16 +16,16 @@ export const metadata: Metadata = getMetadata({
     'compound interest',
     'wealth calculator',
   ],
-  canonicalUrl: '/sip',
+  canonicalUrl: '/sip-weekly',
   pageType: 'calculator',
   calculatorType: 'SIP'
 });
 
-export default function SIPCalculatorPage() {
+export default function WeeklySIPCalculatorPage() {
   return (
     <div className="space-y-6">
       <SIPTabs />
-      <SIPCalculator frequency="monthly" />
+      <SIPCalculator frequency="weekly" />
     </div>
   );
 } 
