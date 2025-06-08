@@ -91,6 +91,7 @@ export default function SipSummary({
 }: SipSummaryProps) {
   const [showFullValue, setShowFullValue] = useState<string | null>(null);
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
+  const [clickedValues, setClickedValues] = useState<{[key: string]: boolean}>({});
 
   const chartData = {
     labels: ['Invested Amount', 'Est. Returns'],
@@ -106,14 +107,21 @@ export default function SipSummary({
   const handleMouseEnter = (value: string, event: React.MouseEvent) => {
     const rect = event.currentTarget.getBoundingClientRect();
     setTooltipPosition({
-      x: rect.left + window.scrollX,
-      y: rect.bottom + window.scrollY,
+      x: rect.left + (rect.width / 2),
+      y: rect.top - 40, // Position further up
     });
     setShowFullValue(value);
   };
 
   const handleMouseLeave = () => {
     setShowFullValue(null);
+  };
+
+  const handleClick = (key: string) => {
+    setClickedValues(prev => ({
+      ...prev,
+      [key]: !prev[key]
+    }));
   };
 
   return (
@@ -140,33 +148,36 @@ export default function SipSummary({
           <div>
             <div className="text-sm text-gray-600">Invested Amount</div>
             <div 
-              className="text-2xl font-semibold cursor-help"
+              className="text-2xl font-semibold cursor-pointer"
               onMouseEnter={(e) => handleMouseEnter(formatCurrency(totalInvestment, true), e)}
               onMouseLeave={handleMouseLeave}
+              onClick={() => handleClick('investment')}
             >
-              {formatCurrency(totalInvestment)}
+              {formatCurrency(totalInvestment, clickedValues['investment'])}
             </div>
           </div>
           
           <div>
             <div className="text-sm text-gray-600">Est. Returns</div>
             <div 
-              className="text-2xl font-semibold text-blue-600 cursor-help"
+              className="text-2xl font-semibold text-blue-600 cursor-pointer"
               onMouseEnter={(e) => handleMouseEnter(formatCurrency(totalReturns, true), e)}
               onMouseLeave={handleMouseLeave}
+              onClick={() => handleClick('returns')}
             >
-              {formatCurrency(totalReturns)}
+              {formatCurrency(totalReturns, clickedValues['returns'])}
             </div>
           </div>
           
           <div className="pt-4 border-t">
             <div className="text-sm text-gray-600">Total Value</div>
             <div 
-              className="text-2xl font-semibold text-green-600 cursor-help"
+              className="text-2xl font-semibold text-green-600 cursor-pointer"
               onMouseEnter={(e) => handleMouseEnter(formatCurrency(totalValue, true), e)}
               onMouseLeave={handleMouseLeave}
+              onClick={() => handleClick('total')}
             >
-              {formatCurrency(totalValue)}
+              {formatCurrency(totalValue, clickedValues['total'])}
             </div>
             <div className="text-sm text-gray-500 mt-1">
               {numberToWords(totalValue)}
@@ -181,10 +192,10 @@ export default function SipSummary({
             initial={{ opacity: 0, y: 5 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 5 }}
-            className="fixed z-50 bg-gray-900 text-white px-4 py-2 rounded-lg shadow-lg text-sm"
+            className="fixed z-50 bg-gray-900 text-white px-4 py-2 rounded-lg shadow-lg text-sm transform -translate-x-1/2"
             style={{
               left: tooltipPosition.x,
-              top: tooltipPosition.y + 8,
+              top: tooltipPosition.y,
             }}
           >
             {showFullValue}

@@ -15,6 +15,34 @@ export default function SipForm({
   onInterestRateChange,
   onYearsChange,
 }: SipFormProps) {
+  const MAX_INVESTMENT = 500000; // Fixed max value of 5 Lakhs
+  const MAX_INTEREST = 30;
+  const MAX_YEARS = 35;
+
+  // Calculate percentage for slider background
+  const calculatePercentage = (value: number, max: number) => {
+    return (value / max) * 100;
+  };
+
+  // Get color based on percentage
+  const getSliderColor = (value: number, max: number) => {
+    const percentage = (value / max) * 100;
+    if (percentage >= 70) return 'rgb(34, 197, 94)'; // green-500
+    if (percentage >= 40) return 'rgb(59, 130, 246)'; // blue-500
+    return 'rgb(99, 102, 241)'; // indigo-500
+  };
+
+  const getSliderStyle = (value: number, max: number) => ({
+    background: `linear-gradient(to right, 
+      ${getSliderColor(value, max)} 0%, 
+      ${getSliderColor(value, max)} ${calculatePercentage(value, max)}%, 
+      #e5e7eb ${calculatePercentage(value, max)}%, 
+      #e5e7eb 100%)`
+  });
+
+  const sliderClassName = "flex-1 h-2 rounded-lg appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-blue-500 [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:shadow-md [&::-moz-range-thumb]:appearance-none [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-white [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-blue-500 [&::-moz-range-thumb]:cursor-pointer [&::-moz-range-thumb]:shadow-md";
+  const inputClassName = "block w-32 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm";
+
   return (
     <div className="bg-white rounded-xl shadow-lg p-6">
       <div className="space-y-6">
@@ -27,17 +55,24 @@ export default function SipForm({
               type="number"
               value={monthlyInvestment}
               onChange={(e) => onMonthlyInvestmentChange(Number(e.target.value))}
-              className="block w-32 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+              className={inputClassName}
+              step="500"
+              min="500"
+              max={MAX_INVESTMENT}
             />
             <input
               type="range"
               min="500"
-              max="100000"
+              max={MAX_INVESTMENT}
               step="500"
               value={monthlyInvestment}
               onChange={(e) => onMonthlyInvestmentChange(Number(e.target.value))}
-              className="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+              className={sliderClassName}
+              style={getSliderStyle(monthlyInvestment, MAX_INVESTMENT)}
             />
+          </div>
+          <div className="mt-1 text-sm text-gray-500">
+            Max value: ₹5 Lakh
           </div>
         </div>
 
@@ -50,17 +85,24 @@ export default function SipForm({
               type="number"
               value={interestRate}
               onChange={(e) => onInterestRateChange(Number(e.target.value))}
-              className="block w-32 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+              className={inputClassName}
+              step="0.5"
+              min="1"
+              max={MAX_INTEREST}
             />
             <input
               type="range"
               min="1"
-              max="30"
+              max={MAX_INTEREST}
               step="0.5"
               value={interestRate}
               onChange={(e) => onInterestRateChange(Number(e.target.value))}
-              className="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+              className={sliderClassName}
+              style={getSliderStyle(interestRate, MAX_INTEREST)}
             />
+          </div>
+          <div className="mt-1 text-sm text-gray-500">
+            Max value: {MAX_INTEREST}%
           </div>
         </div>
 
@@ -73,17 +115,24 @@ export default function SipForm({
               type="number"
               value={years}
               onChange={(e) => onYearsChange(Number(e.target.value))}
-              className="block w-32 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+              className={inputClassName}
+              step="1"
+              min="1"
+              max={MAX_YEARS}
             />
             <input
               type="range"
               min="1"
-              max="35"
+              max={MAX_YEARS}
               step="1"
               value={years}
               onChange={(e) => onYearsChange(Number(e.target.value))}
-              className="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+              className={sliderClassName}
+              style={getSliderStyle(years, MAX_YEARS)}
             />
+          </div>
+          <div className="mt-1 text-sm text-gray-500">
+            Max value: {MAX_YEARS} years
           </div>
         </div>
       </div>
