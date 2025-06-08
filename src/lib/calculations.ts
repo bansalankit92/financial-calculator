@@ -1,6 +1,7 @@
 import { SIPFrequency, SIPCalculationResult } from '@/types/calculator';
 
-const PAYMENTS_PER_YEAR: Record<SIPFrequency, number> = {
+export const PAYMENTS_PER_YEAR: Record<SIPFrequency, number> = {
+  daily: 365,
   weekly: 52,
   monthly: 12,
   quarterly: 4,
@@ -34,6 +35,8 @@ export function calculateSIP(
 
 export function getInvestmentLabel(frequency: SIPFrequency): string {
   switch (frequency) {
+    case 'daily':
+      return 'Daily Investment';
     case 'weekly':
       return 'Weekly Investment';
     case 'monthly':
@@ -47,6 +50,8 @@ export function getInvestmentLabel(frequency: SIPFrequency): string {
 
 export function getDefaultInvestment(frequency: SIPFrequency): number {
   switch (frequency) {
+    case 'daily':
+      return 100;
     case 'weekly':
       return 1000;
     case 'monthly':
@@ -60,6 +65,8 @@ export function getDefaultInvestment(frequency: SIPFrequency): number {
 
 export function getMaxInvestment(frequency: SIPFrequency): number {
   switch (frequency) {
+    case 'daily':
+      return 10000;
     case 'weekly':
       return 100000;
     case 'monthly':
@@ -83,4 +90,81 @@ export function calculateWealthGrowth(monthlyInvestment: number, interestRate: n
       wealthGain: totalReturns
     };
   });
+}
+
+export function getFrequencyComparison(monthlyAmount: number): { frequency: SIPFrequency; pros: string[]; cons: string[] }[] {
+  return [
+    {
+      frequency: 'daily',
+      pros: [
+        'Maximum power of compounding',
+        'Smaller amounts, easier on daily budget',
+        'More investment opportunities to average out market volatility',
+        'Better for short-term goals'
+      ],
+      cons: [
+        'More transaction costs if not automated',
+        'Requires strict daily discipline',
+        'May be overwhelming to track',
+        'Some platforms may not support daily SIPs'
+      ]
+    },
+    {
+      frequency: 'weekly',
+      pros: [
+        'Good balance of compounding benefits',
+        'Better market averaging than monthly',
+        'Aligns well with weekly income',
+        'More flexible than daily commitment'
+      ],
+      cons: [
+        'Requires more active management than monthly',
+        'Weekly commitment might be challenging',
+        'Higher transaction costs than monthly'
+      ]
+    },
+    {
+      frequency: 'monthly',
+      pros: [
+        'Most common and widely supported',
+        'Aligns with monthly salary cycles',
+        'Easy to maintain and track',
+        'Good balance of compounding and convenience'
+      ],
+      cons: [
+        'Less frequent market averaging compared to weekly/daily',
+        'Might miss some market opportunities',
+        'Monthly lump sum might be harder to spare'
+      ]
+    },
+    {
+      frequency: 'quarterly',
+      pros: [
+        'Lower transaction costs',
+        'Good for long-term investors',
+        'Easier to manage larger sums',
+        'Less frequent monitoring needed'
+      ],
+      cons: [
+        'Miss out on short-term market opportunities',
+        'Less benefit from rupee cost averaging',
+        'Larger amounts needed per investment'
+      ]
+    },
+    {
+      frequency: 'yearly',
+      pros: [
+        'Lowest transaction costs',
+        'Good for annual bonus investments',
+        'Minimal monitoring required',
+        'Suitable for very long-term goals'
+      ],
+      cons: [
+        'Minimal benefit from rupee cost averaging',
+        'Miss out on compounding benefits',
+        'Requires larger lump sum amounts',
+        'Higher risk of timing the market wrong'
+      ]
+    }
+  ];
 } 

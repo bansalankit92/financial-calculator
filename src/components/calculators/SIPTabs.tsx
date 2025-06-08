@@ -5,8 +5,9 @@ import { usePathname } from 'next/navigation';
 import { SIPFrequency } from '@/types/calculator';
 
 const tabs: { label: string; href: string; frequency: SIPFrequency }[] = [
-  { label: 'Monthly', href: '/sip', frequency: 'monthly' },
+  { label: 'Daily', href: '/sip-daily', frequency: 'daily' },
   { label: 'Weekly', href: '/sip-weekly', frequency: 'weekly' },
+  { label: 'Monthly', href: '/sip', frequency: 'monthly' },
   { label: 'Quarterly', href: '/sip-quarterly', frequency: 'quarterly' },
   { label: 'Yearly', href: '/sip-yearly', frequency: 'yearly' },
 ];

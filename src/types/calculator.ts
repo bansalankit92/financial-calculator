@@ -1,4 +1,4 @@
-export type SIPFrequency = 'monthly' | 'quarterly' | 'yearly' | 'weekly';
+export type SIPFrequency = 'daily' | 'weekly' | 'monthly' | 'quarterly' | 'yearly';
 
 export interface SIPCalculationParams {
   investment: number;

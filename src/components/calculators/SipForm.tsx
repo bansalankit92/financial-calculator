@@ -48,13 +48,22 @@ export default function SipForm({
   const sliderClassName = "flex-1 h-2 rounded-lg appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-blue-500 [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:shadow-md [&::-moz-range-thumb]:appearance-none [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-white [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-blue-500 [&::-moz-range-thumb]:cursor-pointer [&::-moz-range-thumb]:shadow-md";
   const inputClassName = "block w-32 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm";
 
-  const minInvestment = frequency === 'weekly' ? 100 : 
-                       frequency === 'monthly' ? 500 :
-                       frequency === 'quarterly' ? 1500 : 6000;
+  const getInvestmentConfig = (freq: SIPFrequency) => {
+    switch (freq) {
+      case 'daily':
+        return { min: 50, step: 50 };
+      case 'weekly':
+        return { min: 100, step: 100 };
+      case 'monthly':
+        return { min: 500, step: 500 };
+      case 'quarterly':
+        return { min: 1500, step: 1500 };
+      case 'yearly':
+        return { min: 6000, step: 1000 };
+    }
+  };
 
-  const stepInvestment = frequency === 'weekly' ? 100 : 
-                        frequency === 'monthly' ? 500 :
-                        frequency === 'quarterly' ? 1500 : 6000;
+  const { min: minInvestment, step: stepInvestment } = getInvestmentConfig(frequency);
 
   return (
     <div className="bg-white rounded-xl shadow-lg p-6">

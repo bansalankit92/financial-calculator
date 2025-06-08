@@ -8,10 +8,11 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import SipForm from './SipForm';
 import SipSummary from './SipSummary';
 import WealthTable from './WealthTable';
-import { calculateSIP, getDefaultInvestment } from '@/lib/calculations';
+import { calculateSIP, getDefaultInvestment, PAYMENTS_PER_YEAR } from '@/lib/calculations';
 import { useQueryParams } from '@/hooks/useQueryParams';
 import { useDebounce } from '@/hooks/useDebounce';
 import { SIPFrequency } from '@/types/calculator';
+import FrequencyComparison from './FrequencyComparison';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -125,6 +126,8 @@ export default function SIPCalculator({ frequency }: SIPCalculatorProps) {
             It takes into account the power of compounding and helps you plan your long-term financial goals.
           </p>
         </div>
+
+        <FrequencyComparison monthlyAmount={frequency === 'monthly' ? investment : investment * PAYMENTS_PER_YEAR[frequency] / 12} />
 
         <div>
           <h3 className="text-xl font-semibold mb-3">How it Works</h3>
