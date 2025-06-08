@@ -14,7 +14,7 @@ A modern financial calculator web application built with Next.js and Tailwind CS
 
 ## Tech Stack
 
-- Next.js 14
+- Next.js 15
 - TypeScript
 - Tailwind CSS
 - Chart.js
