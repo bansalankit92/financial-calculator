@@ -5,8 +5,8 @@ import Link from 'next/link';
 import { ShareIcon } from '@heroicons/react/24/outline';
 
 const tabs = [
-    { name: 'FY 2024-25 (Current)', href: '/new-regime-income-tax/2024-25' },
-    { name: 'FY 2025-26 (Next Year)', href: '/new-regime-income-tax/2025-26' },
+    { name: 'FY 2024-25 (AY Current)', href: '/new-regime-income-tax/2024-25' },
+    { name: 'FY 2025-26 (AY Next Year)', href: '/new-regime-income-tax/2025-26' },
 ];
 
 export default function TaxCalculatorLayout({

@@ -6,7 +6,7 @@ interface PageMetadataProps {
   keywords?: string[];
   canonicalUrl?: string;
   pageType?: 'calculator' | 'article' | 'homepage';
-  calculatorType?: 'SIP' | 'EMI' | 'FD' | 'RD';
+  calculatorType?: 'SIP' | 'EMI' | 'FD' | 'RD' | 'TAX';
 }
 
 const BASE_URL = 'https://fincalculator.in';
@@ -100,6 +100,29 @@ const calculatorFeatures = {
       'Interest rate',
       'Deposit duration',
       'Compounding frequency'
+    ]
+  },
+  TAX: {
+    features: [
+      'Calculate income tax liability',
+      'Standard deduction calculation',
+      'NPS deduction under 80CCD(2)',
+      'Tax rebate calculation',
+      'Education cess computation'
+    ],
+    benefits: [
+      'Plan tax payments',
+      'Optimize tax savings',
+      'Understand tax implications',
+      'Budget monthly taxes',
+      'Compare tax regimes'
+    ],
+    inputs: [
+      'Annual income',
+      'Basic salary',
+      'NPS contribution',
+      'Assessment year',
+      'Tax regime'
     ]
   }
 };

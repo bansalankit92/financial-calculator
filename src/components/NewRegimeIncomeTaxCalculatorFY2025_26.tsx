@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { ShareIcon } from '@heroicons/react/24/outline';
 
 interface TaxSlabRate {
     min: number;
@@ -25,21 +26,51 @@ const REBATE_LIMIT = 1200000;
 const NewRegimeIncomeTaxCalculatorFY2025_26 = () => {
     const [income, setIncome] = useState<number>(1000000);
     const [basicSalary, setBasicSalary] = useState<number>(0);
-    const [npsPercentage, setNpsPercentage] = useState<number>(10);
+    const [monthlyBasic, setMonthlyBasic] = useState<number>(0);
+    const [monthlyNpsAmount, setMonthlyNpsAmount] = useState<number>(0);
     const [npsDeduction, setNpsDeduction] = useState<number>(0);
+    const [npsError, setNpsError] = useState<string>("");
     const [taxableIncome, setTaxableIncome] = useState<number>(0);
     const [totalTax, setTotalTax] = useState<number>(0);
     const [monthlyTax, setMonthlyTax] = useState<number>(0);
     const [slabwiseTax, setSlabwiseTax] = useState<{ slab: string; tax: number }[]>([]);
+    const [showCopied, setShowCopied] = useState(false);
 
-    // Calculate basic salary and NPS deduction whenever income changes
+    // Calculate basic salary whenever income changes
     useEffect(() => {
         const calculatedBasicSalary = Math.round(income * 0.5); // 50% of CTC
+        const calculatedMonthlyBasic = Math.round(calculatedBasicSalary / 12);
         setBasicSalary(calculatedBasicSalary);
+        setMonthlyBasic(calculatedMonthlyBasic);
         
-        const calculatedNpsDeduction = Math.round((calculatedBasicSalary * npsPercentage) / 100);
-        setNpsDeduction(calculatedNpsDeduction);
-    }, [income, npsPercentage]);
+        // Validate existing NPS amount against new basic salary
+        validateAndSetNpsAmount(monthlyNpsAmount, calculatedMonthlyBasic);
+    }, [income]);
+
+    const validateAndSetNpsAmount = (amount: number, monthlyBasicSalary: number = monthlyBasic) => {
+        const maxMonthlyNps = Math.round(monthlyBasicSalary * 0.1); // 10% of monthly basic
+        
+        if (amount > maxMonthlyNps) {
+            setNpsError(`Maximum allowed is ₹${maxMonthlyNps.toLocaleString()} (10% of monthly basic)`);
+            setMonthlyNpsAmount(maxMonthlyNps);
+            setNpsDeduction(maxMonthlyNps * 12);
+        } else {
+            setNpsError("");
+            setMonthlyNpsAmount(amount);
+            setNpsDeduction(amount * 12);
+        }
+    };
+
+    const handleNpsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = Number(e.target.value);
+        if (value < 0) {
+            setMonthlyNpsAmount(0);
+            setNpsDeduction(0);
+            setNpsError("");
+            return;
+        }
+        validateAndSetNpsAmount(value);
+    };
 
     const calculateTax = (amount: number) => {
         let remainingIncome = amount;
@@ -111,9 +142,56 @@ const NewRegimeIncomeTaxCalculatorFY2025_26 = () => {
         setSlabwiseTax(slabwiseBreakdown);
     }, [income, npsDeduction]);
 
+    // Calculate percentage for slider background
+    const calculatePercentage = (value: number, max: number) => {
+        return (value / max) * 100;
+    };
+
+    // Get color based on percentage
+    const getSliderColor = (value: number, max: number) => {
+        const percentage = (value / max) * 100;
+        if (percentage >= 70) return 'rgb(34, 197, 94)'; // green-500
+        if (percentage >= 40) return 'rgb(59, 130, 246)'; // blue-500
+        return 'rgb(99, 102, 241)'; // indigo-500
+    };
+
+    const getSliderStyle = (value: number, max: number) => ({
+        background: `linear-gradient(to right, 
+            ${getSliderColor(value, max)} 0%, 
+            ${getSliderColor(value, max)} ${calculatePercentage(value, max)}%, 
+            #e5e7eb ${calculatePercentage(value, max)}%, 
+            #e5e7eb 100%)`
+    });
+
+    const sliderClassName = "w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-blue-500 [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:shadow-md [&::-moz-range-thumb]:appearance-none [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-white [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-blue-500 [&::-moz-range-thumb]:cursor-pointer [&::-moz-range-thumb]:shadow-md";
+
+    const handleShare = async () => {
+        try {
+            await navigator.clipboard.writeText(window.location.href);
+            setShowCopied(true);
+            setTimeout(() => setShowCopied(false), 2000);
+        } catch (err) {
+            console.error('Failed to copy URL:', err);
+        }
+    };
+
     return (
         <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-lg">
-            <h2 className="text-2xl font-bold mb-6 text-gray-800">New Tax Regime Calculator (FY 2025-26)</h2>
+            <div className="flex items-center justify-between mb-6">
+                <h2 className="text-2xl font-bold text-gray-800">New Tax Regime Calculator (FY 2025-26)</h2>
+                <button
+                    onClick={handleShare}
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 transition-colors relative"
+                >
+                    <ShareIcon className="h-5 w-5" />
+                    <span>Share</span>
+                    {showCopied && (
+                        <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-gray-800 text-white text-sm py-1 px-2 rounded">
+                            Copied!
+                        </div>
+                    )}
+                </button>
+            </div>
             
             <div className="mb-8">
                 <label className="block text-gray-700 text-sm font-bold mb-2">
@@ -135,26 +213,36 @@ const NewRegimeIncomeTaxCalculatorFY2025_26 = () => {
                         min="0"
                         max="9000000"
                         step="10000"
-                        className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                        className={sliderClassName}
+                        style={getSliderStyle(income, 9000000)}
                     />
                 </div>
             </div>
 
             <div className="mb-8">
                 <label className="block text-gray-700 text-sm font-bold mb-2">
-                    Employer NPS Contribution (% of Basic)
+                    Monthly Employer NPS Contribution (₹)
                 </label>
-                <input
-                    type="range"
-                    value={npsPercentage}
-                    onChange={(e) => setNpsPercentage(Number(e.target.value))}
-                    min="0"
-                    max="10"
-                    step="1"
-                    className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
-                />
-                <div className="mt-1 text-sm text-gray-600">
-                    {npsPercentage}% of Basic Salary
+                <div className="relative">
+                    <input
+                        type="number"
+                        value={monthlyNpsAmount}
+                        onChange={handleNpsChange}
+                        className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
+                            npsError ? 'border-red-500 focus:ring-red-500' : 'focus:ring-blue-500'
+                        }`}
+                        min="0"
+                        step="100"
+                        placeholder={`Max: ₹${Math.round(monthlyBasic * 0.1).toLocaleString()}`}
+                    />
+                    {npsError && (
+                        <p className="mt-1 text-sm text-red-600">
+                            {npsError}
+                        </p>
+                    )}
+                    <p className="mt-1 text-sm text-gray-600">
+                        Yearly NPS Contribution: ₹{npsDeduction.toLocaleString()}
+                    </p>
                 </div>
             </div>
 
@@ -168,15 +256,21 @@ const NewRegimeIncomeTaxCalculatorFY2025_26 = () => {
                         </div>
                         <div className="flex justify-between">
                             <span>Basic Salary (50% of CTC):</span>
-                            <span>₹{basicSalary.toLocaleString()}</span>
+                            <div className="text-right">
+                                <div>₹{basicSalary.toLocaleString()} / year</div>
+                                <div className="text-sm text-gray-600">₹{monthlyBasic.toLocaleString()} / month</div>
+                            </div>
                         </div>
                         <div className="flex justify-between">
                             <span>Standard Deduction:</span>
                             <span>₹{STANDARD_DEDUCTION.toLocaleString()}</span>
                         </div>
-                        <div className="flex justify-between">
-                            <span>NPS Deduction (80CCD-2):</span>
-                            <span>₹{npsDeduction.toLocaleString()}</span>
+                        <div className="flex justify-between items-start">
+                            <span className="max-w-[60%]">NPS Deduction (80CCD-2) - 10% of basic salary:</span>
+                            <div className="text-right">
+                                <div>₹{npsDeduction.toLocaleString()} / year</div>
+                                <div className="text-sm text-gray-600">₹{monthlyNpsAmount.toLocaleString()} / month</div>
+                            </div>
                         </div>
                         <div className="flex justify-between font-medium">
                             <span>Taxable Income:</span>
@@ -219,16 +313,116 @@ const NewRegimeIncomeTaxCalculatorFY2025_26 = () => {
                 </div>
             </div>
 
-            <div className="bg-blue-50 p-4 rounded-lg text-sm">
+            <div className="bg-blue-50 p-4 rounded-lg text-sm mb-8">
                 <h3 className="font-semibold mb-2">Important Notes:</h3>
                 <ul className="list-disc list-inside space-y-1">
                     <li>Basic Salary is calculated as 50% of CTC</li>
                     <li>Standard Deduction of ₹75,000 is available for salaried individuals</li>
-                    <li>Employer NPS contribution under Section 80CCD(2) is limited to 10% of Basic Salary</li>
+                    <li>Monthly Employer NPS contribution under Section 80CCD(2) is limited to 10% of monthly basic salary</li>
                     <li>Tax rebate of ₹60,000 is available for income up to ₹12L (after standard deduction)</li>
                     <li>Education cess of 4% will be added to the calculated tax</li>
                     <li>Due date for filing return is 15th September 2026 (non-audit cases)</li>
                 </ul>
+            </div>
+
+            <div className="space-y-6 bg-white p-6 rounded-lg shadow-md">
+                <div>
+                    <h2 className="text-2xl font-semibold mb-4">About New Tax Regime Calculator</h2>
+                    <p className="text-gray-700 mb-4">
+                        The New Tax Regime Calculator for FY 2025-26 helps you estimate your income tax liability under the new tax regime. 
+                        It takes into account your gross income, standard deduction, and employer NPS contributions to calculate your tax liability.
+                        This calculator reflects the updated tax slabs and enhanced rebate announced in Budget 2024.
+                    </p>
+                </div>
+
+                <div>
+                    <h3 className="text-xl font-semibold mb-3">Tax Slabs for FY 2025-26</h3>
+                    <div className="overflow-x-auto">
+                        <table className="min-w-full bg-white border border-gray-200">
+                            <thead>
+                                <tr className="bg-gray-50">
+                                    <th className="px-4 py-2 border-b text-left">Income Range</th>
+                                    <th className="px-4 py-2 border-b text-left">Tax Rate</th>
+                                    <th className="px-4 py-2 border-b text-left">Notes</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td className="px-4 py-2 border-b">Up to ₹4,00,000</td>
+                                    <td className="px-4 py-2 border-b">Nil</td>
+                                    <td className="px-4 py-2 border-b">Tax exempt income</td>
+                                </tr>
+                                <tr>
+                                    <td className="px-4 py-2 border-b">₹4,00,001 to ₹8,00,000</td>
+                                    <td className="px-4 py-2 border-b">5%</td>
+                                    <td className="px-4 py-2 border-b">₹20,000 max in this slab</td>
+                                </tr>
+                                <tr>
+                                    <td className="px-4 py-2 border-b">₹8,00,001 to ₹12,00,000</td>
+                                    <td className="px-4 py-2 border-b">10%</td>
+                                    <td className="px-4 py-2 border-b">₹40,000 max in this slab</td>
+                                </tr>
+                                <tr>
+                                    <td className="px-4 py-2 border-b">₹12,00,001 to ₹16,00,000</td>
+                                    <td className="px-4 py-2 border-b">15%</td>
+                                    <td className="px-4 py-2 border-b">₹60,000 max in this slab</td>
+                                </tr>
+                                <tr>
+                                    <td className="px-4 py-2 border-b">₹16,00,001 to ₹20,00,000</td>
+                                    <td className="px-4 py-2 border-b">20%</td>
+                                    <td className="px-4 py-2 border-b">₹80,000 max in this slab</td>
+                                </tr>
+                                <tr>
+                                    <td className="px-4 py-2 border-b">₹20,00,001 to ₹24,00,000</td>
+                                    <td className="px-4 py-2 border-b">25%</td>
+                                    <td className="px-4 py-2 border-b">₹1,00,000 max in this slab</td>
+                                </tr>
+                                <tr>
+                                    <td className="px-4 py-2">Above ₹24,00,000</td>
+                                    <td className="px-4 py-2">30%</td>
+                                    <td className="px-4 py-2">No upper limit</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 className="text-xl font-semibold mb-3">How it Works</h3>
+                    <p className="text-gray-700 mb-4">
+                        The calculator uses the following parameters to compute your tax liability:
+                    </p>
+                    <ul className="list-disc list-inside text-gray-700 space-y-2 ml-4">
+                        <li>Gross Annual Income: Your total income for the financial year</li>
+                        <li>Standard Deduction: Fixed deduction of ₹75,000 for salaried individuals</li>
+                        <li>NPS Deduction: Employer contribution to NPS under Section 80CCD(2)</li>
+                        <li>Tax Rebate: Available for taxable income up to ₹12,00,000</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 className="text-xl font-semibold mb-3">Key Features</h3>
+                    <ul className="list-disc list-inside text-gray-700 space-y-2 ml-4">
+                        <li>Automatic calculation of Basic Salary (50% of CTC)</li>
+                        <li>Monthly and annual tax breakup</li>
+                        <li>Slab-wise tax calculation</li>
+                        <li>Education cess computation</li>
+                        <li>Enhanced tax rebate consideration</li>
+                        <li>NPS contribution validation</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 className="text-xl font-semibold mb-3">Important Considerations</h3>
+                    <ul className="list-disc list-inside text-gray-700 space-y-2 ml-4">
+                        <li>This calculator is for salaried individuals under the new tax regime</li>
+                        <li>All calculations include education cess of 4%</li>
+                        <li>Enhanced tax rebate of ₹60,000 is automatically applied for eligible income</li>
+                        <li>NPS contribution is capped at 10% of basic salary</li>
+                        <li>Standard deduction is automatically considered</li>
+                        <li>Tax slabs have been modified as per Budget 2024 announcements</li>
+                    </ul>
+                </div>
             </div>
         </div>
     );
