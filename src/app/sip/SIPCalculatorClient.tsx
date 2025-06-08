@@ -1,19 +1,28 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+import { useRouter, usePathname } from 'next/navigation';
+import { ShareIcon } from '@heroicons/react/24/outline';
 import SipForm from '@/components/calculators/SipForm';
 import SipSummary from '@/components/calculators/SipSummary';
 import WealthTable from '@/components/calculators/WealthTable';
 import { calculateSIP } from '@/lib/calculations';
+import { useQueryParams } from '@/hooks/useQueryParams';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 export default function SIPCalculatorClient() {
-  const [monthlyInvestment, setMonthlyInvestment] = useState(3000);
-  const [interestRate, setInterestRate] = useState(12);
-  const [years, setYears] = useState(3);
+  const router = useRouter();
+  const pathname = usePathname();
+  const { getQueryParam, createQueryString } = useQueryParams();
+  const [showCopied, setShowCopied] = useState(false);
+
+  // Initialize state from URL parameters or defaults
+  const monthlyInvestment = getQueryParam('investment', 3000);
+  const interestRate = getQueryParam('interest', 12);
+  const years = getQueryParam('years', 3);
 
   const { totalInvestment, totalReturns, totalValue } = calculateSIP(
     monthlyInvestment,
@@ -21,15 +30,57 @@ export default function SIPCalculatorClient() {
     years
   );
 
+  // Update URL when values change
+  const updateQueryParams = (params: { [key: string]: number }) => {
+    const queryString = createQueryString(params);
+    router.push(`${pathname}?${queryString}`);
+  };
+
+  const handleMonthlyInvestmentChange = (value: number) => {
+    updateQueryParams({ investment: value, interest: interestRate, years });
+  };
+
+  const handleInterestRateChange = (value: number) => {
+    updateQueryParams({ investment: monthlyInvestment, interest: value, years });
+  };
+
+  const handleYearsChange = (value: number) => {
+    updateQueryParams({ investment: monthlyInvestment, interest: interestRate, years: value });
+  };
+
+  const handleShare = async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      setShowCopied(true);
+      setTimeout(() => setShowCopied(false), 2000);
+    } catch (err) {
+      console.error('Failed to copy URL:', err);
+    }
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       className="max-w-6xl mx-auto space-y-8"
     >
-      <div>
-        <h1 className="text-3xl font-bold mb-2">SIP Calculator</h1>
-        <p className="text-gray-600">For mutual funds</p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold mb-2">SIP Calculator</h1>
+          <p className="text-gray-600">For mutual funds</p>
+        </div>
+        <button
+          onClick={handleShare}
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 transition-colors relative"
+        >
+          <ShareIcon className="h-5 w-5" />
+          <span>Share</span>
+          {showCopied && (
+            <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-gray-800 text-white text-sm py-1 px-2 rounded">
+              Copied!
+            </div>
+          )}
+        </button>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -37,9 +88,9 @@ export default function SIPCalculatorClient() {
           monthlyInvestment={monthlyInvestment}
           interestRate={interestRate}
           years={years}
-          onMonthlyInvestmentChange={setMonthlyInvestment}
-          onInterestRateChange={setInterestRate}
-          onYearsChange={setYears}
+          onMonthlyInvestmentChange={handleMonthlyInvestmentChange}
+          onInterestRateChange={handleInterestRateChange}
+          onYearsChange={handleYearsChange}
         />
 
         <SipSummary
