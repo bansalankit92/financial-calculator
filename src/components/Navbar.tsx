@@ -11,7 +11,7 @@ const calculators = [
   { name: 'SIP Calculator', href: '/sip' },
   { name: 'EMI Calculator', href: '/emi' },
   { name: 'New Tax Regime', href: '/new-regime-income-tax/2024-25' },
-  { name: 'Old Tax Regime', href: '/old-tax' },
+  { name: 'Old Tax Regime', href: '/old-regime-income-tax' },
   { name: 'Tax Comparison', href: '/tax-comparison' },
   { name: 'Salary Calculator', href: '/salary' },
 ];

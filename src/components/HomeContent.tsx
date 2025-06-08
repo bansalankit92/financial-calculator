@@ -17,6 +17,12 @@ const calculators = [
     icon: CalculatorIcon,
   },
   {
+    name: 'Old Tax Regime Calculator',
+    description: 'Calculate your income tax under old regime with all deductions like 80C, HRA, and more. Perfect for those who want to claim traditional tax benefits.',
+    href: '/old-regime-income-tax',
+    icon: CalculatorIcon,
+  },
+  {
     name: 'SIP Calculator',
     description: 'Plan your investments with our SIP calculator. Calculate returns with daily, weekly, monthly, quarterly, or yearly investments.',
     href: '/sip',
