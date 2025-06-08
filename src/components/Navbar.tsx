@@ -1,31 +1,73 @@
 'use client';
 
+import { Fragment } from 'react';
+import { Menu, Transition } from '@headlessui/react';
 import { Bars3Icon } from '@heroicons/react/24/outline';
+import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-interface NavbarProps {
-  onMenuClick?: () => void;
-  isSidebarOpen: boolean;
-}
+const calculators = [
+  { name: 'Home', href: '/' },
+  { name: 'SIP Calculator', href: '/sip' },
+  { name: 'EMI Calculator', href: '/emi' },
+  { name: 'New Tax Regime', href: '/new-tax' },
+  { name: 'Old Tax Regime', href: '/old-tax' },
+  { name: 'Tax Comparison', href: '/tax-comparison' },
+  { name: 'Salary Calculator', href: '/salary' },
+];
 
-export default function Navbar({ onMenuClick, isSidebarOpen }: NavbarProps) {
+export default function Navbar() {
   const pathname = usePathname();
   const title = getPageTitle(pathname);
 
   return (
     <nav className="sticky top-0 bg-white border-b border-gray-200 z-10">
-      <div className="px-4 md:px-8 h-16 flex items-center gap-4">
-        <button
-          type="button"
-          onClick={onMenuClick}
-          className="inline-flex items-center justify-center p-2 rounded-lg text-gray-500 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 lg:hidden"
-          aria-controls="sidebar"
-          aria-expanded={isSidebarOpen}
-        >
-          <span className="sr-only">{isSidebarOpen ? "Close menu" : "Open menu"}</span>
-          <Bars3Icon className="h-6 w-6" aria-hidden="true" />
-        </button>
-        <h1 className="text-xl font-semibold">{title}</h1>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between h-16">
+          <div className="flex">
+            <div className="flex-shrink-0 flex items-center">
+              <Link href="/" className="text-xl font-bold text-gray-900">
+                Financial Calculator
+              </Link>
+            </div>
+          </div>
+          <div className="flex items-center">
+            <Menu as="div" className="relative inline-block text-left">
+              <Menu.Button className="inline-flex items-center justify-center p-2 rounded-lg text-gray-500 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500">
+                <span className="sr-only">Open menu</span>
+                <Bars3Icon className="h-6 w-6" aria-hidden="true" />
+              </Menu.Button>
+              <Transition
+                as={Fragment}
+                enter="transition ease-out duration-100"
+                enterFrom="transform opacity-0 scale-95"
+                enterTo="transform opacity-100 scale-100"
+                leave="transition ease-in duration-75"
+                leaveFrom="transform opacity-100 scale-100"
+                leaveTo="transform opacity-0 scale-95"
+              >
+                <Menu.Items className="absolute right-0 mt-2 w-56 origin-top-right rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                  <div className="py-1">
+                    {calculators.map((calculator) => (
+                      <Menu.Item key={calculator.href}>
+                        {({ active }) => (
+                          <Link
+                            href={calculator.href}
+                            className={`${
+                              active ? 'bg-gray-100 text-gray-900' : 'text-gray-700'
+                            } block px-4 py-2 text-sm`}
+                          >
+                            {calculator.name}
+                          </Link>
+                        )}
+                      </Menu.Item>
+                    ))}
+                  </div>
+                </Menu.Items>
+              </Transition>
+            </Menu>
+          </div>
+        </div>
       </div>
     </nav>
   );
@@ -34,6 +76,8 @@ export default function Navbar({ onMenuClick, isSidebarOpen }: NavbarProps) {
 function getPageTitle(pathname: string): string {
   switch (pathname) {
     case '/':
+      return 'Home';
+    case '/sip':
       return 'SIP Calculator';
     case '/emi':
       return 'EMI Calculator';
