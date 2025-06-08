@@ -322,7 +322,7 @@ export function generateMetadata({
         { url: '/assets/icons/apple-touch-icon.png' },
       ],
     },
-    manifest: '/assets/icons/site.webmanifest',
+    // manifest: '/assets/icons/site.webmanifest',
     openGraph: {
       title: metaTitle,
       description: metaDescription,

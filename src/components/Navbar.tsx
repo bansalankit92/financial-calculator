@@ -10,7 +10,7 @@ const calculators = [
   { name: 'Home', href: '/' },
   { name: 'SIP Calculator', href: '/sip' },
   { name: 'EMI Calculator', href: '/emi' },
-  { name: 'New Tax Regime', href: '/new-tax' },
+  { name: 'New Tax Regime', href: '/new-regime-income-tax/2024-25' },
   { name: 'Old Tax Regime', href: '/old-tax' },
   { name: 'Tax Comparison', href: '/tax-comparison' },
   { name: 'Salary Calculator', href: '/salary' },
@@ -83,8 +83,10 @@ function getPageTitle(pathname: string): string {
       return 'EMI Calculator';
     case '/tax-comparison':
       return 'Old vs New Regime Income Tax';
-    case '/new-tax':
-      return 'New Regime Income Tax';
+    case '/new-regime-income-tax/2024-25':
+      return 'New Tax Regime Calculator FY 2024-25';
+    case '/new-regime-income-tax/2025-26':
+      return 'New Tax Regime Calculator FY 2025-26';
     case '/old-tax':
       return 'Old Regime Income Tax';
     case '/salary':
