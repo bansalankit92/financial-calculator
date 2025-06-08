@@ -38,6 +38,9 @@ const OldRegimeIncomeTaxCalculator = () => {
     const [donations80G, setDonations80G] = useState(0);
     const [homeLoanInterest80EEA, setHomeLoanInterest80EEA] = useState(0);
     const [eduLoanInterest80E, setEduLoanInterest80E] = useState(0);
+    const [actualRent, setActualRent] = useState(0);
+    const [isMetroCity, setIsMetroCity] = useState(true);
+    const [hraExemption, setHraExemption] = useState(0);
 
     // Calculated values
     const [totalDeductions, setTotalDeductions] = useState(0);
@@ -124,6 +127,21 @@ const OldRegimeIncomeTaxCalculator = () => {
         homeLoanInterest80EEA,
         eduLoanInterest80E
     ]);
+
+    // Calculate HRA exemption whenever relevant inputs change
+    useEffect(() => {
+        const hraReceived = hra;
+        const basicSalaryPercent = isMetroCity ? 0.5 : 0.4;
+        const rentExceedingBasic = Math.max(0, actualRent - (basicSalaryYearly * 0.1));
+        
+        const exemption = Math.min(
+            hraReceived,
+            basicSalaryYearly * basicSalaryPercent,
+            rentExceedingBasic
+        );
+        
+        setHraExemption(exemption);
+    }, [hra, actualRent, basicSalaryYearly, isMetroCity]);
 
     const calculateTax = (amount: number) => {
         let remainingIncome = amount;
@@ -290,13 +308,47 @@ const OldRegimeIncomeTaxCalculator = () => {
                                         />
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">HRA</label>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">HRA Received (Yearly)</label>
                                         <input
                                             type="number"
                                             value={hra}
                                             onChange={(e: ChangeEvent<HTMLInputElement>) => setHra(Number(e.target.value))}
                                             className={inputClassName}
+                                            min={0}
                                         />
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">Annual Rent Paid</label>
+                                        <input
+                                            type="number"
+                                            value={actualRent}
+                                            onChange={(e: ChangeEvent<HTMLInputElement>) => setActualRent(Number(e.target.value))}
+                                            className={inputClassName}
+                                            min={0}
+                                        />
+                                    </div>
+                                    <div className="col-span-2">
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">City Type</label>
+                                        <div className="flex gap-4">
+                                            <label className="inline-flex items-center">
+                                                <input
+                                                    type="radio"
+                                                    className="form-radio text-blue-600"
+                                                    checked={isMetroCity}
+                                                    onChange={() => setIsMetroCity(true)}
+                                                />
+                                                <span className="ml-2">Metro (50% of Basic)</span>
+                                            </label>
+                                            <label className="inline-flex items-center">
+                                                <input
+                                                    type="radio"
+                                                    className="form-radio text-blue-600"
+                                                    checked={!isMetroCity}
+                                                    onChange={() => setIsMetroCity(false)}
+                                                />
+                                                <span className="ml-2">Non-Metro (40% of Basic)</span>
+                                            </label>
+                                        </div>
                                     </div>
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-2">ELSS/PPF/LIC/H.Loan 80C (Max: ₹1.5L)</label>
@@ -389,11 +441,11 @@ const OldRegimeIncomeTaxCalculator = () => {
                             <div className="pt-3 border-t">
                                 <div className="flex justify-between items-center">
                                     <span className="text-gray-600">Take Home (Yearly):</span>
-                                    <span className="font-semibold text-gray-600">{formatCurrency(taxableIncome)}</span>
+                                    <span className="font-semibold text-gray-600">{formatCurrency((ctc - totalTax))}</span>
                                 </div>
                                 <div className="flex justify-between items-center mt-1">
                                     <span className="text-gray-600">Take Home (Monthly):</span>
-                                    <span className="font-semibold text-gray-600">{formatCurrency(Math.round(taxableIncome / 12))}</span>
+                                    <span className="font-semibold text-gray-600">{formatCurrency((ctc - totalTax) / 12)}</span>
                                 </div>
                             </div>
                             <div className="pt-3 border-t">
@@ -412,6 +464,29 @@ const OldRegimeIncomeTaxCalculator = () => {
                     <div className="bg-white rounded-xl shadow-lg p-6">
                         <h3 className="text-xl font-semibold mb-4">Tax Calculation</h3>
                         
+                        {/* HRA Calculation */}
+                        <div className="mb-6">
+                            <h4 className="text-lg font-medium mb-3">HRA Exemption Calculation</h4>
+                            <div className="space-y-2 text-sm">
+                                <div className="flex justify-between">
+                                    <span>HRA Received:</span>
+                                    <span>{formatCurrency(hra)}</span>
+                                </div>
+                                <div className="flex justify-between">
+                                    <span>{isMetroCity ? '50%' : '40%'} of Basic Salary:</span>
+                                    <span>{formatCurrency(basicSalaryYearly * (isMetroCity ? 0.5 : 0.4))}</span>
+                                </div>
+                                <div className="flex justify-between">
+                                    <span>Rent Exceeding 10% of Basic:</span>
+                                    <span>{formatCurrency(Math.max(0, actualRent - (basicSalaryYearly * 0.1)))}</span>
+                                </div>
+                                <div className="flex justify-between font-medium pt-2 border-t">
+                                    <span>HRA Exemption (Minimum of above):</span>
+                                    <span className="text-green-600">{formatCurrency(hraExemption)}</span>
+                                </div>
+                            </div>
+                        </div>
+
                         {/* Tax Summary Table */}
                         <div className="overflow-x-auto">
                             <table className="w-full">
