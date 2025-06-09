@@ -39,9 +39,7 @@ const OldRegimeIncomeTaxCalculator = () => {
     const [homeLoanInterest80EEA, setHomeLoanInterest80EEA] = useState(0);
     const [eduLoanInterest80E, setEduLoanInterest80E] = useState(0);
     const [actualRent, setActualRent] = useState(0);
-    const [isMetroCity, setIsMetroCity] = useState(true);
     const [hraExemption, setHraExemption] = useState(0);
-    const [showDocs, setShowDocs] = useState(false);
     const [showAdvancedOptions, setShowAdvancedOptions] = useState(false);
 
     // Calculated values
@@ -132,21 +130,21 @@ const OldRegimeIncomeTaxCalculator = () => {
 
     // Calculate HRA exemption whenever relevant inputs change
     useEffect(() => {
-        const hraReceived = hra;
-        const basicSalaryPercent = isMetroCity ? 0.5 : 0.4;
+        const hraReceived = basicSalaryYearly * 0.4; // HRA is 40% of basic salary
         const rentExceedingBasic = Math.max(0, actualRent - (basicSalaryYearly * 0.1));
         
         const exemption = Math.min(
             hraReceived,
-            basicSalaryYearly * basicSalaryPercent,
+            basicSalaryYearly * 0.5, // Always use 50% of basic as per metro city rules
             rentExceedingBasic
         );
         
         setHraExemption(exemption);
-    }, [hra, actualRent, basicSalaryYearly, isMetroCity]);
+        setHra(hraReceived); // Set HRA for tax calculations
+    }, [actualRent, basicSalaryYearly]);
 
     const calculateTax = (amount: number) => {
-        let remainingIncome = amount;
+        const remainingIncome = amount;
         let totalTaxAmount = 0;
         const slabwiseBreakdown: { slab: string; tax: number }[] = [];
 
@@ -320,16 +318,6 @@ const OldRegimeIncomeTaxCalculator = () => {
                                             />
                                         </div>
                                         <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-2">HRA Received (Yearly)</label>
-                                            <input
-                                                type="number"
-                                                value={hra}
-                                                onChange={(e: ChangeEvent<HTMLInputElement>) => setHra(Number(e.target.value))}
-                                                className={inputClassName}
-                                                min={0}
-                                            />
-                                        </div>
-                                        <div>
                                             <label className="block text-sm font-medium text-gray-700 mb-2">Annual Rent Paid</label>
                                             <input
                                                 type="number"
@@ -338,29 +326,7 @@ const OldRegimeIncomeTaxCalculator = () => {
                                                 className={inputClassName}
                                                 min={0}
                                             />
-                                        </div>
-                                        <div className="col-span-2">
-                                            <label className="block text-sm font-medium text-gray-700 mb-2">City Type</label>
-                                            <div className="flex gap-4">
-                                                <label className="inline-flex items-center">
-                                                    <input
-                                                        type="radio"
-                                                        className="form-radio text-blue-600"
-                                                        checked={isMetroCity}
-                                                        onChange={() => setIsMetroCity(true)}
-                                                    />
-                                                    <span className="ml-2">Metro (50% of Basic)</span>
-                                                </label>
-                                                <label className="inline-flex items-center">
-                                                    <input
-                                                        type="radio"
-                                                        className="form-radio text-blue-600"
-                                                        checked={!isMetroCity}
-                                                        onChange={() => setIsMetroCity(false)}
-                                                    />
-                                                    <span className="ml-2">Non-Metro (40% of Basic)</span>
-                                                </label>
-                                            </div>
+                                            <p className="mt-1 text-sm text-gray-500">HRA is automatically calculated as 40% of basic salary</p>
                                         </div>
                                         <div>
                                             <label className="block text-sm font-medium text-gray-700 mb-2">ELSS/PPF/LIC/H.Loan 80C (Max: ₹1.5L)</label>
@@ -490,8 +456,8 @@ const OldRegimeIncomeTaxCalculator = () => {
                                 <span className="font-medium">{formatCurrency(hra)}</span>
                             </div>
                             <div className="flex justify-between">
-                                <span>{isMetroCity ? '50%' : '40%'} of Basic Salary:</span>
-                                <span className="font-medium">{formatCurrency(basicSalaryYearly * (isMetroCity ? 0.5 : 0.4))}</span>
+                                <span>50% of Basic Salary:</span>
+                                <span className="font-medium">{formatCurrency(basicSalaryYearly * 0.5)}</span>
                             </div>
                             <div className="flex justify-between">
                                 <span>Rent Exceeding 10% of Basic:</span>
@@ -730,13 +696,13 @@ const OldRegimeIncomeTaxCalculator = () => {
                             <ul className="space-y-2 text-gray-600">
                                 <li>• All figures are for Financial Year 2023-24 (Assessment Year 2024-25)</li>
                                 <li>• Basic salary typically constitutes 40-50% of CTC in most organizations</li>
-                                <li>• EPF contribution is mandatory if basic salary > ₹15,000 per month</li>
+                                <li>• EPF contribution is mandatory if basic salary {'>'} ₹15,000 per month</li>
                                 <li>• EPF contribution is capped at ₹1,800 monthly (12% of ₹15,000)</li>
                                 <li>• Professional Tax varies by state, typically around ₹2,400 per year</li>
                                 <li>• Education Cess of 4% is applicable on the total tax amount</li>
                                 <li>• Tax calculation is progressive - different rates apply to different slabs</li>
                                 <li>• Section 80C deductions have a combined limit of ₹1.5L</li>
-                                <li>• For HRA exemption, rent receipts are mandatory if annual rent > ₹1L</li>
+                                <li>• For HRA exemption, rent receipts are mandatory if annual rent {'>'} ₹1L</li>
                             </ul>
                         </div>
                     </div>

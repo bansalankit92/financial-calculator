@@ -11,6 +11,12 @@ import {
 
 const calculators = [
   {
+    name: 'Old vs New Regime Calculator',
+    description: 'Compare tax savings between old and new regimes. Find out which regime is better for you based on your income and deductions.',
+    href: '/tax-comparison',
+    icon: CalculatorIcon,
+  },
+  {
     name: 'New Tax Regime Calculator',
     description: 'Calculate your income tax under new regime for FY 2024-25 & 2025-26. Includes standard deduction, NPS benefits, and tax rebates.',
     href: '/new-regime-income-tax/2024-25',
