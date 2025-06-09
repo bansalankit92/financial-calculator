@@ -1,23 +1,65 @@
-# Free Financial Calculator
+# My Financial Calculator
 
-An easy-to-use free financial calculator to calculate your montly salary, income tax, loans, emi, investments and comparing old vs new regime income tax.  
+A modern financial calculator web application built with Next.js and Tailwind CSS. Calculate SIP returns, EMI, Income Tax, and more with a beautiful and responsive interface.
 
-[https://fincalculator.in](https://fincalculator.in)
-### New Calculators
+## Features
 
-- [ ] Create porfolio rebalance calculator page
-- [ ] Create CTC creator
-- [ ] Retirement calculator
-- [ ] Portfolio creator based on salary
+- SIP (Systematic Investment Plan) Calculator
+- EMI Calculator
+- Income Tax Calculator (Old vs New Regime)
+- Salary Calculator
+- Responsive design
+- Interactive charts and tables
+- Real-time calculations
 
-### Feature Enhancement
+## Tech Stack
 
-- [ ] Add localstorage for all calculators to restore on revist
-- [X] Upgrade Angular
-- [ ] Use SSR/Improve SEO
-- [ ] Redesign Income tax calulator pages to make it minimalist
-- [ ] In old regime add validation of max limit to dedections
-- [ ] adding comments section on each page
-- [ ] adding feedback page
-- [ ] add weekly quaterly to sip
-- [ ] add nps field in new regime
+- Next.js 15
+- TypeScript
+- Tailwind CSS
+- Chart.js
+- Framer Motion
+- Heroicons
+
+## Getting Started
+
+1. Clone the repository:
+   ```bash
+   git clone <repository-url>
+   cd financial-calculator/nextjs
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Run the development server:
+   ```bash
+   npm run dev
+   ```
+
+4. Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+## Project Structure
+
+```
+src/
+├── app/                 # App router pages
+├── components/          # React components
+│   └── calculators/     # Calculator-specific components
+├── lib/                 # Utility functions and calculations
+└── styles/             # Global styles
+```
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

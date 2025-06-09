@@ -7,9 +7,9 @@
   },
   "files": [
     "src/main.ts",
-    "src/polyfills.ts"
+    "old-angular/src/polyfills.ts"
   ],
   "include": [
-    "src/**/*.d.ts"
+    "old-angular/src/**/*.d.ts"
   ]
 }
