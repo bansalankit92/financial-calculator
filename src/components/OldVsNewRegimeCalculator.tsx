@@ -559,7 +559,7 @@ const OldVsNewRegimeCalculator = () => {
                         <li>For income up to ₹7L, new regime is always better due to tax rebate</li>
                         <li>Middle income (₹7L-₹25L): New regime generally better unless you have very high deductions</li>
                         <li>High income ({'>'}₹30L): Old regime becomes more beneficial with proper tax planning</li>
-                        <li>Consider switching to new regime if you don't have enough deductions</li>
+                        <li>Consider switching to new regime if you don&apos;t have enough deductions</li>
                         <li>Factor in future salary increases when choosing a regime</li>
                     </ul>
                 </div>

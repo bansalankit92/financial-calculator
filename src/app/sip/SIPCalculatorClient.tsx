@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { useRouter, usePathname } from 'next/navigation';
@@ -10,6 +10,7 @@ import SipSummary from '@/components/calculators/SipSummary';
 import WealthTable from '@/components/calculators/WealthTable';
 import { calculateSIP } from '@/lib/calculations';
 import { useQueryParams } from '@/hooks/useQueryParams';
+import { SIPFrequency } from '@/types/calculator';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -20,14 +21,16 @@ export default function SIPCalculatorClient() {
   const [showCopied, setShowCopied] = useState(false);
 
   // Initialize state from URL parameters or defaults
-  const monthlyInvestment = getQueryParam('investment', 3000);
+  const investment = getQueryParam('investment', 3000);
   const interestRate = getQueryParam('interest', 12);
   const years = getQueryParam('years', 3);
+  const frequency: SIPFrequency = 'monthly';
 
   const { totalInvestment, totalReturns, totalValue } = calculateSIP(
-    monthlyInvestment,
+    investment,
     interestRate,
-    years
+    years,
+    frequency
   );
 
   // Update URL when values change
@@ -36,16 +39,16 @@ export default function SIPCalculatorClient() {
     router.push(`${pathname}?${queryString}`);
   };
 
-  const handleMonthlyInvestmentChange = (value: number) => {
+  const handleInvestmentChange = (value: number) => {
     updateQueryParams({ investment: value, interest: interestRate, years });
   };
 
   const handleInterestRateChange = (value: number) => {
-    updateQueryParams({ investment: monthlyInvestment, interest: value, years });
+    updateQueryParams({ investment: investment, interest: value, years });
   };
 
   const handleYearsChange = (value: number) => {
-    updateQueryParams({ investment: monthlyInvestment, interest: interestRate, years: value });
+    updateQueryParams({ investment: investment, interest: interestRate, years: value });
   };
 
   const handleShare = async () => {
@@ -85,10 +88,11 @@ export default function SIPCalculatorClient() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <SipForm
-          monthlyInvestment={monthlyInvestment}
+          investment={investment}
           interestRate={interestRate}
           years={years}
-          onMonthlyInvestmentChange={handleMonthlyInvestmentChange}
+          frequency={frequency}
+          onInvestmentChange={handleInvestmentChange}
           onInterestRateChange={handleInterestRateChange}
           onYearsChange={handleYearsChange}
         />
@@ -101,8 +105,9 @@ export default function SIPCalculatorClient() {
       </div>
 
       <WealthTable
-        monthlyInvestment={monthlyInvestment}
+        investment={investment}
         interestRate={interestRate}
+        frequency={frequency}
       />
 
       <div className="bg-white p-6 rounded-lg shadow-md space-y-6">
