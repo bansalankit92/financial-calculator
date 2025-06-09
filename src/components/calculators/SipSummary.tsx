@@ -1,9 +1,13 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
 'use client';
 
 import { useState } from 'react';
-import 'chart.js/auto';
-import { Pie } from 'react-chartjs-2';
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { motion, AnimatePresence } from 'framer-motion';
+
+ChartJS.register(ArcElement, Tooltip, Legend);
+
+const Pie = require('react-chartjs-2').Pie;
 
 interface SipSummaryProps {
   totalInvestment: number;

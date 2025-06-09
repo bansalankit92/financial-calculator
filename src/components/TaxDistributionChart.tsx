@@ -1,4 +1,5 @@
-import { Pie } from 'react-chartjs-2';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-require-imports */
 import {
   Chart as ChartJS,
   ArcElement,
@@ -8,6 +9,8 @@ import {
 } from 'chart.js';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
+
+const Pie = require('react-chartjs-2').Pie;
 
 interface TaxDistributionChartProps {
   taxableIncome: number;
@@ -46,7 +49,7 @@ export default function TaxDistributionChart({
             },
             tooltip: {
               callbacks: {
-                label: (context) => {
+                label: (context: any) => {
                   const value = context.raw as number;
                   const percentage = ((value / ctc) * 100).toFixed(1);
                   return `₹${value.toLocaleString('en-IN')} (${percentage}%)`;
