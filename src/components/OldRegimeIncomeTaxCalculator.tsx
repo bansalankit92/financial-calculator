@@ -398,7 +398,6 @@ const OldRegimeIncomeTaxCalculator = () => {
                     <div className="bg-white rounded-xl shadow-lg p-6">
                         <h2 className="text-2xl font-bold mb-4">Tax Distribution</h2>
                         <TaxDistributionChart
-                            taxableIncome={taxableIncome}
                             totalTax={totalTax}
                             totalDeductions={totalDeductions}
                             ctc={ctc}

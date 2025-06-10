@@ -1,18 +1,19 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
 'use client';
 
-import { useState } from 'react';
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+import { useState, useMemo, useCallback } from 'react';
+import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip, PieLabelRenderProps } from 'recharts';
 import { motion, AnimatePresence } from 'framer-motion';
-
-ChartJS.register(ArcElement, Tooltip, Legend);
-
-const Pie = require('react-chartjs-2').Pie;
 
 interface SipSummaryProps {
   totalInvestment: number;
   totalReturns: number;
   totalValue: number;
+}
+
+interface ChartDataEntry {
+  name: string;
+  value: number;
 }
 
 function formatCurrency(amount: number, showFull: boolean = false): string {
@@ -98,55 +99,96 @@ export default function SipSummary({
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
   const [clickedValues, setClickedValues] = useState<{[key: string]: boolean}>({});
 
-  const chartData = {
-    labels: ['Invested Amount', 'Est. Returns'],
-    datasets: [
-      {
-        data: [totalInvestment, totalReturns],
-        backgroundColor: ['#3b82f6', '#fbbf24'],
-        borderWidth: 0,
-      },
-    ],
-  };
+  const COLORS = ['#3b82f6', '#fbbf24'];
 
-  const handleMouseEnter = (value: string, event: React.MouseEvent) => {
+  const data = useMemo(() => [
+    { name: 'Invested Amount', value: totalInvestment },
+    { name: 'Est. Returns', value: totalReturns }
+  ], [totalInvestment, totalReturns]);
+
+  const renderCustomizedLabel = useCallback(({ cx, cy, midAngle, innerRadius, outerRadius, percent }: PieLabelRenderProps) => {
+    if (cx === undefined || cy === undefined || midAngle === undefined || 
+        innerRadius === undefined || outerRadius === undefined || percent === undefined) {
+      return null;
+    }
+    
+    const RADIAN = Math.PI / 180;
+    const radius = (innerRadius as number) + ((outerRadius as number) - (innerRadius as number)) * 0.5;
+    const x = (cx as number) + radius * Math.cos(-midAngle * RADIAN);
+    const y = (cy as number) + radius * Math.sin(-midAngle * RADIAN);
+
+    return (
+      <text
+        x={x}
+        y={y}
+        fill="white"
+        textAnchor={x > (cx as number) ? 'start' : 'end'}
+        dominantBaseline="central"
+        style={{ fontSize: '12px', fontWeight: 'bold', textShadow: '0 0 3px rgba(0,0,0,0.5)' }}
+      >
+        {`${(percent * 100).toFixed(1)}%`}
+      </text>
+    );
+  }, []);
+
+  const handleMouseEnter = useCallback((value: string, event: React.MouseEvent) => {
     const rect = event.currentTarget.getBoundingClientRect();
     setTooltipPosition({
       x: rect.left + (rect.width / 2),
-      y: rect.top - 40, // Position further up
+      y: rect.top - 40,
     });
     setShowFullValue(value);
-  };
+  }, []);
 
-  const handleMouseLeave = () => {
+  const handleMouseLeave = useCallback(() => {
     setShowFullValue(null);
-  };
+  }, []);
 
-  const handleClick = (key: string) => {
+  const handleClick = useCallback((key: string) => {
     setClickedValues(prev => ({
       ...prev,
       [key]: !prev[key]
     }));
-  };
+  }, []);
+
+  const renderCell = useCallback((entry: ChartDataEntry, index: number) => (
+    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+  ), []);
 
   return (
-    <div className="bg-white rounded-xl shadow-lg p-6">
-      <h2 className="text-xl font-semibold mb-6">Investment Summary</h2>
+    <div className="bg-white rounded-xl shadow-lg p-4">
+      <h2 className="text-xl font-semibold mb-4">Investment Summary</h2>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div className="w-full aspect-square max-w-[300px] mx-auto">
-          <Pie 
-            data={chartData}
-            options={{
-              plugins: {
-                legend: {
-                  position: 'bottom',
-                },
-              },
-              responsive: true,
-              maintainAspectRatio: true,
-            }}
-          />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="w-full aspect-square max-w-[320px] mx-auto">
+          <ResponsiveContainer width="100%" height="100%">
+            <PieChart>
+              <Pie
+                data={data}
+                cx="50%"
+                cy="50%"
+                labelLine={false}
+                label={renderCustomizedLabel}
+                outerRadius={100}
+                fill="#8884d8"
+                dataKey="value"
+                animationBegin={0}
+                animationDuration={600}
+                isAnimationActive={true}
+                animationEasing="ease-out"
+              >
+                {data.map((entry, index) => renderCell(entry, index))}
+              </Pie>
+              <Tooltip 
+                formatter={(value: number) => formatCurrency(value)}
+                animationEasing="ease-out"
+              />
+              <Legend 
+                verticalAlign="bottom"
+                height={32}
+              />
+            </PieChart>
+          </ResponsiveContainer>
         </div>
 
         <div className="space-y-4">
