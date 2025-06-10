@@ -9,7 +9,7 @@ import { cn } from '@/lib/utils';
 const navigation = [
   { name: 'SIP Calculator', href: '/' },
   { name: 'EMI Calculator', href: '/emi' },
-  { name: 'Old vs New Regime Income Tax', href: '/tax-comparison' },
+  { name: 'Old vs New Regime Income Tax', href: '/old-vs-new-income-tax-regime-compare' },
   { name: '(New Regime) Income Tax', href: '/new-regime-income-tax/2024-25' },
   { name: '(Old Regime) Income Tax', href: '/old-regime-income-tax' },
   { name: 'Salary Calculator', href: '/salary' },

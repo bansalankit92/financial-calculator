@@ -13,7 +13,7 @@ const calculators = [
   {
     name: 'Old vs New Regime Calculator',
     description: 'Compare tax savings between old and new regimes. Find out which regime is better for you based on your income and deductions.',
-    href: '/tax-comparison',
+    href: '/old-vs-new-income-tax-regime-compare',
     icon: CalculatorIcon,
   },
   {
