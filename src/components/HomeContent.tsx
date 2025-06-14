@@ -8,42 +8,43 @@ import {
   CalculatorIcon,
   CurrencyRupeeIcon,
 } from '@heroicons/react/24/outline';
+import { ROUTES } from '@/constants/routes';
 
 const calculators = [
   {
     name: 'Old vs New Regime Calculator',
     description: 'Compare tax savings between old and new regimes. Find out which regime is better for you based on your income and deductions.',
-    href: '/old-vs-new-income-tax-regime-compare',
+    href: ROUTES.OLD_VS_NEW_REGIME,
     icon: CalculatorIcon,
   },
   {
     name: 'New Tax Regime Calculator',
     description: 'Calculate your income tax under new regime for FY 2024-25 & 2025-26. Includes standard deduction, NPS benefits, and tax rebates.',
-    href: '/new-regime-income-tax/2024-25',
+    href: ROUTES.NEW_TAX_REGIME_2024_25,
     icon: CalculatorIcon,
   },
   {
     name: 'Old Tax Regime Calculator',
     description: 'Calculate your income tax under old regime with all deductions like 80C, HRA, and more. Perfect for those who want to claim traditional tax benefits.',
-    href: '/old-regime-income-tax',
+    href: ROUTES.OLD_TAX_REGIME,
     icon: CalculatorIcon,
   },
   {
     name: 'SIP Calculator',
     description: 'Plan your investments with our SIP calculator. Calculate returns with daily, weekly, monthly, quarterly, or yearly investments.',
-    href: '/sip',
+    href: ROUTES.SIP,
     icon: ChartBarIcon,
   },
   {
     name: 'EMI Calculator',
     description: 'Calculate EMIs for your home loan, car loan, or personal loan. Plan your repayments and understand total interest costs.',
-    href: '/emi',
+    href: ROUTES.EMI,
     icon: BanknotesIcon,
   },
   {
     name: 'Salary Calculator',
     description: 'Calculate your in-hand salary after tax and other deductions. Includes standard deduction and professional tax calculations.',
-    href: '/salary',
+    href: ROUTES.SALARY,
     icon: CurrencyRupeeIcon,
   },
 ];
@@ -62,7 +63,7 @@ export default function HomeContent() {
           </h1>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
             Make informed financial decisions with our comprehensive suite of calculators. 
-            Whether you're calculating taxes under the new regime, planning investments through SIP, 
+            Whether you&apos;re calculating taxes under the new regime, planning investments through SIP, 
             or managing loan EMIs, we provide accurate and easy-to-use tools for all your financial needs.
           </p>
         </div>

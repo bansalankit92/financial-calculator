@@ -1,6 +1,7 @@
 import NewRegimeIncomeTaxCalculatorFY2025_26 from '@/components/NewRegimeIncomeTaxCalculatorFY2025_26';
 import { Metadata } from 'next';
 import { generateMetadata as getMetadata } from '@/components/common/PageMetadata';
+import { ROUTES } from '@/constants/routes';
 
 export const metadata: Metadata = getMetadata({
     title: 'New Tax Regime Calculator FY 2025-26 | Next Year',
@@ -19,7 +20,7 @@ export const metadata: Metadata = getMetadata({
         'tax planning',
         'education cess calculation'
     ],
-    canonicalUrl: '/new-regime-income-tax/2025-26',
+    canonicalUrl: ROUTES.NEW_TAX_REGIME_2025_26,
     pageType: 'calculator',
     calculatorType: 'TAX'
 });

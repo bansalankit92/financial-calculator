@@ -46,6 +46,8 @@ const OldVsNewRegimeCalculator = () => {
     const [eduLoanInterest80E, setEduLoanInterest80E] = useState<number>(0);
     const [actualRent, setActualRent] = useState<number>(0);
     const [hraExemption, setHraExemption] = useState<number>(0);
+    const [gratuity, setGratuity] = useState<number>(0);
+    const [profTax, setProfTax] = useState<number>(2400);
 
     // Employer NPS
     const [monthlyEmployerNps, setMonthlyEmployerNps] = useState<number>(0);
@@ -57,6 +59,10 @@ const OldVsNewRegimeCalculator = () => {
     const [newRegimeTax, setNewRegimeTax] = useState<number>(0);
     const [oldRegimeTakeHome, setOldRegimeTakeHome] = useState<number>(0);
     const [newRegimeTakeHome, setNewRegimeTakeHome] = useState<number>(0);
+    const [oldRegimeMonthlyTax, setOldRegimeMonthlyTax] = useState<number>(0);
+    const [newRegimeMonthlyTax, setNewRegimeMonthlyTax] = useState<number>(0);
+    const [oldRegimeMonthlyTakeHome, setOldRegimeMonthlyTakeHome] = useState<number>(0);
+    const [newRegimeMonthlyTakeHome, setNewRegimeMonthlyTakeHome] = useState<number>(0);
 
     // Calculate basic salary whenever income changes
     useEffect(() => {
@@ -130,19 +136,25 @@ const OldVsNewRegimeCalculator = () => {
             homeLoanInterest80EEA +
             eduLoanInterest80E +
             employerNpsYearly +
-            hraExemption;
+            hraExemption +
+            gratuity +
+            profTax;
 
         const oldRegimeTaxableIncome = Math.max(0, income - oldRegimeDeductions);
         const oldTax = calculateTax(oldRegimeTaxableIncome, OLD_REGIME_TAX_SLABS);
         setOldRegimeTax(oldTax);
         setOldRegimeTakeHome(income - oldTax);
+        setOldRegimeMonthlyTax(Math.round(oldTax / 12));
+        setOldRegimeMonthlyTakeHome(Math.round((income - oldTax) / 12));
 
         // Calculate New Regime Tax
-        const newRegimeTaxableIncome = Math.max(0, income - NEW_STANDARD_DEDUCTION - employerNpsYearly);
+        const newRegimeTaxableIncome = Math.max(0, income - NEW_STANDARD_DEDUCTION - employerNpsYearly - profTax);
         const newTax = calculateTax(newRegimeTaxableIncome, NEW_REGIME_TAX_SLABS, NEW_TAX_REBATE, NEW_REBATE_LIMIT);
         setNewRegimeTax(newTax);
         setNewRegimeTakeHome(income - newTax);
-    }, [income, section80C, nps80CCD, mediclaim80D, donations80G, homeLoanInterest80EEA, eduLoanInterest80E, hraExemption, employerNpsYearly]);
+        setNewRegimeMonthlyTax(Math.round(newTax / 12));
+        setNewRegimeMonthlyTakeHome(Math.round((income - newTax) / 12));
+    }, [income, section80C, nps80CCD, mediclaim80D, donations80G, homeLoanInterest80EEA, eduLoanInterest80E, hraExemption, employerNpsYearly, gratuity, profTax]);
 
     // Calculate percentage for slider background
     const calculatePercentage = (value: number, max: number) => {
@@ -337,6 +349,28 @@ const OldVsNewRegimeCalculator = () => {
                         />
                         <p className="mt-1 text-sm text-gray-500">HRA is automatically calculated as 40% of basic salary</p>
                     </div>
+                    <div>
+                        <label className="block text-gray-700 text-sm font-bold mb-2">
+                            Gratuity (Yearly)
+                        </label>
+                        <input
+                            type="number"
+                            value={gratuity}
+                            onChange={(e) => setGratuity(Number(e.target.value))}
+                            className={inputClassName}
+                        />
+                    </div>
+                    <div>
+                        <label className="block text-gray-700 text-sm font-bold mb-2">
+                            Professional Tax (Typical: ₹2,400/year)
+                        </label>
+                        <input
+                            type="number"
+                            value={profTax}
+                            onChange={(e) => setProfTax(Number(e.target.value))}
+                            className={inputClassName}
+                        />
+                    </div>
                 </div>
             </div>
 
@@ -404,6 +438,14 @@ const OldVsNewRegimeCalculator = () => {
                             <span>HRA Exemption:</span>
                             <span>{formatCurrency(hraExemption)}</span>
                         </div>
+                        <div className="flex justify-between">
+                            <span>Gratuity:</span>
+                            <span>{formatCurrency(gratuity)}</span>
+                        </div>
+                        <div className="flex justify-between">
+                            <span>Professional Tax:</span>
+                            <span>{formatCurrency(profTax)}</span>
+                        </div>
                         <div className="pt-3 border-t">
                             <div className="flex justify-between font-semibold">
                                 <span>Total Tax:</span>
@@ -411,7 +453,7 @@ const OldVsNewRegimeCalculator = () => {
                             </div>
                             <div className="flex justify-between font-semibold mt-2">
                                 <span>Take Home (Monthly):</span>
-                                <span className="text-green-600">{formatCurrency(oldRegimeTakeHome / 12)}</span>
+                                <span className="text-green-600">{formatCurrency(oldRegimeMonthlyTakeHome)}</span>
                             </div>
                         </div>
                     </div>
@@ -445,15 +487,65 @@ const OldVsNewRegimeCalculator = () => {
                             </div>
                             <div className="flex justify-between font-semibold mt-2">
                                 <span>Take Home (Monthly):</span>
-                                <span className="text-green-600">{formatCurrency(newRegimeTakeHome / 12)}</span>
+                                <span className="text-green-600">{formatCurrency(newRegimeMonthlyTakeHome)}</span>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            {/* Documentation Section */}
+            {/* Tax Comparison */}
             <div className="mt-8 p-6">
+                <h2 className="text-2xl font-bold mb-6">Tax Comparison</h2>
+                <div className="bg-white rounded-lg p-6 shadow-sm">
+                    <div className="space-y-4">
+                        <div className="flex justify-between items-center">
+                            <span className="text-gray-600">Old Regime Tax:</span>
+                            <div className="text-right">
+                                <div className="font-semibold text-red-600">{formatCurrency(oldRegimeTax)} / year</div>
+                                <div className="text-sm text-gray-500">{formatCurrency(oldRegimeMonthlyTax)} / month</div>
+                            </div>
+                        </div>
+                        <div className="flex justify-between items-center">
+                            <span className="text-gray-600">New Regime Tax:</span>
+                            <div className="text-right">
+                                <div className="font-semibold text-red-600">{formatCurrency(newRegimeTax)} / year</div>
+                                <div className="text-sm text-gray-500">{formatCurrency(newRegimeMonthlyTax)} / month</div>
+                            </div>
+                        </div>
+                        <div className="flex justify-between items-center">
+                            <span className="text-gray-600">Old Regime Take Home:</span>
+                            <div className="text-right">
+                                <div className="font-semibold text-green-600">{formatCurrency(oldRegimeTakeHome)} / year</div>
+                                <div className="text-sm text-gray-500">{formatCurrency(oldRegimeMonthlyTakeHome)} / month</div>
+                            </div>
+                        </div>
+                        <div className="flex justify-between items-center">
+                            <span className="text-gray-600">New Regime Take Home:</span>
+                            <div className="text-right">
+                                <div className="font-semibold text-green-600">{formatCurrency(newRegimeTakeHome)} / year</div>
+                                <div className="text-sm text-gray-500">{formatCurrency(newRegimeMonthlyTakeHome)} / month</div>
+                            </div>
+                        </div>
+                        <div className="pt-4 border-t">
+                            <div className="flex justify-between items-center">
+                                <span className="text-gray-600">Difference:</span>
+                                <div className="text-right">
+                                    <div className={`font-semibold ${oldRegimeTax > newRegimeTax ? 'text-green-600' : 'text-red-600'}`}>
+                                        {formatCurrency(Math.abs(oldRegimeTax - newRegimeTax))} / year
+                                    </div>
+                                    <div className="text-sm text-gray-500">
+                                        {formatCurrency(Math.abs(oldRegimeMonthlyTax - newRegimeMonthlyTax))} / month
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Understanding Tax Regime Selection */}
+            <div className="mt-8">
                 <h2 className="text-2xl font-bold mb-6">Understanding Tax Regime Selection</h2>
                 
                 <div className="mb-8">

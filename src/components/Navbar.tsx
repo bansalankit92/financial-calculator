@@ -4,22 +4,19 @@ import { Fragment } from 'react';
 import { Menu, Transition } from '@headlessui/react';
 import { Bars3Icon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { ROUTES } from '@/constants/routes';
 
 const calculators = [
-  { name: 'Home', href: '/' },
-  { name: 'SIP Calculator', href: '/sip' },
-  { name: 'EMI Calculator', href: '/emi' },
-  { name: 'New Tax Regime', href: '/new-regime-income-tax/2024-25' },
-  { name: 'Old Tax Regime', href: '/old-regime-income-tax' },
-  { name: 'Old vs New Regime', href: '/old-vs-new-income-tax-regime-compare' },
-  { name: 'Salary Calculator', href: '/salary' },
+  { name: 'Home', href: ROUTES.HOME },
+  { name: 'SIP Calculator', href: ROUTES.SIP },
+  { name: 'EMI Calculator', href: ROUTES.EMI },
+  { name: 'New Tax Regime', href: ROUTES.NEW_TAX_REGIME_2024_25 },
+  { name: 'Old Tax Regime', href: ROUTES.OLD_TAX_REGIME },
+  { name: 'Old vs New Regime', href: ROUTES.OLD_VS_NEW_REGIME },
+  { name: 'Salary Calculator', href: ROUTES.SALARY },
 ];
 
 export default function Navbar() {
-  const pathname = usePathname();
-  const title = getPageTitle(pathname);
-
   return (
     <nav className="sticky top-0 bg-white border-b border-gray-200 z-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -71,27 +68,4 @@ export default function Navbar() {
       </div>
     </nav>
   );
-}
-
-function getPageTitle(pathname: string): string {
-  switch (pathname) {
-    case '/':
-      return 'Home';
-    case '/sip':
-      return 'SIP Calculator';
-    case '/emi':
-      return 'EMI Calculator';
-    case '/old-vs-new-income-tax-regime-compare':
-      return 'Old vs New Regime Income Tax';
-    case '/new-regime-income-tax/2024-25':
-      return 'New Tax Regime Calculator FY 2024-25';
-    case '/new-regime-income-tax/2025-26':
-      return 'New Tax Regime Calculator FY 2025-26';
-    case '/old-tax':
-      return 'Old Regime Income Tax';
-    case '/salary':
-      return 'Salary Calculator';
-    default:
-      return 'Financial Calculator';
-  }
 } 

@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     apple: [
       { url: "/assets/icons/icon-152x152.png" }
     ],
-    shortcut: ["/favicon.ico"]
+    shortcut: ["/assets/icons/favicon.ico"]
   },
   appleWebApp: {
     capable: true,
