@@ -1,4 +1,5 @@
 import { SIPFrequency, SIPCalculationResult } from '@/types/calculator';
+import { EMICalculationParams, EMICalculationResult } from '@/types/calculator';
 
 export const PAYMENTS_PER_YEAR: Record<SIPFrequency, number> = {
   daily: 365,
@@ -80,12 +81,10 @@ export function getMaxInvestment(frequency: SIPFrequency): number {
 
 export function calculateWealthGrowth(monthlyInvestment: number, interestRate: number) {
   const years = [1, 3, 5, 8, 10, 12, 15, 18, 20, 22, 25, 30, 35];
-  
   return years.map(year => {
     const { totalValue, totalReturns } = calculateSIP(monthlyInvestment, interestRate, year);
     return {
       duration: year,
-      monthlyAmount: monthlyInvestment,
       totalValue,
       wealthGain: totalReturns
     };
@@ -167,4 +166,51 @@ export function getFrequencyComparison(monthlyAmount: number): { frequency: SIPF
       ]
     }
   ];
+}
+
+export function calculateEMI({ principal, interestRate, years }: EMICalculationParams): EMICalculationResult {
+  const n = years * 12;
+  const r = interestRate / 12 / 100;
+  const emi = principal * r * Math.pow(1 + r, n) / (Math.pow(1 + r, n) - 1);
+  let balance = principal;
+  let totalInterest = 0;
+  let totalPayment = 0;
+  const yearlyBreakup: EMICalculationResult['yearlyBreakup'] = [];
+  const currentYear = new Date().getFullYear();
+
+  for (let y = 0; y < years; y++) {
+    let yearPrincipal = 0;
+    let yearInterest = 0;
+    const months: EMICalculationResult['yearlyBreakup'][0]['months'] = [];
+    for (let m = 0; m < 12 && (y * 12 + m) < n; m++) {
+      const interest = balance * r;
+      const principalPaid = emi - interest;
+      yearPrincipal += principalPaid;
+      yearInterest += interest;
+      totalInterest += interest;
+      totalPayment += emi;
+      balance -= principalPaid;
+      months.push({
+        month: new Date(currentYear, m).toLocaleString('default', { month: 'short' }),
+        principalPaid: Math.round(principalPaid),
+        interestPaid: Math.round(interest),
+        totalPayment: Math.round(emi),
+        balance: Math.max(0, Math.round(balance)),
+      });
+    }
+    yearlyBreakup.push({
+      year: currentYear + y,
+      principalPaid: Math.round(yearPrincipal),
+      interestPaid: Math.round(yearInterest),
+      totalPayment: Math.round(yearPrincipal + yearInterest),
+      months,
+    });
+  }
+
+  return {
+    emi: Math.round(emi),
+    totalInterest: Math.round(totalInterest),
+    totalPayment: Math.round(totalPayment),
+    yearlyBreakup,
+  };
 } 
