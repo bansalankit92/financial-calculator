@@ -73,7 +73,7 @@ const OldVsNewRegimeCalculator = () => {
         setBasicSalary(calculatedBasicSalary);
         setMonthlyBasic(calculatedMonthlyBasic);
         
-        const newEpf = Math.min(21600, Math.round(newBasicYearly * 0.12), 1800 * 12);
+        const newEpf = Math.min(21600, Math.round(calculatedBasicSalary * 0.12), 1800 * 12);
         // Set default EPF and PF to 21600 (1800*12)
         setEpf(newEpf);
         setPf(newEpf);

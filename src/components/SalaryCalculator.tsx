@@ -65,7 +65,6 @@ const SalaryCalculator = () => {
   const [gross, setGross] = useState(0);
   const [incomeTax, setIncomeTax] = useState(0);
   const [takeHome, setTakeHome] = useState(0);
-  const [inHand, setInHand] = useState(0);
 
   // Cash Take Home calculation (do NOT deduct PF, EPF, Gratuity again)
   const cashTakeHome = takeHome
@@ -178,9 +177,7 @@ const SalaryCalculator = () => {
 
     // Take Home = Gross - Income Tax
     setTakeHome(grossSalary - Math.round(totalTax));
-    // In-hand calculation (no need to deduct PF, EPF, Professional Tax, and Gratuity again)
-    setInHand(grossSalary - Math.round(totalTax));
-  }, [ctc, pf, epf, gratuity, profTax, section80C, nps80CCD, employerNps, mediclaim80D, donations80G, homeLoanInterest80EEA, eduLoanInterest80E, hraExemption, actualRent, regime, basicSalary]);
+   }, [ctc, pf, epf, gratuity, profTax, section80C, nps80CCD, employerNps, mediclaim80D, donations80G, homeLoanInterest80EEA, eduLoanInterest80E, hraExemption, actualRent, regime, basicSalary]);
 
   // Share button handler
   const handleShare = async () => {
