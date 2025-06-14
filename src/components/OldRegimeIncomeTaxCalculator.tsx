@@ -78,11 +78,10 @@ const OldRegimeIncomeTaxCalculator = () => {
         const newBasicYearly = ctc * 0.5;
         setBasicSalaryYearly(newBasicYearly);
         setBasicSalaryMonthly(Math.round(newBasicYearly / 12));
-        
-        // Auto calculate EPF (12% of basic)
-        const newEpf = Math.min(1800*12, Math.round(newBasicYearly * 0.12));
+        const newEpf = Math.min(21600, Math.round(newBasicYearly * 0.12), 1800 * 12);
+        // Set default EPF and PF to 21600 (1800*12)
         setEpf(newEpf);
-        setPf(newEpf); // PF matches EPF by default
+        setPf(newEpf);
         
         // Auto calculate Gratuity (5% of basic)
         setGratuity(Math.round(newBasicYearly * 0.05));
@@ -281,13 +280,12 @@ const OldRegimeIncomeTaxCalculator = () => {
                                             />
                                         </div>
                                         <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-2">EPF (yearly, Max: ₹1,800/month)</label>
+                                            <label className="block text-sm font-medium text-gray-700 mb-2">EPF (yearly)</label>
                                             <input
                                                 type="number"
                                                 value={epf}
-                                                onChange={(e: ChangeEvent<HTMLInputElement>) => setEpf(Math.min(Number(e.target.value), 1800 * 12))}
+                                                onChange={(e: ChangeEvent<HTMLInputElement>) => setEpf(Number(e.target.value))}
                                                 className={inputClassName}
-                                                max={1800 * 12}
                                             />
                                         </div>
                                         <div>

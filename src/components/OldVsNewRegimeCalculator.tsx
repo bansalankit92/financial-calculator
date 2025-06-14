@@ -48,6 +48,8 @@ const OldVsNewRegimeCalculator = () => {
     const [hraExemption, setHraExemption] = useState<number>(0);
     const [gratuity, setGratuity] = useState<number>(0);
     const [profTax, setProfTax] = useState<number>(2400);
+    const [pf, setPf] = useState<number>(0);
+    const [epf, setEpf] = useState<number>(0);
 
     // Employer NPS
     const [monthlyEmployerNps, setMonthlyEmployerNps] = useState<number>(0);
@@ -70,6 +72,14 @@ const OldVsNewRegimeCalculator = () => {
         const calculatedMonthlyBasic = Math.round(calculatedBasicSalary / 12);
         setBasicSalary(calculatedBasicSalary);
         setMonthlyBasic(calculatedMonthlyBasic);
+        
+        const newEpf = Math.min(21600, Math.round(newBasicYearly * 0.12), 1800 * 12);
+        // Set default EPF and PF to 21600 (1800*12)
+        setEpf(newEpf);
+        setPf(newEpf);
+        
+        // Auto calculate Gratuity (5% of basic)
+        setGratuity(Math.round(calculatedBasicSalary * 0.05));
     }, [income]);
 
     // Calculate HRA exemption
@@ -129,7 +139,7 @@ const OldVsNewRegimeCalculator = () => {
     useEffect(() => {
         // Calculate Old Regime Tax
         const oldRegimeDeductions = OLD_STANDARD_DEDUCTION + 
-            Math.min(section80C, OLD_MAX_80C_LIMIT) +
+            Math.min(section80C + pf + epf, OLD_MAX_80C_LIMIT) +
             Math.min(nps80CCD, OLD_MAX_80CCD_LIMIT) +
             Math.min(mediclaim80D, OLD_MAX_80D_LIMIT) +
             donations80G +
@@ -154,7 +164,7 @@ const OldVsNewRegimeCalculator = () => {
         setNewRegimeTakeHome(income - newTax);
         setNewRegimeMonthlyTax(Math.round(newTax / 12));
         setNewRegimeMonthlyTakeHome(Math.round((income - newTax) / 12));
-    }, [income, section80C, nps80CCD, mediclaim80D, donations80G, homeLoanInterest80EEA, eduLoanInterest80E, hraExemption, employerNpsYearly, gratuity, profTax]);
+    }, [income, section80C, nps80CCD, mediclaim80D, donations80G, homeLoanInterest80EEA, eduLoanInterest80E, hraExemption, employerNpsYearly, gratuity, profTax, pf, epf]);
 
     // Calculate percentage for slider background
     const calculatePercentage = (value: number, max: number) => {
@@ -312,6 +322,7 @@ const OldVsNewRegimeCalculator = () => {
                             value={donations80G}
                             onChange={(e) => setDonations80G(Number(e.target.value))}
                             className={inputClassName}
+                            step="100"
                         />
                     </div>
                     <div>
@@ -335,6 +346,7 @@ const OldVsNewRegimeCalculator = () => {
                             value={eduLoanInterest80E}
                             onChange={(e) => setEduLoanInterest80E(Number(e.target.value))}
                             className={inputClassName}
+                            step="1000"
                         />
                     </div>
                     <div>
@@ -346,6 +358,7 @@ const OldVsNewRegimeCalculator = () => {
                             value={actualRent}
                             onChange={(e) => setActualRent(Number(e.target.value))}
                             className={inputClassName}
+                            step="500"
                         />
                         <p className="mt-1 text-sm text-gray-500">HRA is automatically calculated as 40% of basic salary</p>
                     </div>
@@ -358,6 +371,7 @@ const OldVsNewRegimeCalculator = () => {
                             value={gratuity}
                             onChange={(e) => setGratuity(Number(e.target.value))}
                             className={inputClassName}
+                            step="100"
                         />
                     </div>
                     <div>
@@ -369,6 +383,30 @@ const OldVsNewRegimeCalculator = () => {
                             value={profTax}
                             onChange={(e) => setProfTax(Number(e.target.value))}
                             className={inputClassName}
+                        />
+                    </div>
+                    <div>
+                        <label className="block text-gray-700 text-sm font-bold mb-2">
+                            PF (Yearly)
+                        </label>
+                        <input
+                            type="number"
+                            value={pf}
+                            onChange={(e) => setPf(Number(e.target.value))}
+                            className={inputClassName}
+                            step="100"
+                        />
+                    </div>
+                    <div>
+                        <label className="block text-gray-700 text-sm font-bold mb-2">
+                            EPF (Yearly)
+                        </label>
+                        <input
+                            type="number"
+                            value={epf}
+                            onChange={(e) => setEpf(Number(e.target.value))}
+                            className={inputClassName}
+                            step="100"
                         />
                     </div>
                 </div>
@@ -437,6 +475,14 @@ const OldVsNewRegimeCalculator = () => {
                         <div className="flex justify-between">
                             <span>HRA Exemption:</span>
                             <span>{formatCurrency(hraExemption)}</span>
+                        </div>
+                        <div className="flex justify-between">
+                            <span>PF:</span>
+                            <span>{formatCurrency(pf)}</span>
+                        </div>
+                        <div className="flex justify-between">
+                            <span>EPF:</span>
+                            <span>{formatCurrency(epf)}</span>
                         </div>
                         <div className="flex justify-between">
                             <span>Gratuity:</span>

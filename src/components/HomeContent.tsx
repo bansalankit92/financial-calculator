@@ -20,7 +20,7 @@ const calculators = [
   {
     name: 'New Tax Regime Calculator',
     description: 'Calculate your income tax under new regime for FY 2024-25 & 2025-26. Includes standard deduction, NPS benefits, and tax rebates.',
-    href: ROUTES.NEW_TAX_REGIME_2024_25,
+    href: ROUTES.NEW_TAX_REGIME_2025_26,
     icon: CalculatorIcon,
   },
   {
