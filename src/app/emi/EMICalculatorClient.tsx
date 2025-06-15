@@ -8,15 +8,25 @@ import EmiSummary from '@/components/calculators/EmiSummary';
 import EmiBreakupTable from '@/components/calculators/EmiBreakupTable';
 import EmiBarChart from '@/components/calculators/EmiBarChart';
 
-export default function EMICalculatorClient() {
-  // Defaults
-  const [principal, setPrincipal] = useState(800000);
-  const [interestRate, setInterestRate] = useState(9);
-  const [years, setYears] = useState(5);
+export interface EmiFormConfig {
+  principal: { min: number; max: number; step: number; default: number };
+  interest: { min: number; max: number; step: number; default: number };
+  years: { min: number; max: number; step: number; default: number };
+}
+
+const defaultConfig: EmiFormConfig = {
+  principal: { min: 100000, max: 50000000, step: 50000, default: 8000000 },
+  interest: { min: 5, max: 20, step: 0.1, default: 8 },
+  years: { min: 1, max: 30, step: 1, default: 20 },
+};
+
+export default function EMICalculatorClient({ config = defaultConfig }: { config?: EmiFormConfig }) {
+  const [principal, setPrincipal] = useState(config.principal.default);
+  const [interestRate, setInterestRate] = useState(config.interest.default);
+  const [years, setYears] = useState(config.years.default);
 
   const emiResult = calculateEMI({ principal, interestRate, years });
 
-  // Placeholder components to be implemented
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -39,6 +49,7 @@ export default function EMICalculatorClient() {
           onPrincipalChange={setPrincipal}
           onInterestRateChange={setInterestRate}
           onYearsChange={setYears}
+          config={config}
         />
         <EmiSummary
           emi={emiResult.emi}

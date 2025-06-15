@@ -1,5 +1,11 @@
 import React from 'react';
 
+interface EmiFormConfig {
+  principal: { min: number; max: number; step: number; default: number };
+  interest: { min: number; max: number; step: number; default: number };
+  years: { min: number; max: number; step: number; default: number };
+}
+
 interface EmiFormProps {
   principal: number;
   interestRate: number;
@@ -7,6 +13,7 @@ interface EmiFormProps {
   onPrincipalChange: (value: number) => void;
   onInterestRateChange: (value: number) => void;
   onYearsChange: (value: number) => void;
+  config: EmiFormConfig;
 }
 
 export default function EmiForm({
@@ -16,16 +23,9 @@ export default function EmiForm({
   onPrincipalChange,
   onInterestRateChange,
   onYearsChange,
+  config,
 }: EmiFormProps) {
-  const MAX_PRINCIPAL = 20000000; // 2 crore
-  const MIN_PRINCIPAL = 10000;
-  const PRINCIPAL_STEP = 5000;
-  const MAX_INTEREST = 25;
-  const MIN_INTEREST = 1;
-  const INTEREST_STEP = 0.5;
-  const MAX_YEARS = 35;
-  const MIN_YEARS = 1;
-  const YEARS_STEP = 1;
+  const { principal: pCfg, interest: iCfg, years: yCfg } = config;
 
   const sliderClassName = "flex-1 h-2 rounded-lg appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-blue-500 [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:shadow-md [&::-moz-range-thumb]:appearance-none [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-white [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-blue-500 [&::-moz-range-thumb]:cursor-pointer [&::-moz-range-thumb]:shadow-md";
   const inputClassName = "block w-32 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm";
@@ -58,23 +58,23 @@ export default function EmiForm({
               value={principal}
               onChange={e => onPrincipalChange(Number(e.target.value))}
               className={inputClassName}
-              step={PRINCIPAL_STEP}
-              min={MIN_PRINCIPAL}
-              max={MAX_PRINCIPAL}
+              step={pCfg.step}
+              min={pCfg.min}
+              max={pCfg.max}
             />
             <input
               type="range"
-              min={MIN_PRINCIPAL}
-              max={MAX_PRINCIPAL}
-              step={PRINCIPAL_STEP}
+              min={pCfg.min}
+              max={pCfg.max}
+              step={pCfg.step}
               value={principal}
               onChange={e => onPrincipalChange(Number(e.target.value))}
               className={sliderClassName}
-              style={getSliderStyle(principal, MAX_PRINCIPAL)}
+              style={getSliderStyle(principal, pCfg.max)}
             />
           </div>
           <div className="mt-1 text-sm text-gray-500">
-            Max value: ₹{(MAX_PRINCIPAL / 100000).toFixed(1)} Lakh
+            Max value: ₹{(pCfg.max / 100000).toFixed(1)} Lakh
           </div>
         </div>
 
@@ -88,23 +88,23 @@ export default function EmiForm({
               value={interestRate}
               onChange={e => onInterestRateChange(Number(e.target.value))}
               className={inputClassName}
-              step={INTEREST_STEP}
-              min={MIN_INTEREST}
-              max={MAX_INTEREST}
+              step={iCfg.step}
+              min={iCfg.min}
+              max={iCfg.max}
             />
             <input
               type="range"
-              min={MIN_INTEREST}
-              max={MAX_INTEREST}
-              step={INTEREST_STEP}
+              min={iCfg.min}
+              max={iCfg.max}
+              step={iCfg.step}
               value={interestRate}
               onChange={e => onInterestRateChange(Number(e.target.value))}
               className={sliderClassName}
-              style={getSliderStyle(interestRate, MAX_INTEREST)}
+              style={getSliderStyle(interestRate, iCfg.max)}
             />
           </div>
           <div className="mt-1 text-sm text-gray-500">
-            Max value: {MAX_INTEREST}%
+            Max value: {iCfg.max}%
           </div>
         </div>
 
@@ -118,23 +118,23 @@ export default function EmiForm({
               value={years}
               onChange={e => onYearsChange(Number(e.target.value))}
               className={inputClassName}
-              step={YEARS_STEP}
-              min={MIN_YEARS}
-              max={MAX_YEARS}
+              step={yCfg.step}
+              min={yCfg.min}
+              max={yCfg.max}
             />
             <input
               type="range"
-              min={MIN_YEARS}
-              max={MAX_YEARS}
-              step={YEARS_STEP}
+              min={yCfg.min}
+              max={yCfg.max}
+              step={yCfg.step}
               value={years}
               onChange={e => onYearsChange(Number(e.target.value))}
               className={sliderClassName}
-              style={getSliderStyle(years, MAX_YEARS)}
+              style={getSliderStyle(years, yCfg.max)}
             />
           </div>
           <div className="mt-1 text-sm text-gray-500">
-            Max value: {MAX_YEARS} years
+            Max value: {yCfg.max} years
           </div>
         </div>
       </div>
