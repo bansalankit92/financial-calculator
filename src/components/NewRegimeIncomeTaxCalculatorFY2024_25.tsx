@@ -324,7 +324,7 @@ const NewRegimeIncomeTaxCalculatorFY2024_25 = () => {
                 </ul>
             </div>
 
-            <div className="space-y-6 bg-white p-6 rounded-lg shadow-md">
+            <div className="space-y-6 bg-white ">
                 <div>
                     <h2 className="text-2xl font-semibold mb-4">About New Tax Regime Calculator</h2>
                     <p className="text-gray-700 mb-4">

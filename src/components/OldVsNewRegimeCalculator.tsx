@@ -543,7 +543,7 @@ const OldVsNewRegimeCalculator = () => {
             {/* Tax Comparison */}
             <div className="mt-8 p-6">
                 <h2 className="text-2xl font-bold mb-6">Tax Comparison</h2>
-                <div className="bg-white rounded-lg p-6 shadow-sm">
+                <div className="">
                     <div className="space-y-4">
                         <div className="flex justify-between items-center">
                             <span className="text-gray-600">Old Regime Tax:</span>

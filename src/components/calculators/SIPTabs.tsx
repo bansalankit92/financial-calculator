@@ -3,13 +3,14 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { SIPFrequency } from '@/types/calculator';
+import { ROUTES } from '@/constants/routes';
 
 const tabs: { label: string; href: string; frequency: SIPFrequency }[] = [
-  { label: 'Daily', href: '/sip-daily', frequency: 'daily' },
-  { label: 'Weekly', href: '/sip-weekly', frequency: 'weekly' },
-  { label: 'Monthly', href: '/sip', frequency: 'monthly' },
-  { label: 'Quarterly', href: '/sip-quarterly', frequency: 'quarterly' },
-  { label: 'Yearly', href: '/sip-yearly', frequency: 'yearly' },
+  { label: 'Daily', href: ROUTES.SIP_DAILY, frequency: 'daily' },
+  { label: 'Weekly', href: ROUTES.SIP_WEEKLY, frequency: 'weekly' },
+  { label: 'Monthly', href: ROUTES.SIP_MONTHLY, frequency: 'monthly' },
+  { label: 'Quarterly', href: ROUTES.SIP_QUARTERLY, frequency: 'quarterly' },
+  { label: 'Yearly', href: ROUTES.SIP_YEARLY, frequency: 'yearly' },
 ];
 
 export default function SIPTabs() {
