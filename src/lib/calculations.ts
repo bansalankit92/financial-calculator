@@ -176,35 +176,52 @@ export function calculateEMI({ principal, interestRate, years }: EMICalculationP
   let totalInterest = 0;
   let totalPayment = 0;
   const yearlyBreakup: EMICalculationResult['yearlyBreakup'] = [];
-  const currentYear = new Date().getFullYear();
 
-  for (let y = 0; y < years; y++) {
-    let yearPrincipal = 0;
-    let yearInterest = 0;
-    const months: EMICalculationResult['yearlyBreakup'][0]['months'] = [];
-    for (let m = 0; m < 12 && (y * 12 + m) < n; m++) {
-      const interest = balance * r;
-      const principalPaid = emi - interest;
-      yearPrincipal += principalPaid;
-      yearInterest += interest;
-      totalInterest += interest;
-      totalPayment += emi;
-      balance -= principalPaid;
-      months.push({
-        month: new Date(currentYear, m).toLocaleString('default', { month: 'short' }),
-        principalPaid: Math.round(principalPaid),
-        interestPaid: Math.round(interest),
-        totalPayment: Math.round(emi),
-        balance: Math.max(0, Math.round(balance)),
-      });
+  // Start from next month
+  const startDate = new Date();
+  startDate.setMonth(startDate.getMonth() + 1);
+
+  const yearMap: { [year: number]: EMICalculationResult['yearlyBreakup'][0] } = {};
+
+  for (let i = 0; i < n; i++) {
+    const emiDate = new Date(startDate.getFullYear(), startDate.getMonth() + i, 1);
+    const year = emiDate.getFullYear();
+    const month = emiDate.toLocaleString('default', { month: 'short' });
+    const interest = balance * r;
+    const principalPaid = emi - interest;
+    totalInterest += interest;
+    totalPayment += emi;
+    balance -= principalPaid;
+
+    if (!yearMap[year]) {
+      yearMap[year] = {
+        year,
+        principalPaid: 0,
+        interestPaid: 0,
+        totalPayment: 0,
+        months: [],
+      };
     }
-    yearlyBreakup.push({
-      year: currentYear + y,
-      principalPaid: Math.round(yearPrincipal),
-      interestPaid: Math.round(yearInterest),
-      totalPayment: Math.round(yearPrincipal + yearInterest),
-      months,
+    yearMap[year].principalPaid += principalPaid;
+    yearMap[year].interestPaid += interest;
+    yearMap[year].totalPayment += emi;
+    yearMap[year].months.push({
+      month,
+      principalPaid: Math.round(principalPaid),
+      interestPaid: Math.round(interest),
+      totalPayment: Math.round(emi),
+      balance: Math.max(0, Math.round(balance)),
     });
+  }
+
+  // Convert yearMap to array sorted by year
+  const sortedYears = Object.keys(yearMap).map(Number).sort((a, b) => a - b);
+  for (const y of sortedYears) {
+    const yb = yearMap[y];
+    yb.principalPaid = Math.round(yb.principalPaid);
+    yb.interestPaid = Math.round(yb.interestPaid);
+    yb.totalPayment = Math.round(yb.totalPayment);
+    yearlyBreakup.push(yb);
   }
 
   return {

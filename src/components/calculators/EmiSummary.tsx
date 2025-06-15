@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useState, useCallback } from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip, PieLabelRenderProps } from 'recharts';
 
 interface EmiSummaryProps {
@@ -8,7 +8,8 @@ interface EmiSummaryProps {
   principal: number;
 }
 
-function formatCurrency(amount: number): string {
+function formatCurrency(amount: number, showFull: boolean = false): string {
+  if (showFull) return `₹${amount.toLocaleString('en-IN')}`;
   if (amount >= 10000000) {
     return `₹${(amount / 10000000).toFixed(2)} Cr`;
   } else if (amount >= 100000) {
@@ -65,6 +66,13 @@ export default function EmiSummary({ emi, totalInterest, totalPayment, principal
     { name: 'Interest', value: totalInterest }
   ], [principal, totalInterest]);
 
+  // State for toggling full value display
+  const [showFull, setShowFull] = useState<{ emi: boolean; interest: boolean; total: boolean }>({ emi: false, interest: false, total: false });
+
+  const handleToggle = useCallback((key: 'emi' | 'interest' | 'total') => {
+    setShowFull((prev) => ({ ...prev, [key]: !prev[key] }));
+  }, []);
+
   const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent }: PieLabelRenderProps) => {
     if (cx === undefined || cy === undefined || midAngle === undefined || innerRadius === undefined || outerRadius === undefined || percent === undefined) {
       return null;
@@ -120,15 +128,33 @@ export default function EmiSummary({ emi, totalInterest, totalPayment, principal
         <div className="space-y-4">
           <div>
             <div className="text-sm text-gray-600">Loan EMI</div>
-            <div className="text-2xl font-semibold">{formatCurrency(emi)}</div>
+            <div
+              className="text-2xl font-semibold cursor-pointer"
+              onClick={() => handleToggle('emi')}
+              title="Click to toggle full value"
+            >
+              {formatCurrency(emi, showFull.emi)}
+            </div>
           </div>
           <div>
             <div className="text-sm text-gray-600">Total Interest Payable</div>
-            <div className="text-2xl font-semibold text-blue-600">{formatCurrency(totalInterest)}</div>
+            <div
+              className="text-2xl font-semibold text-blue-600 cursor-pointer"
+              onClick={() => handleToggle('interest')}
+              title="Click to toggle full value"
+            >
+              {formatCurrency(totalInterest, showFull.interest)}
+            </div>
           </div>
           <div>
             <div className="text-sm text-gray-600">Total Payment (Principal + Interest)</div>
-            <div className="text-2xl font-semibold text-green-600">{formatCurrency(totalPayment)}</div>
+            <div
+              className="text-2xl font-semibold text-green-600 cursor-pointer"
+              onClick={() => handleToggle('total')}
+              title="Click to toggle full value"
+            >
+              {formatCurrency(totalPayment, showFull.total)}
+            </div>
             <div className="text-sm text-gray-500 mt-1">{numberToWords(totalPayment)}</div>
           </div>
         </div>

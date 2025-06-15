@@ -26,17 +26,17 @@ export default function EmiBarChart({ yearlyBreakup }: EmiBarChartProps) {
       <ResponsiveContainer width="100%" height={350}>
         <BarChart
           data={data}
-          margin={{ top: 20, right: 30, left: 30, bottom: 30 }}
-          onClick={(_, index) => setActiveIndex(index)}
+          margin={{ top: 20, right: 30, left: 40, bottom: 30 }}
         >
           <XAxis dataKey="year" />
           <YAxis tickFormatter={formatCurrency} />
           <Tooltip formatter={formatCurrency} />
           <Legend />
-          <Bar dataKey="Principal" stackId="a" fill="#3b82f6" radius={[4, 4, 0, 0]} isAnimationActive>
+          <Bar          onClick={(_, index) => setActiveIndex(index)}
+ dataKey="Principal" stackId="a" fill="#3b82f6" radius={[4, 4, 0, 0]} isAnimationActive>
             {/* <LabelList dataKey="Principal" position="top" formatter={formatCurrency} /> */}
           </Bar>
-          <Bar dataKey="Interest" stackId="a" fill="#fbbf24" isAnimationActive>
+          <Bar  dataKey="Interest" stackId="a" fill="#fbbf24" isAnimationActive>
             {/* <LabelList dataKey="Interest" position="top" formatter={formatCurrency} /> */}
           </Bar>
         </BarChart>
