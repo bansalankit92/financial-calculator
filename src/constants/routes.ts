@@ -1,5 +1,7 @@
 export const ROUTES = {
   HOME: '/',
+  CONTACT: '/contact',
+  FEEDBACK: '/feedback',
   SIP: '/sip',
   SIP_DAILY: '/sip-daily',
   SIP_WEEKLY: '/sip-weekly',

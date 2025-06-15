@@ -55,6 +55,20 @@ export default function Footer() {
               </li>
             </ul>
           </div>
+          <div className="flex-1 min-w-[200px]">
+            <h3 className="text-2xl font-bold mb-4">Quick Links</h3>
+            <ul className="space-y-2">
+              <li>
+                <Link href={ROUTES.HOME} className="hover:underline">Home</Link>
+              </li>
+              <li>
+                <Link href={ROUTES.CONTACT} className="hover:underline">Contact</Link>
+              </li>
+              <li>
+                <Link href="https://docs.google.com/forms/d/e/1FAIpQLScv_SsrJtRdWPMtC3jfKUcu6KXZxAN9kgUUri1-ygCeM_PU6g/viewform" target="_blank" rel="noopener noreferrer" className="hover:underline">Feedback</Link>
+              </li>
+            </ul>
+          </div>
         </div>
         <div className="mt-8 text-center text-sm w-full flex justify-center">
           © 2020-{new Date().getFullYear()} Design and developed by{' '}

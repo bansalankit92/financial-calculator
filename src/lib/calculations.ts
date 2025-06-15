@@ -91,7 +91,7 @@ export function calculateWealthGrowth(monthlyInvestment: number, interestRate: n
   });
 }
 
-export function getFrequencyComparison(monthlyAmount: number): { frequency: SIPFrequency; pros: string[]; cons: string[] }[] {
+export function getFrequencyComparison(): { frequency: SIPFrequency; pros: string[]; cons: string[] }[] {
   return [
     {
       frequency: 'daily',

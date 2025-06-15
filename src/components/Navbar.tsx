@@ -8,12 +8,13 @@ import { ROUTES } from '@/constants/routes';
 
 const calculators = [
   { name: 'Home', href: ROUTES.HOME },
+  { name: 'Old vs New Regime', href: ROUTES.OLD_VS_NEW_REGIME },
+  { name: 'New Tax Regime (2025-26)', href: ROUTES.NEW_TAX_REGIME_2025_26 },
+  { name: 'Old Tax Regime', href: ROUTES.OLD_TAX_REGIME },
   { name: 'SIP Calculator', href: ROUTES.SIP },
   { name: 'EMI Calculator', href: ROUTES.EMI },
-  { name: 'New Tax Regime', href: ROUTES.NEW_TAX_REGIME_2025_26 },
-  { name: 'Old Tax Regime', href: ROUTES.OLD_TAX_REGIME },
-  { name: 'Old vs New Regime', href: ROUTES.OLD_VS_NEW_REGIME },
   { name: 'Salary Calculator', href: ROUTES.SALARY },
+  { name: 'Contact / Feedback', href: ROUTES.CONTACT },
 ];
 
 export default function Navbar() {

@@ -72,7 +72,7 @@ const NewRegimeIncomeTaxCalculatorFY2024_25 = () => {
     };
 
     const calculateTax = (amount: number) => {
-        let remainingIncome = amount;
+        const remainingIncome = amount;
         let totalTaxAmount = 0;
         const slabwiseBreakdown: { slab: string; tax: number }[] = [];
 
