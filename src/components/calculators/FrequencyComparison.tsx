@@ -1,12 +1,9 @@
 import { getFrequencyComparison } from '@/lib/calculations';
 import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/outline';
 
-interface FrequencyComparisonProps {
-  monthlyAmount: number;
-}
 
-export default function FrequencyComparison({ monthlyAmount }: FrequencyComparisonProps) {
-  const comparisons = getFrequencyComparison(monthlyAmount);
+export default function FrequencyComparison() {
+  const comparisons = getFrequencyComparison();
 
   return (
     <div className="space-y-6">
