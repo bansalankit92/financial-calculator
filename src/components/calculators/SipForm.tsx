@@ -46,7 +46,7 @@ export default function SipForm({
   });
 
   const sliderClassName = "flex-1 h-2 rounded-lg appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-blue-500 [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:shadow-md [&::-moz-range-thumb]:appearance-none [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-white [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-blue-500 [&::-moz-range-thumb]:cursor-pointer [&::-moz-range-thumb]:shadow-md";
-  const inputClassName = "block w-32 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm";
+  const inputClassName = "block w-20 sm:w-28 md:w-32 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm min-w-0";
 
   const getInvestmentConfig = (freq: SIPFrequency) => {
     switch (freq) {
@@ -72,7 +72,7 @@ export default function SipForm({
           <label className="block text-sm font-medium text-gray-700 mb-2">
             {getInvestmentLabel(frequency)}
           </label>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 sm:gap-4">
             <input
               type="number"
               value={investment}
@@ -102,7 +102,7 @@ export default function SipForm({
           <label className="block text-sm font-medium text-gray-700 mb-2">
             Interest Rate (%)
           </label>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 sm:gap-4">
             <input
               type="number"
               value={interestRate}
@@ -132,7 +132,7 @@ export default function SipForm({
           <label className="block text-sm font-medium text-gray-700 mb-2">
             Number of Years
           </label>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 sm:gap-4">
             <input
               type="number"
               value={years}
