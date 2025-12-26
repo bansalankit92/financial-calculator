@@ -1,4 +1,4 @@
-import { SIPFrequency, SIPCalculationResult } from '@/types/calculator';
+import { SIPFrequency, SIPCalculationResult, StepUpCalculationParams, StepUpCalculationResult, StepUpFrequency, StepUpType } from '@/types/calculator';
 import { EMICalculationParams, EMICalculationResult } from '@/types/calculator';
 
 export const PAYMENTS_PER_YEAR: Record<SIPFrequency, number> = {
@@ -230,4 +230,122 @@ export function calculateEMI({ principal, interestRate, years }: EMICalculationP
     totalPayment: Math.round(totalPayment),
     yearlyBreakup,
   };
+}
+
+export function calculateStepUpSIP({
+  initialInvestment,
+  stepUpValue,
+  stepUpType,
+  stepUpFrequency,
+  interestRate,
+  years
+}: StepUpCalculationParams): StepUpCalculationResult {
+  const monthlyRate = interestRate / 12 / 100;
+  let totalValue = 0;
+  let totalInvestment = 0;
+  const yearlyBreakdown: StepUpCalculationResult['yearlyBreakdown'] = [];
+
+  // For monthly step-up frequency
+  if (stepUpFrequency === 'monthly') {
+    let currentInvestment = initialInvestment;
+
+    for (let year = 1; year <= years; year++) {
+      let yearStartValue = totalValue;
+      let yearInvestment = 0;
+
+      for (let month = 1; month <= 12; month++) {
+        // Add monthly investment
+        yearInvestment += currentInvestment;
+        totalInvestment += currentInvestment;
+
+        // Calculate value with compound interest
+        yearStartValue = (yearStartValue + currentInvestment) * (1 + monthlyRate);
+
+        // Increase investment monthly
+        if (stepUpType === 'percentage') {
+          currentInvestment = currentInvestment * (1 + stepUpValue / 100);
+        } else {
+          currentInvestment = currentInvestment + stepUpValue;
+        }
+      }
+
+      totalValue = yearStartValue;
+
+      yearlyBreakdown.push({
+        year,
+        investment: Math.round(yearInvestment),
+        cumulativeInvestment: Math.round(totalInvestment),
+        value: Math.round(totalValue),
+      });
+    }
+  } else {
+    // For yearly step-up frequency
+    let currentYearlyInvestment = initialInvestment;
+
+    for (let year = 1; year <= years; year++) {
+      let yearValue = totalValue;
+      const monthlyInvestment = currentYearlyInvestment / 12;
+
+      // Calculate for 12 months
+      for (let month = 1; month <= 12; month++) {
+        yearValue = (yearValue + monthlyInvestment) * (1 + monthlyRate);
+      }
+
+      totalInvestment += currentYearlyInvestment;
+      totalValue = yearValue;
+
+      yearlyBreakdown.push({
+        year,
+        investment: Math.round(currentYearlyInvestment),
+        cumulativeInvestment: Math.round(totalInvestment),
+        value: Math.round(totalValue),
+      });
+
+      // Increase investment yearly
+      if (stepUpType === 'percentage') {
+        currentYearlyInvestment = currentYearlyInvestment * (1 + stepUpValue / 100);
+      } else {
+        currentYearlyInvestment = currentYearlyInvestment + stepUpValue;
+      }
+    }
+  }
+
+  const totalReturns = totalValue - totalInvestment;
+
+  return {
+    totalInvestment: Math.round(totalInvestment),
+    totalReturns: Math.round(totalReturns),
+    totalValue: Math.round(totalValue),
+    yearlyBreakdown,
+  };
+}
+
+export function getStepUpInvestmentLabel(frequency: StepUpFrequency): string {
+  return frequency === 'monthly' ? 'Monthly Investment' : 'Yearly Investment';
+}
+
+export function getStepUpLabel(frequency: StepUpFrequency): string {
+  return frequency === 'monthly' ? 'Monthly Step-Up' : 'Yearly Step-Up';
+}
+
+export function getDefaultStepUpInvestment(frequency: StepUpFrequency): number {
+  return frequency === 'monthly' ? 5000 : 100000;
+}
+
+export function getDefaultStepUpValue(frequency: StepUpFrequency, type: StepUpType): number {
+  if (frequency === 'monthly') {
+    return type === 'percentage' ? 10 : 100;
+  }
+  return type === 'percentage' ? 10 : 10000;
+}
+
+export function getMaxStepUpInvestment(frequency: StepUpFrequency): number {
+  return frequency === 'monthly' ? 500000 : 5000000;
+}
+
+export function getMaxStepUpValue(frequency: StepUpFrequency, type: StepUpType): number {
+  if (type === 'percentage') {
+    return 100; // Max 100% increase
+  }
+  return frequency === 'monthly' ? 50000 : 500000;
 } 

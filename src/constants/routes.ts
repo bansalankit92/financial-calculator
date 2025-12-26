@@ -8,6 +8,7 @@ export const ROUTES = {
   SIP_MONTHLY: '/sip',
   SIP_QUARTERLY: '/sip-quarterly',
   SIP_YEARLY: '/sip-yearly',
+  STEP_UP_SIP: '/step-up-sip',
   EMI: '/emi',
   EMI_HOME_LOAN: '/emi/home-loan',
   EMI_CAR_LOAN: '/emi/car-loan',
