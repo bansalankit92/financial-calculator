@@ -12,6 +12,7 @@ const calculators = [
   { name: 'New Tax Regime (2025-26)', href: ROUTES.NEW_TAX_REGIME_2025_26 },
   { name: 'Old Tax Regime', href: ROUTES.OLD_TAX_REGIME },
   { name: 'SIP Calculator', href: ROUTES.SIP },
+  { name: 'Step-Up SIP Calculator', href: ROUTES.STEP_UP_SIP },
   { name: 'EMI Calculator', href: ROUTES.EMI },
   { name: 'Salary Calculator', href: ROUTES.SALARY },
   { name: 'Contact / Feedback', href: ROUTES.CONTACT },
@@ -44,7 +45,7 @@ export default function Navbar() {
                 leaveFrom="transform opacity-100 scale-100"
                 leaveTo="transform opacity-0 scale-95"
               >
-                <Menu.Items className="absolute right-0 mt-2 w-56 origin-top-right rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                <Menu.Items className="absolute right-0 mt-2 w-56 max-w-[calc(100vw-2rem)] origin-top-right rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-50">
                   <div className="py-1">
                     {calculators.map((calculator) => (
                       <Menu.Item key={calculator.href}>
