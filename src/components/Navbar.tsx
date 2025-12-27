@@ -8,6 +8,7 @@ import { ROUTES } from '@/constants/routes';
 
 const calculators = [
   { name: 'Home', href: ROUTES.HOME },
+  { name: 'Blog', href: ROUTES.BLOG },
   { name: 'Old vs New Regime', href: ROUTES.OLD_VS_NEW_REGIME },
   { name: 'New Tax Regime (2025-26)', href: ROUTES.NEW_TAX_REGIME_2025_26 },
   { name: 'Old Tax Regime', href: ROUTES.OLD_TAX_REGIME },
