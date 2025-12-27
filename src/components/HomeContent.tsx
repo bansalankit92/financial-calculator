@@ -36,6 +36,12 @@ const calculators = [
     icon: ChartBarIcon,
   },
   {
+    name: 'Step-Up SIP Calculator',
+    description: 'Plan your investments with increasing contributions. Calculate returns with monthly or yearly step-up investments to maximize wealth creation.',
+    href: ROUTES.STEP_UP_SIP,
+    icon: ChartBarIcon,
+  },
+  {
     name: 'EMI Calculator',
     description: 'Calculate EMIs for your home loan, car loan, or personal loan. Plan your repayments and understand total interest costs.',
     href: ROUTES.EMI,

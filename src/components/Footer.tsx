@@ -33,6 +33,9 @@ export default function Footer() {
               <li>
                 <Link href={ROUTES.SIP} className="hover:underline">SIP Calculator</Link>
               </li>
+              <li>
+                <Link href={ROUTES.STEP_UP_SIP} className="hover:underline">Step-Up SIP Calculator</Link>
+              </li>
             </ul>
           </div>
           <div className="flex-1 min-w-[200px]">

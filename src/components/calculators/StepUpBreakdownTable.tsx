@@ -21,9 +21,10 @@ export default function StepUpBreakdownTable({
   yearlyBreakdown
 }: StepUpBreakdownTableProps) {
   return (
-    <div className="bg-white rounded-xl shadow-lg overflow-hidden">
-      <div className="overflow-x-auto">
-        <table className="min-w-full divide-y divide-gray-200">
+    <div className="bg-white rounded-xl shadow-lg overflow-hidden w-full">
+      <div className="overflow-x-auto -mx-4 sm:mx-0">
+        <div className="inline-block min-w-full align-middle px-4 sm:px-0">
+          <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
             <tr>
               <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -69,6 +70,7 @@ export default function StepUpBreakdownTable({
             })}
           </tbody>
         </table>
+        </div>
       </div>
     </div>
   );

@@ -26,11 +26,12 @@ export default function EmiBreakupTable({ yearlyBreakup, emi, principal, interes
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-lg p-6 mt-8">
+    <div className="bg-white rounded-xl shadow-lg p-6 mt-8 w-full">
       <h2 className="text-xl font-semibold mb-2">Your Repayment/Breakup Details (Monthly)</h2>
       <p className="text-gray-600 mb-4">Your debt repayment schedule in regular instalments over a period of time.</p>
-      <div className="overflow-x-auto">
-        <table className="min-w-full border text-sm">
+      <div className="overflow-x-auto -mx-6 sm:mx-0">
+        <div className="inline-block min-w-full align-middle px-6 sm:px-0">
+          <table className="min-w-full border text-sm">
           <thead className="bg-gray-50">
             <tr>
               <th className="px-3 py-2 border">Year</th>
@@ -69,6 +70,7 @@ export default function EmiBreakupTable({ yearlyBreakup, emi, principal, interes
             ))}
           </tbody>
         </table>
+        </div>
       </div>
       <div className="mt-8">
         <h3 className="text-lg font-semibold mb-2">Formula used by EMI Calculator</h3>
