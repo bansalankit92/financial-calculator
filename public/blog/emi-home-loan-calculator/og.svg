@@ -1,0 +1,39 @@
+<svg width="1200" height="630" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background gradient -->
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2563eb;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#4f46e5;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bgGradient)"/>
+
+  <!-- Pattern overlay -->
+  <circle cx="100" cy="100" r="150" fill="#ffffff" opacity="0.05"/>
+  <circle cx="1100" cy="530" r="200" fill="#ffffff" opacity="0.05"/>
+
+  <!-- Main content container -->
+  <rect x="80" y="120" width="1040" height="390" rx="20" fill="#ffffff" opacity="0.1"/>
+
+  <!-- Title -->
+  <text x="600" y="240" font-family="Arial, sans-serif" font-size="56" font-weight="bold" fill="#ffffff" text-anchor="middle">
+    EMI Home Loan Calculator
+  </text>
+
+  <!-- Subtitle -->
+  <text x="600" y="310" font-family="Arial, sans-serif" font-size="32" fill="#e0e7ff" text-anchor="middle">
+    Smart Strategies vs Emotional Decisions
+  </text>
+
+  <!-- Tagline -->
+  <text x="600" y="390" font-family="Arial, sans-serif" font-size="24" fill="#c7d2fe" text-anchor="middle">
+    Understand the real cost of home loans and make data-driven decisions
+  </text>
+
+  <!-- Brand -->
+  <text x="600" y="560" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="#ffffff" text-anchor="middle">
+    FinCalculator.in
+  </text>
+</svg>
