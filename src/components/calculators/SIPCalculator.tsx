@@ -1,16 +1,14 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ShareIcon } from '@heroicons/react/24/outline';
-import { useRouter, usePathname } from 'next/navigation';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import SipForm from './SipForm';
 import SipSummary from './SipSummary';
 import WealthTable from './WealthTable';
 import { calculateSIP, getDefaultInvestment } from '@/lib/calculations';
 import { useQueryParams } from '@/hooks/useQueryParams';
-import { useDebounce } from '@/hooks/useDebounce';
 import { SIPFrequency } from '@/types/calculator';
 import FrequencyComparison from './FrequencyComparison';
 
@@ -21,36 +19,19 @@ interface SIPCalculatorProps {
 }
 
 export default function SIPCalculator({ frequency }: SIPCalculatorProps) {
-  const router = useRouter();
-  const pathname = usePathname();
   const { getQueryParam, createQueryString } = useQueryParams();
   const [showCopied, setShowCopied] = useState(false);
 
   // Initialize state from URL parameters or defaults
-  const [investment, setInvestment] = useState(() => 
+  const [investment, setInvestment] = useState(() =>
     getQueryParam('investment', getDefaultInvestment(frequency))
   );
-  const [interestRate, setInterestRate] = useState(() => 
+  const [interestRate, setInterestRate] = useState(() =>
     getQueryParam('interest', 12)
   );
-  const [years, setYears] = useState(() => 
+  const [years, setYears] = useState(() =>
     getQueryParam('years', 3)
   );
-
-  // Create debounced versions of the state
-  const debouncedInvestment = useDebounce(investment, 500);
-  const debouncedInterestRate = useDebounce(interestRate, 500);
-  const debouncedYears = useDebounce(years, 500);
-
-  // Update URL when debounced values change
-  useEffect(() => {
-    const queryString = createQueryString({
-      investment: debouncedInvestment,
-      interest: debouncedInterestRate,
-      years: debouncedYears
-    });
-    router.push(`${pathname}?${queryString}`, { scroll: false });
-  }, [debouncedInvestment, debouncedInterestRate, debouncedYears, pathname, router, createQueryString]);
 
   const { totalInvestment, totalReturns, totalValue } = calculateSIP(
     investment,
@@ -61,7 +42,14 @@ export default function SIPCalculator({ frequency }: SIPCalculatorProps) {
 
   const handleShare = async () => {
     try {
-      await navigator.clipboard.writeText(window.location.href);
+      // Build shareable URL with current values only when sharing
+      const queryString = createQueryString({
+        investment,
+        interest: interestRate,
+        years
+      });
+      const shareUrl = `${window.location.origin}${window.location.pathname}?${queryString}`;
+      await navigator.clipboard.writeText(shareUrl);
       setShowCopied(true);
       setTimeout(() => setShowCopied(false), 2000);
     } catch (err) {

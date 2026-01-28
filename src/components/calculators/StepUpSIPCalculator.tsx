@@ -1,20 +1,16 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { useRouter, usePathname } from 'next/navigation';
 import { ShareIcon } from '@heroicons/react/24/outline';
 import StepUpForm from '@/components/calculators/StepUpForm';
 import StepUpSummary from '@/components/calculators/StepUpSummary';
 import StepUpBreakdownTable from '@/components/calculators/StepUpBreakdownTable';
 import { calculateStepUpSIP, getDefaultStepUpInvestment, getDefaultStepUpValue } from '@/lib/calculations';
 import { useQueryParams } from '@/hooks/useQueryParams';
-import { useDebounce } from '@/hooks/useDebounce';
 import { StepUpFrequency, StepUpType } from '@/types/calculator';
 
 export default function StepUpSIPCalculator() {
-  const router = useRouter();
-  const pathname = usePathname();
   const { getQueryParam, createQueryString } = useQueryParams();
   const [showCopied, setShowCopied] = useState(false);
 
@@ -34,25 +30,6 @@ export default function StepUpSIPCalculator() {
   const [years, setYears] = useState(() =>
     getQueryParam('years', 10)
   );
-
-  // Create debounced versions of the state
-  const debouncedInitialInvestment = useDebounce(initialInvestment, 500);
-  const debouncedStepUpValue = useDebounce(stepUpValue, 500);
-  const debouncedInterestRate = useDebounce(interestRate, 500);
-  const debouncedYears = useDebounce(years, 500);
-
-  // Update URL when debounced values change
-  useEffect(() => {
-    const queryString = createQueryString({
-      investment: debouncedInitialInvestment,
-      stepup: debouncedStepUpValue,
-      type: stepUpType,
-      frequency: stepUpFrequency,
-      interest: debouncedInterestRate,
-      years: debouncedYears
-    });
-    router.push(`${pathname}?${queryString}`, { scroll: false });
-  }, [debouncedInitialInvestment, debouncedStepUpValue, stepUpType, stepUpFrequency, debouncedInterestRate, debouncedYears, pathname, router, createQueryString]);
 
   const { totalInvestment, totalReturns, totalValue, yearlyBreakdown } = calculateStepUpSIP({
     initialInvestment,
@@ -79,7 +56,17 @@ export default function StepUpSIPCalculator() {
 
   const handleShare = async () => {
     try {
-      await navigator.clipboard.writeText(window.location.href);
+      // Build shareable URL with current values only when sharing
+      const queryString = createQueryString({
+        investment: initialInvestment,
+        stepup: stepUpValue,
+        type: stepUpType,
+        frequency: stepUpFrequency,
+        interest: interestRate,
+        years
+      });
+      const shareUrl = `${window.location.origin}${window.location.pathname}?${queryString}`;
+      await navigator.clipboard.writeText(shareUrl);
       setShowCopied(true);
       setTimeout(() => setShowCopied(false), 2000);
     } catch (err) {

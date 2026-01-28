@@ -2,6 +2,9 @@ import { Metadata } from 'next';
 import { generateMetadata as getMetadata } from '@/components/common/PageMetadata';
 import HomeContent from '@/components/HomeContent';
 
+// Revalidate homepage every hour
+export const revalidate = 3600
+
 export const metadata: Metadata = getMetadata({
   title: 'Free Financial Calculators for Tax, SIP, EMI & Salary',
   description: 'Comprehensive suite of financial calculators for Indian taxpayers. Calculate income tax under new regime, SIP returns, EMI payments, and in-hand salary with our easy-to-use tools.',

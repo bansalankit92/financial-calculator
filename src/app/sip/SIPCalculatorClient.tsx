@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
-import { useRouter, usePathname } from 'next/navigation';
 import { ShareIcon } from '@heroicons/react/24/outline';
 import SipForm from '@/components/calculators/SipForm';
 import SipSummary from '@/components/calculators/SipSummary';
@@ -15,15 +14,13 @@ import { SIPFrequency } from '@/types/calculator';
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 export default function SIPCalculatorClient() {
-  const router = useRouter();
-  const pathname = usePathname();
   const { getQueryParam, createQueryString } = useQueryParams();
   const [showCopied, setShowCopied] = useState(false);
 
-  // Initialize state from URL parameters or defaults
-  const investment = getQueryParam('investment', 3000);
-  const interestRate = getQueryParam('interest', 12);
-  const years = getQueryParam('years', 3);
+  // Initialize state from URL parameters or defaults - use local state instead of URL
+  const [investment, setInvestment] = useState(() => getQueryParam('investment', 3000));
+  const [interestRate, setInterestRate] = useState(() => getQueryParam('interest', 12));
+  const [years, setYears] = useState(() => getQueryParam('years', 3));
   const frequency: SIPFrequency = 'monthly';
 
   const { totalInvestment, totalReturns, totalValue } = calculateSIP(
@@ -33,27 +30,16 @@ export default function SIPCalculatorClient() {
     frequency
   );
 
-  // Update URL when values change
-  const updateQueryParams = (params: { [key: string]: number }) => {
-    const queryString = createQueryString(params);
-    router.push(`${pathname}?${queryString}`);
-  };
-
-  const handleInvestmentChange = (value: number) => {
-    updateQueryParams({ investment: value, interest: interestRate, years });
-  };
-
-  const handleInterestRateChange = (value: number) => {
-    updateQueryParams({ investment: investment, interest: value, years });
-  };
-
-  const handleYearsChange = (value: number) => {
-    updateQueryParams({ investment: investment, interest: interestRate, years: value });
-  };
-
   const handleShare = async () => {
     try {
-      await navigator.clipboard.writeText(window.location.href);
+      // Build shareable URL with current values only when sharing
+      const queryString = createQueryString({
+        investment,
+        interest: interestRate,
+        years
+      });
+      const shareUrl = `${window.location.origin}${window.location.pathname}?${queryString}`;
+      await navigator.clipboard.writeText(shareUrl);
       setShowCopied(true);
       setTimeout(() => setShowCopied(false), 2000);
     } catch (err) {
@@ -92,9 +78,9 @@ export default function SIPCalculatorClient() {
           interestRate={interestRate}
           years={years}
           frequency={frequency}
-          onInvestmentChange={handleInvestmentChange}
-          onInterestRateChange={handleInterestRateChange}
-          onYearsChange={handleYearsChange}
+          onInvestmentChange={setInvestment}
+          onInterestRateChange={setInterestRate}
+          onYearsChange={setYears}
         />
 
         <SipSummary

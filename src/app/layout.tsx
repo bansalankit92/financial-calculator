@@ -13,6 +13,9 @@ export const viewport: Viewport = {
   themeColor: "#2563eb"
 };
 
+// Enable ISR - revalidate pages every hour by default
+export const revalidate = 3600
+
 export const metadata: Metadata = {
   title: "My Financial Calculator",
   description: "Calculate SIP, EMI, Income Tax, and more",
