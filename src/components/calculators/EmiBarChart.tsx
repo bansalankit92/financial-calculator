@@ -6,7 +6,8 @@ interface EmiBarChartProps {
   yearlyBreakup: EMICalculationResult['yearlyBreakup'];
 }
 
-function formatCurrency(amount: number): string {
+function formatCurrency(amount: number | undefined): string {
+  if (amount === undefined) return '₹0';
   return `₹${amount.toLocaleString('en-IN')}`;
 }
 

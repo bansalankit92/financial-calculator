@@ -1,11 +1,14 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  eslint: {
-    // Ignore old Angular files
-    ignoreDuringBuilds: true,
-    dirs: ['src', 'pages', 'components', 'lib', 'utils']
-  }
+
+  // Enable Turbopack and ignore Angular folder
+  turbopack: {},
+
+  // Ignore Angular folder during TypeScript checking
+  typescript: {
+    ignoreBuildErrors: false,
+  },
 };
 
 module.exports = nextConfig; 

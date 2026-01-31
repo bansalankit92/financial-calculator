@@ -49,7 +49,8 @@ export default function TaxDistributionChart({
     );
   }, []);
 
-  const formatTooltipValue = useCallback((value: number) => {
+  const formatTooltipValue = useCallback((value: number | undefined) => {
+    if (value === undefined) return ['₹0', '0%'];
     const percentage = ((value / ctc) * 100).toFixed(1);
     return [`₹${value.toLocaleString('en-IN')}`, `${percentage}%`];
   }, [ctc]);

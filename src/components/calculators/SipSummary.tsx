@@ -179,8 +179,8 @@ export default function SipSummary({
               >
                 {data.map((entry, index) => renderCell(entry, index))}
               </Pie>
-              <Tooltip 
-                formatter={(value: number) => formatCurrency(value)}
+              <Tooltip
+                formatter={(value: number | undefined) => value !== undefined ? formatCurrency(value) : '₹0'}
                 animationEasing="ease-out"
               />
               <Legend 

@@ -120,7 +120,7 @@ export default function EmiSummary({ emi, totalInterest, totalPayment, principal
                   <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                 ))}
               </Pie>
-              <Tooltip formatter={(value: number) => formatCurrency(value)} animationEasing="ease-out" />
+              <Tooltip formatter={(value: number | undefined) => value !== undefined ? formatCurrency(value) : '₹0'} animationEasing="ease-out" />
               <Legend verticalAlign="bottom" height={32} />
             </PieChart>
           </ResponsiveContainer>

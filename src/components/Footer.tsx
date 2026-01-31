@@ -1,4 +1,3 @@
-import React from 'react';
 import Link from 'next/link';
 import { ROUTES } from '@/constants/routes';
 
@@ -74,8 +73,11 @@ export default function Footer() {
           </div>
         </div>
         <div className="mt-8 text-center text-sm w-full flex justify-center">
-          © 2020-{new Date().getFullYear()} Design and developed by{' '}
-          <Link href="https://ankitbansal.co.in" target="_blank" rel="noopener noreferrer" className="underline ml-1">Ankit Bansal</Link>
+          <p className="flex flex-wrap justify-center items-center gap-1">
+            <span>© 2020-2026</span>
+            <span>Designed and developed by</span>
+            <Link href="https://ankitbansal.co.in" target="_blank" rel="noopener noreferrer" className="underline">Ankit Bansal</Link>
+          </p>
         </div>
       </div>
     </footer>
