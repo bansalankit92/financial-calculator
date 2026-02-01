@@ -99,8 +99,8 @@ export default function EmiSummary({ emi, totalInterest, totalPayment, principal
     <div className="bg-white rounded-xl shadow-lg p-4">
       <h2 className="text-xl font-semibold mb-4">Loan Summary</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="w-full aspect-square max-w-[320px] mx-auto">
-          <ResponsiveContainer width="100%" height="100%">
+        <div className="w-full aspect-square max-w-[320px] mx-auto" style={{ minHeight: '320px' }}>
+          <ResponsiveContainer width="100%" height="100%" minHeight={320}>
             <PieChart>
               <Pie
                 data={data}

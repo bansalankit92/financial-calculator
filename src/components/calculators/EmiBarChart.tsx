@@ -24,7 +24,7 @@ export default function EmiBarChart({ yearlyBreakup }: EmiBarChartProps) {
   return (
     <div className="bg-white rounded-xl shadow-lg p-6 mt-8">
       <h2 className="text-xl font-semibold mb-4">EMI Payment / Year</h2>
-      <ResponsiveContainer width="100%" height={350}>
+      <ResponsiveContainer width="100%" height={350} minHeight={350}>
         <BarChart
           data={data}
           margin={{ top: 20, right: 30, left: 40, bottom: 30 }}

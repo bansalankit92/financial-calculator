@@ -60,8 +60,8 @@ export default function TaxDistributionChart({
   ), []);
 
   return (
-    <div className="w-full aspect-square max-w-[400px] mx-auto">
-      <ResponsiveContainer width="100%" height="100%">
+    <div className="w-full aspect-square max-w-[400px] mx-auto" style={{ minHeight: '400px' }}>
+      <ResponsiveContainer width="100%" height="100%" minHeight={400}>
         <PieChart>
           <Pie
             data={data}
